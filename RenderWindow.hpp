@@ -1,4 +1,4 @@
-#pragma once // This ensures there are headers that are copied twice
+#pragma once // This ensures there are no headers that are copied twice
 #include <SDL.h>
 #include <SDL_image.h>
 
