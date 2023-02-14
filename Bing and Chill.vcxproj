@@ -24,6 +24,7 @@
     <ProjectGuid>{d902c0cd-4665-4b79-a1c4-457d8e93a94c}</ProjectGuid>
     <RootNamespace>BingandChill</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>God_of_War_Rage_of_Jotunheim</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
