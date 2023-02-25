@@ -1,5 +1,8 @@
 #include "Game.hpp"
 
+SDL_Texture* playerTex;
+SDL_Rect srcR, destR;
+
 Game::Game()
 {
 
@@ -41,6 +44,10 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	{
 		gameRunning = false;
 	}
+
+	// Loading the player texture
+	SDL_Surface* tmpSurface = IMG_Load("Assets/Kratos.png");
+	playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 }
 
 bool Game::isRunning()
@@ -65,14 +72,15 @@ void Game::handleEvents()
 
 void Game::update()
 {
-
+	destR.h = 64;
+	destR.w = 64;
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Adding stuff to render
-
+	SDL_RenderCopy(renderer, playerTex, NULL, &destR);
 	SDL_RenderPresent(renderer);
 }
 
