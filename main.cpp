@@ -9,7 +9,7 @@ int main(int argc, char* args[])
 	// Initializing SDL
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 	{
-		std::cout << "SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+		std::cout << "SDL_Init has failed. SDL_ERROR: " << SDL_GetError() << std::endl;
 	}
 
 	// Initializing SDL_image
