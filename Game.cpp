@@ -45,7 +45,7 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 
 bool Game::isRunning()
 {
-
+	return gameRunning;
 }
 
 void Game::handleEvents()
@@ -81,4 +81,5 @@ void Game::clean()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
+	std::cout << "Game cleaned" << std::endl;
 }
