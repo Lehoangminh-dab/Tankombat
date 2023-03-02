@@ -7,7 +7,7 @@ int main(int argc, char* args[])
 	const int FRAME_DELAY_MILISECONDS = 1000 / FPS;
 
 	Game* game = new Game();
-	game->init("DieEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, false);
+	game->initialize("DieEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, false);
 
 	Uint32 frameStartTime;
 	Uint32 frameEndTime;

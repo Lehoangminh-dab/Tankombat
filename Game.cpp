@@ -16,8 +16,29 @@ Game::~Game()
 	
 }
 
+void Game::initializeWindow(SDL_Window* window, const char* title, int xPos, int yPos, int width, int height, int flags)
+{
+	window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
+	if (window == NULL)
+	{
+		std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
+	}
+}
 
-void Game::init(const char* title, int xPos, int yPos, int width, int height, bool fullscreen)
+void Game::initializeRenderer(SDL_Renderer* renderer)
+{
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == NULL)
+	{
+		std::cout << "Renderer failed to init. Error: " << SDL_GetError() << std::endl;
+	}
+	else
+	{
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	}
+}
+
+void Game::initialize(const char* title, int xPos, int yPos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
 	if (fullscreen)
@@ -27,28 +48,14 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{	
-		window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
-		if (window == NULL)
-		{
-			std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
-		}
-
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		if (renderer == NULL)
-		{
-			std::cout << "Renderer failed to init. Error: " << SDL_GetError() << std::endl;
-		}
-		else
-		{
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		}
+		initializeWindow(window, title, xPos, yPos, width, height, flags);
+		initializeRenderer(renderer);
 		gameRunning = true;
 	}
 	else
 	{
 		gameRunning = false;
 	}
-
 
 	playerTexture = TextureManager::renderTexture(playerTexturePath, renderer);
 }

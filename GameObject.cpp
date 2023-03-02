@@ -1,11 +1,11 @@
 #include "GameObject.hpp"
 #include "TextureManager.hpp"
 
-GameObject::GameObject(const char* textureSheet, SDL_Renderer* renderer, int xPosition, int yPosition)
+GameObject::GameObject(const char* textureSheet, SDL_Renderer* renderer, int xStartingPosition, int yStartingPosition)
 {
 	objectTexture = TextureManager::renderTexture(textureSheet, renderer);
-	xStartingPosition = xPosition;
-	yStartingPosition = yPosition;
+	xPosition = xStartingPosition;
+	yPosition = yStartingPosition;
 }
 
 void GameObject::update()
@@ -13,8 +13,8 @@ void GameObject::update()
 	sourceRectangle->h = 32; // Magic numbers
 	sourceRectangle->w = 32;
 
-	destinationRectangle->x = xStartingPosition;
-	destinationRectangle->y = yStartingPosition;
+	destinationRectangle->x = xPosition;
+	destinationRectangle->y = yPosition;
 }
 
 void GameObject::render()
