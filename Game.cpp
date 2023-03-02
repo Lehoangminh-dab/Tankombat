@@ -49,6 +49,7 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		gameRunning = false;
 	}
 
+
 	playerTexture = TextureManager::renderTexture(playerTexturePath, renderer);
 }
 

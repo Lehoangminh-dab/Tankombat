@@ -8,7 +8,8 @@ public:
 	~GameObject();
 private:
 	SDL_Texture* objectTexture;
-	SDL_Rect* sourceRectangle, destinationRectangle;
+	SDL_Rect* sourceRectangle;
+	SDL_Rect* destinationRectangle;
 	int xStartingPosition;
 	int yStartingPosition;
 	void update();

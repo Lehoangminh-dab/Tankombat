@@ -1,17 +1,17 @@
 ﻿#include "Game.hpp"
 
-const int FPS = 60;
-const int FRAME_DELAY = 1000 / FPS;
-
 
 int main(int argc, char* args[])
 {
+	const int FPS = 60;
+	const int FRAME_DELAY_MILISECONDS = 1000 / FPS;
+
 	Game* game = new Game();
 	game->init("DieEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 800, false);
 
 	Uint32 frameStartTime;
 	Uint32 frameEndTime;
-	Uint32 frameElapsedTime;
+	Uint32 ElapsedTimeOfFrame;
 	while (game->isRunning())
 	{         
 		frameStartTime = SDL_GetTicks();
@@ -21,12 +21,13 @@ int main(int argc, char* args[])
 		game->render();
 		
 		frameEndTime = SDL_GetTicks();
-		frameElapsedTime = frameEndTime - frameStartTime;
-		if (frameElapsedTime < FRAME_DELAY)
+		ElapsedTimeOfFrame = frameEndTime - frameStartTime;
+		if (ElapsedTimeOfFrame < FRAME_DELAY_MILISECONDS)
 		{
-			SDL_Delay(FRAME_DELAY - frameElapsedTime);
+			SDL_Delay(FRAME_DELAY_MILISECONDS - ElapsedTimeOfFrame);
 		}
 	}
+
 	game->clean();
 	return 0;
 }

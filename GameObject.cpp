@@ -10,11 +10,11 @@ GameObject::GameObject(const char* textureSheet, SDL_Renderer* renderer, int xPo
 
 void GameObject::update()
 {
-	sourceRectangle->h = imageResolution.h;
-	sourceRectangle->w = imageResolution.w;
+	sourceRectangle->h = 32; // Magic numbers
+	sourceRectangle->w = 32;
 
-	destinationRectangle.x = xStartingPosition;
-	destinationRectangle.y = yStartingPosition;
+	destinationRectangle->x = xStartingPosition;
+	destinationRectangle->y = yStartingPosition;
 }
 
 void GameObject::render()
