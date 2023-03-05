@@ -1,33 +1,19 @@
 #pragma once
+#include "Game.hpp"
 
-const int TYPE_BUILDING = 0;
-const int TYPE_GLASS = 1;
-const int TYPE_CRATE = 2;
-const int TYPE_PLATFORM = 3;
-
-Map::Map()
+class Map
 {
+public:
+	Map();
+	~Map();
 
-}
+	void LoadMap(int tileMap[MAP_HEIGHT][MAP_WIDTH]);
+	void DrawMap();
+private:
 
-void Map::LoadMap()
-{
-
-}
-
-void Map::DrawMap()
-{
-	type = 0;
-	
-	for ()
-	{
-		switch (type)
-		{
-		case TYPE_BUILDING:
-			TextureManager::Draw();
-			break;
-		W
-
-		}
-	}
-}
+	SDL_Rect sourceRectangle, destinationRectangle;
+	SDL_Texture* building;
+	SDL_Texture* glass;
+	SDL_Texture* crate;
+	SDL_Texture* platform;
+};

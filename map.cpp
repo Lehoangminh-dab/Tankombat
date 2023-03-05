@@ -1,19 +1,49 @@
-#include "map.hpp"
-#include "Game.hpp"
+#include "Map.hpp"
 #include "TextureManager.hpp"
 
-class Map
-{
-public:
-	Map();
-	~Map();
+const int TYPE_BUILDING = 0;
+const int TYPE_GLASS = 1;
+const int TYPE_CRATE = 2;
+const int TYPE_PLATFORM = 3;
 
-	void LoadMap();
-	void DrawMap();
-private:
-	SDL_Rect sourceRectangle, destinationRectangle;
-	SDL_Texture* building;
-	SDL_Texture* glass;
-	SDL_Texture* crate;
-	SDL_Texture* platform;
-};
+const int MAP_WIDTH = 25;
+const int MAP_HEIGHT = 20;
+
+int tileMap[MAP_HEIGHT][MAP_WIDTH];
+
+
+
+Map::Map()
+{
+	for (int tileRow = 0; tileRow < MAP_HEIGHT; tileRow++)
+	{
+		for (int tileColumn = 0; tileColumn < MAP_WIDTH; tileColumn++)
+		{
+			tileMap[tileRow][tileColumn] = 0;
+		}
+	}
+
+	glass = TextureManager::renderTexture("Assets/Map - Rooftop/glass.png");
+}
+
+void Map::LoadMap(int tileMap[MAP_HEIGHT][MAP_WIDTH])
+{
+
+}
+
+void Map::DrawMap()
+{
+	type = 0;
+	
+	for ()
+	{
+		switch (type)
+		{
+		case TYPE_BUILDING:
+			TextureManager::Draw();
+			break;
+		W
+
+		}
+	}
+}
