@@ -4,8 +4,11 @@
 
 GameObject* player;
 GameObject* enemy;
-const char* PLAYER_TEXTURE_PATH = "Assets/Max/Idle/1.png";
-const char* ENEMY_TEXTURE_PATH = "Assets/Bob/Idle/1.png";
+const char* PLAYER_TEXTURE_PATH = "Assets/Kratos.png";
+const char* ENEMY_TEXTURE_PATH = "Assets/Kratos.png";
+
+SDL_Renderer* Game::renderer = nullptr;
+
 
 Game::Game()
 {
@@ -51,8 +54,8 @@ void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int wid
 		gameRunning = false;
 	}
 
-	player = new GameObject(PLAYER_TEXTURE_PATH, renderer, 0, 0);
-	enemy = new GameObject(ENEMY_TEXTURE_PATH, renderer, 10, 10);
+	player = new GameObject(PLAYER_TEXTURE_PATH, 0, 0);
+	enemy = new GameObject(ENEMY_TEXTURE_PATH, 100, 100);
 }
 
 

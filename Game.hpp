@@ -17,9 +17,8 @@ public:
 	void update();
 	void render();
 	void clean(); 
-
+	static SDL_Renderer* renderer;
 private:
 	bool gameRunning;
 	SDL_Window* window;
-	SDL_Renderer* renderer;
 };
