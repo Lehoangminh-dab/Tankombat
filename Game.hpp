@@ -11,7 +11,7 @@ public:
 	Game();
 	~Game();
 
-	void initialize(const char* title, int xPos, int yPos, int width, int height, bool fullscreen);
+	void initialize(const char* title, int xWindowPos, int yWindowPos, int width, int height, bool fullscreen);
 	bool isRunning();
 	void handleEvents();
 	void update();
@@ -19,9 +19,7 @@ public:
 	void clean(); 
 
 private:
-	void initializeWindow(SDL_Window* window, const char* title, int xPos, int yPos, int width, int height, int flags);
-	void initializeRenderer(SDL_Renderer* renderer);
-	bool gameRunning = false;
+	bool gameRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 };

@@ -1,10 +1,11 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
+#include "GameObject.hpp"
 
-
-SDL_Texture* playerTexture;
-const char* playerTexturePath = "Assets/Kratos.png";
-SDL_Rect sourceRectangle, destinationRectangle;
+GameObject* player;
+GameObject* enemy;
+const char* PLAYER_TEXTURE_PATH = "Assets/Max/Idle/1.png";
+const char* ENEMY_TEXTURE_PATH = "Assets/Bob/Idle/1.png";
 
 Game::Game()
 {
@@ -16,29 +17,8 @@ Game::~Game()
 	
 }
 
-void Game::initializeWindow(SDL_Window* window, const char* title, int xPos, int yPos, int width, int height, int flags)
-{
-	window = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
-	if (window == NULL)
-	{
-		std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
-	}
-}
 
-void Game::initializeRenderer(SDL_Renderer* renderer)
-{
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (renderer == NULL)
-	{
-		std::cout << "Renderer failed to init. Error: " << SDL_GetError() << std::endl;
-	}
-	else
-	{
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	}
-}
-
-void Game::initialize(const char* title, int xPos, int yPos, int width, int height, bool fullscreen)
+void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int width, int height, bool fullscreen)
 {
 	int flags = 0;
 	if (fullscreen)
@@ -48,8 +28,22 @@ void Game::initialize(const char* title, int xPos, int yPos, int width, int heig
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{	
-		initializeWindow(window, title, xPos, yPos, width, height, flags);
-		initializeRenderer(renderer);
+		window = SDL_CreateWindow(title, xWindowPos, yWindowPos, width, height, flags);
+		if (window == NULL)
+		{
+			std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
+		}
+
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		if (renderer == NULL)
+		{
+			std::cout << "Renderer failed to init. Error: " << SDL_GetError() << std::endl;
+		}
+		else
+		{
+			SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+		}
+
 		gameRunning = true;
 	}
 	else
@@ -57,7 +51,8 @@ void Game::initialize(const char* title, int xPos, int yPos, int width, int heig
 		gameRunning = false;
 	}
 
-	playerTexture = TextureManager::renderTexture(playerTexturePath, renderer);
+	player = new GameObject(PLAYER_TEXTURE_PATH, renderer, 0, 0);
+	enemy = new GameObject(ENEMY_TEXTURE_PATH, renderer, 10, 10);
 }
 
 
@@ -84,19 +79,15 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	destinationRectangle.h = 64;
-	destinationRectangle.w = 64;
-	// Movement test
-	destinationRectangle.x++;
-	destinationRectangle.y++;
+	player->update();
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
-	// Adding stuff to render
+	// Stuff to render
+	player->render();
 
-	SDL_RenderCopy(renderer, playerTexture, NULL, &destinationRectangle);
 	SDL_RenderPresent(renderer);
 }
 

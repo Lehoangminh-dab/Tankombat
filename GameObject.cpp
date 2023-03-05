@@ -6,19 +6,28 @@ GameObject::GameObject(const char* textureSheet, SDL_Renderer* renderer, int xSt
 	objectTexture = TextureManager::renderTexture(textureSheet, renderer);
 	xPosition = xStartingPosition;
 	yPosition = yStartingPosition;
+
+	ren = renderer;
 }
 
 void GameObject::update()
 {
-	sourceRectangle->h = 32; // Magic numbers
-	sourceRectangle->w = 32;
+	xPosition++;
+	yPosition++;
 
-	destinationRectangle->x = xPosition;
-	destinationRectangle->y = yPosition;
+	sourceRectangle.h = 255; // Magic numbers
+	sourceRectangle.w = 255;
+	sourceRectangle.x = 0;
+	sourceRectangle.y = 0;
+
+	destinationRectangle.x = xPosition;
+	destinationRectangle.y = yPosition;
+	destinationRectangle.h = sourceRectangle.h;
+	destinationRectangle.w = sourceRectangle.w;
 }
 
 void GameObject::render()
 {
-
+	SDL_RenderCopy(ren, objectTexture, &sourceRectangle, &destinationRectangle);
 }
 
