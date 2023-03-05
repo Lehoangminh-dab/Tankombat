@@ -6,13 +6,6 @@ const int TYPE_GLASS = 1;
 const int TYPE_CRATE = 2;
 const int TYPE_PLATFORM = 3;
 
-const int MAP_WIDTH = 25;
-const int MAP_HEIGHT = 20;
-
-int tileMap[MAP_HEIGHT][MAP_WIDTH];
-
-
-
 Map::Map()
 {
 	for (int tileRow = 0; tileRow < MAP_HEIGHT; tileRow++)
