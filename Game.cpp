@@ -46,7 +46,7 @@ void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int wid
 		}
 		else
 		{
-			SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		}
 
 		gameRunning = true;
@@ -83,6 +83,7 @@ void Game::handleEvents()
 
 void Game::update()
 {
+	
 }
 
 void Game::render()

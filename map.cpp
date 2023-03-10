@@ -41,7 +41,7 @@ int rooftop[Map::MAP_HEIGHT][Map::MAP_WIDTH] = {
 
 Map::Map()
 {
-	brick = TextureManager::renderTexture("Assets/Maps/Rooftop/brick.png");
+	brick = TextureManager::loadTexture("Assets/Maps/Rooftop/brick.png");
 	LoadMap(rooftop);
 
 	sourceRectangle.x = sourceRectangle.y = 0;
@@ -69,6 +69,8 @@ void Map::DrawMap()
 		for (int column = 0; column < MAP_WIDTH; column++)
 		{
 			type = map[row][column];
+
+			std::cout << type;
 
 			destinationRectangle.x = column * TILE_SIZE;
 			destinationRectangle.y = row * TILE_SIZE;
