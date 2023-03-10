@@ -1,6 +1,7 @@
 #include "GameObject.hpp"
 #include "TextureManager.hpp"
 
+
 GameObject::GameObject(const char* textureSheet, int xStartingPosition, int yStartingPosition)
 {
 	objectTexture = TextureManager::renderTexture(textureSheet);
@@ -13,8 +14,8 @@ void GameObject::update()
 	xPosition++;
 	yPosition++;
 
-	sourceRectangle.h = 255; // Magic numbers
-	sourceRectangle.w = 255;
+	sourceRectangle.h = 25; // Magic numbers
+	sourceRectangle.w = 25;
 	sourceRectangle.x = 0;
 	sourceRectangle.y = 0;
 

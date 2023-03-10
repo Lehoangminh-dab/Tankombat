@@ -6,17 +6,12 @@ class Map
 public:
 	Map();
 	~Map();
-
-	void LoadMap(int tileMap[MAP_HEIGHT][MAP_WIDTH]);
+	static const int MAP_WIDTH = 55;
+	static const int MAP_HEIGHT = 27;
+	void LoadMap(int map[MAP_HEIGHT][MAP_WIDTH]);
 	void DrawMap();
 private:
-	const int MAP_WIDTH = 25;
-	const int MAP_HEIGHT = 20;
-	int tileMap[MAP_HEIGHT][MAP_WIDTH];
-
+	int map[MAP_HEIGHT][MAP_WIDTH];
 	SDL_Rect sourceRectangle, destinationRectangle;
-	SDL_Texture* building;
-	SDL_Texture* glass;
-	SDL_Texture* crate;
-	SDL_Texture* platform;
+	SDL_Texture* brick;
 };

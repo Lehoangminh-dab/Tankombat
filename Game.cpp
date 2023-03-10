@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
+#include "Map.hpp"
 
 GameObject* player;
 GameObject* enemy;
@@ -9,6 +10,7 @@ const char* ENEMY_TEXTURE_PATH = "Assets/Kratos.png";
 
 SDL_Renderer* Game::renderer = nullptr;
 
+Map* map;
 
 Game::Game()
 {
@@ -54,8 +56,7 @@ void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int wid
 		gameRunning = false;
 	}
 
-	player = new GameObject(PLAYER_TEXTURE_PATH, 0, 0);
-	enemy = new GameObject(ENEMY_TEXTURE_PATH, 100, 100);
+	map = new Map();
 }
 
 
@@ -82,15 +83,13 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	player->update();
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Stuff to render
-	player->render();
-
+	map->DrawMap();
 	SDL_RenderPresent(renderer);
 }
 
