@@ -6,6 +6,7 @@ class GameObject
 public:
 	GameObject(const char* textureSheet, int xStartingPosition, int yStartingPosition);
 	~GameObject();
+
 	void update();
 	void render();
 private:

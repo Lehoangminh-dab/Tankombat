@@ -55,7 +55,7 @@ void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int wid
 	{
 		gameRunning = false;
 	}
-
+	player = new GameObject(PLAYER_TEXTURE_PATH, 0, 0);
 	map = new Map();
 }
 
@@ -83,7 +83,7 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	
+	player->update();
 }
 
 void Game::render()
