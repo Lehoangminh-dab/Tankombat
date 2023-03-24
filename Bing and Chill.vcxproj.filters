@@ -27,9 +27,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Map.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -40,9 +37,6 @@
     </ClInclude>
     <ClInclude Include="GameObject.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.cpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

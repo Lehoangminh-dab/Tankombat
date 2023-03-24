@@ -4,8 +4,6 @@
 
 GameObject* player;
 GameObject* enemy;
-const char* PLAYER_TEXTURE_PATH = "Assets/Kratos.png";
-const char* ENEMY_TEXTURE_PATH = "Assets/Kratos.png";
 
 SDL_Renderer* Game::renderer = nullptr;
 
@@ -21,7 +19,7 @@ Game::~Game()
 }
 
 
-void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int width, int height, bool fullscreen)
+void Game::init(const char* title, int width, int height, bool fullscreen)
 {
 	int flags = 0;
 	if (fullscreen)
@@ -31,13 +29,8 @@ void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int wid
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{	
-		window = SDL_CreateWindow(title, xWindowPos, yWindowPos, width, height, flags);
-		if (window == NULL)
-		{
-			std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
-		}
-
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer == NULL)
 		{
 			std::cout << "Renderer failed to init. Error: " << SDL_GetError() << std::endl;
@@ -54,8 +47,8 @@ void Game::initialize(const char* title, int xWindowPos, int yWindowPos, int wid
 		gameRunning = false;
 	}
 
-	player = new GameObject(PLAYER_TEXTURE_PATH, 0, 0);
-	enemy = new GameObject(ENEMY_TEXTURE_PATH, 100, 100);
+	player = new GameObject("Assets/Kratos.png", 0, 0);
+	enemy = new GameObject("Assets/Enemy.png", 400, 400);
 }
 
 
@@ -83,6 +76,7 @@ void Game::handleEvents()
 void Game::update()
 {
 	player->update();
+	enemy->update();
 }
 
 void Game::render()
@@ -90,7 +84,7 @@ void Game::render()
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Stuff to render
 	player->render();
-
+	enemy->render();
 	SDL_RenderPresent(renderer);
 }
 

@@ -3,7 +3,7 @@
 
 GameObject::GameObject(const char* textureSheet, int xStartingPosition, int yStartingPosition)
 {
-	objectTexture = TextureManager::renderTexture(textureSheet);
+	objectTexture = TextureManager::loadTexture(textureSheet);
 	xPosition = xStartingPosition;
 	yPosition = yStartingPosition;
 }
@@ -13,15 +13,15 @@ void GameObject::update()
 	xPosition++;
 	yPosition++;
 
-	sourceRectangle.h = 255; // Magic numbers
-	sourceRectangle.w = 255;
+	sourceRectangle.h = 32; // Magic numbers
+	sourceRectangle.w = 32;
 	sourceRectangle.x = 0;
 	sourceRectangle.y = 0;
 
 	destinationRectangle.x = xPosition;
 	destinationRectangle.y = yPosition;
-	destinationRectangle.h = sourceRectangle.h;
-	destinationRectangle.w = sourceRectangle.w;
+	destinationRectangle.h = sourceRectangle.h * 2;
+	destinationRectangle.w = sourceRectangle.w * 2;
 }
 
 void GameObject::render()

@@ -11,7 +11,7 @@ public:
 	Game();
 	~Game();
 
-	void initialize(const char* title, int xWindowPos, int yWindowPos, int width, int height, bool fullscreen);
+	void init(const char* title, int width, int height, bool fullscreen);
 	bool isRunning();
 	void handleEvents();
 	void update();
