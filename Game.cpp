@@ -1,9 +1,11 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
+#include "Map.hpp"
 
 GameObject* player;
 GameObject* enemy;
+Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;
 
@@ -49,6 +51,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	player = new GameObject("Assets/Kratos.png", 0, 0);
 	enemy = new GameObject("Assets/Enemy.png", 400, 400);
+	map = new Map();
 }
 
 
@@ -83,6 +86,7 @@ void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Stuff to render
+	map->DrawMap();
 	player->render();
 	enemy->render();
 	SDL_RenderPresent(renderer);

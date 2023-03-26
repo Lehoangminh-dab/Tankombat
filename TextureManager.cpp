@@ -8,7 +8,7 @@ SDL_Texture* TextureManager::loadTexture(const char* textureFilePath)
 	return texture;
 }
 
-//SDL_Texture* TextureManager::Draw(SDL_Texture* texture, SDL_Rect sourceRectangle, SDL_Rect destinationRectangle)
-//{
-//	SDL_RenderCopy(Game::renderer, texture, &sourceRectangle, &destinationRectangle);
-//}
+void TextureManager::Draw(SDL_Texture* texture, SDL_Rect sourceRectangle, SDL_Rect destinationRectangle)
+{
+	SDL_RenderCopy(Game::renderer, texture, &sourceRectangle, &destinationRectangle);
+}
