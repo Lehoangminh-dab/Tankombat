@@ -2,11 +2,9 @@
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
 #include "Map.hpp"
-
 GameObject* player;
 GameObject* enemy;
 Map* map;
-
 SDL_Renderer* Game::renderer = nullptr;
 
 
@@ -21,7 +19,7 @@ Game::~Game()
 }
 
 
-void Game::init(const char* title, int width, int height, bool fullscreen)
+void Game::init(const char* title, bool fullscreen)
 {
 	int flags = 0;
 	if (fullscreen)
@@ -31,7 +29,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{	
-		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer == NULL)
 		{
