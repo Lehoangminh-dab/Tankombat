@@ -10,7 +10,7 @@ public:
 	void LoadMap(int arr[20][25]);
 	void DrawMap();
 private:
-	SDL_Rect sourceRect, destinationRect;
+	SDL_Rect destinationRect;
 	SDL_Texture* tileSheet;
 	int map[20][25];
 };

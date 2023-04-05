@@ -43,10 +43,10 @@ Map::Map()
 {
 	LoadMap(levelOne);
 	LoadTiles("Assets/TileSheet.png");
-	sourceRect.x = sourceRect.y = 0;
-	sourceRect.w = destinationRect.w = 32;
-	sourceRect.h = destinationRect.h = 32;
-	destinationRect.x = destinationRect.y = 0;
+	destinationRect.w = 32;
+	destinationRect.h = 32;
+	destinationRect.x = 0;
+	destinationRect.y = 0;
 }
 
 
