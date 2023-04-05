@@ -1,6 +1,10 @@
 #include "Map.hpp"
 #include "TextureManager.hpp"
 
+// Tile type constants
+const int TILE_DIRT = 0;
+const int TILE_GRASS = 1;
+const int TILE_WATER = 2;
 
 int levelOne[20][25] = {
 	{0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -62,13 +66,13 @@ void Map::DrawMap()
 			destinationRect.y = row * 32;
 			switch (type)
 			{
-			case 0:
+			case TILE_DIRT:
 				TextureManager::Draw(dirt, sourceRect, destinationRect);
 				break;
-			case 1:
+			case TILE_GRASS:
 				TextureManager::Draw(grass, sourceRect, destinationRect);
 				break;
-			case 2:
+			case TILE_WATER:
 				TextureManager::Draw(water, sourceRect, destinationRect);
 				break;
 			default:
