@@ -26,6 +26,6 @@ void GameObject::update()
 
 void GameObject::render()
 {
-	SDL_RenderCopy(Game::renderer, objectTexture, &sourceRectangle, &destinationRectangle);
+	SDL_RenderCopyEx(Game::renderer, objectTexture, &sourceRectangle, &destinationRectangle, 45, NULL, SDL_FLIP_NONE);
 }
 
