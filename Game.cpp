@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
-#include "Map.hpp"
+#include "TileMap.hpp"
 GameObject* player;
 GameObject* enemy;
 Map* map;

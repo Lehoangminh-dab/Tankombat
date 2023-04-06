@@ -1,4 +1,4 @@
-#include "Map.hpp"
+#include "TileMap.hpp"
 #include "TextureManager.hpp"
 #include "Game.hpp"
 
@@ -53,6 +53,34 @@ int levelOne[20][25] = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
+Tile::Tile(int x, int y, int tileType)
+{
+    //Get the offsets
+    mBox.x = x;
+    mBox.y = y;
+
+    //Set the collision box
+    mBox.w = TILE_WIDTH;
+    mBox.h = TILE_HEIGHT;
+
+    //Get the tile type
+    mType = tileType;
+}
+
+void Tile::render()
+{
+}
+
+int Tile::getType()
+{
+    return 0;
+}
+
+SDL_Rect Tile::getBox()
+{
+    return SDL_Rect();
+}
+
 Map::Map()
 {
 	LoadMap(levelOne);
@@ -67,7 +95,7 @@ Map::Map()
 void Map::LoadTiles(const char* tileSheetFilePath)
 {
 	tileSheet = TextureManager::loadTexture(tileSheetFilePath);
-	
+
 	for (int tileType = 0; tileType < TOTAL_TILE_SPRITES; tileType++) // Because the tiles are distributed exclusively horizontally on the tilesheet
 	{
 		tileSheetClips[tileType].x = tileType * SOURCE_TILE_SIZE;

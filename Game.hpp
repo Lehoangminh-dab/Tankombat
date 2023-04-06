@@ -11,8 +11,8 @@ public:
 	Game();
 	~Game();
 
-	static const int SCREEN_WIDTH = 1250;
-	static const int SCREEN_HEIGHT = 800;
+	static const int SCREEN_WIDTH = 1600;
+	static const int SCREEN_HEIGHT = 1120;
 	void init(const char* title, bool fullscreen);
 	bool isRunning();
 	void handleEvents();

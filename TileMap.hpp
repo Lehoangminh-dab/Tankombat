@@ -1,0 +1,39 @@
+#pragma once
+#include "Game.hpp"
+
+class Tile
+{
+public:
+    //Initializes position and type
+    Tile(int x, int y, int tileType);
+
+    //Shows the tile
+    void render();
+
+    //Get the tile type
+    int getType();
+
+    //Get the collision box
+    SDL_Rect getBox();
+
+private:
+    //The attributes of the tile
+    SDL_Rect mBox;
+
+    //The tile type
+    int mType;
+};
+
+class Map
+{
+public:
+    Map();
+    ~Map();
+    void LoadTiles(const char* tileSheetFilePath);
+    void LoadMap(int arr[20][25]);
+    void DrawMap();
+private:
+    SDL_Rect destinationRect;
+    SDL_Texture* tileSheet;
+    int map[20][25];
+};
