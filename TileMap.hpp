@@ -18,7 +18,7 @@ public:
 
 private:
     //The attributes of the tile
-    SDL_Rect mBox;
+    SDL_Rect mBox{ 0,0,0,0 };
 
     //The tile type
     int mType;
@@ -30,10 +30,9 @@ public:
     Map();
     ~Map();
     void LoadTiles(const char* tileSheetFilePath);
-    void LoadMap(int arr[20][25]);
+    bool LoadMap(int arr[20][25]);
     void DrawMap();
 private:
     SDL_Rect destinationRect;
     SDL_Texture* tileSheet;
-    int map[20][25];
 };

@@ -1,6 +1,7 @@
 #include "TileMap.hpp"
 #include "TextureManager.hpp"
 #include "Game.hpp"
+#include <fstream>
 
 //The dimensions of the level
 const int LEVEL_WIDTH = Game::SCREEN_WIDTH;
@@ -28,7 +29,7 @@ const int TILE_LEFT = 10;
 const int TILE_TOPLEFT = 11;
 
 SDL_Rect tileSheetClips[TOTAL_TILE_SPRITES];
-
+Tile* tiles[TOTAL_TILES];
 
 int levelOne[20][25] = {
 	{0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -73,12 +74,12 @@ void Tile::render()
 
 int Tile::getType()
 {
-    return 0;
+    return mType;
 }
 
 SDL_Rect Tile::getBox()
 {
-    return SDL_Rect();
+    return mBox;
 }
 
 Map::Map()
@@ -105,41 +106,82 @@ void Map::LoadTiles(const char* tileSheetFilePath)
 	}
 }
 
-void Map::LoadMap(int arr[20][25])
+bool Map::LoadMap(int arr[20][25])
 {
-	for (int row = 0; row < 20; row++)
+	//Success flag
+	bool tilesLoaded = true;
+
+	//The tile offsets
+	int x = 0, y = 0;
+
+	//Open the map
+	std::ifstream map("Assets/Maps/Desert.map");
+
+	//If the map couldn't be loaded
+	if (map.fail())
 	{
-		for (int col = 0; col < 25; col++)
+		printf("Unable to load map file!\n");
+		tilesLoaded = false;
+	}
+	else
+	{
+		//Initialize the tiles
+		for (int i = 0; i < TOTAL_TILES; ++i)
 		{
-			map[row][col] = arr[row][col];
+			//Determines what kind of tile will be made
+			int tileType = -1;
+
+			//Read tile from map file
+			map >> tileType;
+
+			//If the was a problem in reading the map
+			if (map.fail())
+			{
+				//Stop loading map
+				printf("Error loading map: Unexpected end of file!\n");
+				tilesLoaded = false;
+				break;
+			}
+
+			//If the number is a valid tile number
+			if ((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES))
+			{
+				std::cout << tileType << " "; //test
+				tiles[i] = new Tile(x, y, tileType);
+			}
+			//If we don't recognize the tile type
+			else
+			{
+				//Stop loading map
+				printf("Error loading map: Invalid tile type at %d!\n", i);
+				tilesLoaded = false;
+				break;
+			}
+			//Move to next tile spot
+			x += TILE_WIDTH;
+
+			//If we've gone too far
+			if (x >= LEVEL_WIDTH)
+			{
+				//Move back
+				x = 0;
+
+				//Move to the next row
+				y += TILE_HEIGHT;
+				//test
+				std::cout << std::endl;
+			}
 		}
 	}
+
+	map.close();
+	return tilesLoaded;
 }
 
 void Map::DrawMap()
 {
-	int type = 0;
-	for (int row = 0; row < 20; row++)
+	for (int i = 0; i < TOTAL_TILES; ++i)
 	{
-		for (int col = 0; col < 25; col++)
-		{
-			type = map[row][col];
-			destinationRect.x = col * TILE_WIDTH;
-			destinationRect.y = row * TILE_HEIGHT;
-			switch (type)
-			{
-			case TILE_DIRT:
-				TextureManager::Draw(tileSheet, tileSheetClips[TILE_DIRT], destinationRect);
-				break;
-			case TILE_GRASS:
-				TextureManager::Draw(tileSheet, tileSheetClips[TILE_GRASS], destinationRect);
-				break;
-			case TILE_WATER:
-				TextureManager::Draw(tileSheet, tileSheetClips[TILE_WATER], destinationRect);
-				break;
-			default:
-				break;
-			}
-		}
+		TextureManager::Draw(tileSheet, tileSheetClips[tiles[i]->getType()], tiles[i]->getBox());
 	}
 }
