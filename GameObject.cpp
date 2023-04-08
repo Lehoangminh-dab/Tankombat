@@ -24,6 +24,9 @@ void GameObject::update()
 
 	destinationRectangle.x = xPosition;
 	destinationRectangle.y = yPosition;
+
+	hitBox.x = destinationRectangle.x;
+	hitBox.y = destinationRectangle.y;
 }
 
 void GameObject::render()
