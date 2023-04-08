@@ -33,11 +33,13 @@ void GameObject::update()
 
 	hitBox.x = destinationRectangle.x;
 	hitBox.y = destinationRectangle.y;
+
+	handleWallCollision();
 }
 
 void GameObject::render()
 {
-	SDL_RenderCopyEx(Game::renderer, objectTexture, &sourceRectangle, &destinationRectangle, 45, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Game::renderer, objectTexture, &sourceRectangle, &destinationRectangle, 0, NULL, SDL_FLIP_NONE);
 }
 
 void GameObject::setVelocity(int veloX, int veloY)
@@ -50,3 +52,23 @@ SDL_Rect GameObject::getHitBox()
 {
 	return hitBox;
 }
+
+void GameObject::handleWallCollision()
+{
+	int width = hitBox.w;
+	int height = hitBox.h;
+	if (xPosition < 0 || (xPosition + width) > Game::SCREEN_WIDTH)
+	{
+		xPosition -= xVelocity;
+	}
+	if (yPosition < 0 || (yPosition + height) > Game::SCREEN_HEIGHT)
+	{
+		yPosition -= yVelocity;
+	}
+}
+
+std::string GameObject::getID()
+{
+	return ID;
+}
+

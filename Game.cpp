@@ -8,7 +8,7 @@ Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
-void handleCollision(GameObject* a, GameObject* b);
+void handleObjectsCollision(GameObject* a, GameObject* b);
 void updateCollision();
 
 Game::Game()
@@ -50,8 +50,8 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new GameObject("Assets/Kratos.png", 0, 30, 1, 0);
-	enemy = new GameObject("Assets/Enemy.png", 400, 30, -1, 0);
+	player = new GameObject("Assets/Kratos.png", 0, 30, 0, 1);
+	enemy = new GameObject("Assets/Enemy.png", 400, 200, 1, 0);
 	map = new Map();
 }
 
@@ -146,7 +146,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
-void handleCollision(GameObject* a, GameObject* b)
+void handleObjectsCollision(GameObject* a, GameObject* b)
 {
 	SDL_Rect hitBoxA = a->getHitBox();
 	SDL_Rect hitBoxB = b->getHitBox();
@@ -154,7 +154,8 @@ void handleCollision(GameObject* a, GameObject* b)
 	{
 		return;
 	}
-	if (a->ID == "TANK" && b->ID == "TANK")
+
+	if (a->getID() == "TANK" && b->getID() == "TANK")
 	{
 		a->setVelocity(0, 0);
 		b->setVelocity(0, 0);
@@ -163,5 +164,5 @@ void handleCollision(GameObject* a, GameObject* b)
 
 void updateCollision()
 {
-	handleCollision(player, enemy);
+	handleObjectsCollision(player, enemy);
 }
