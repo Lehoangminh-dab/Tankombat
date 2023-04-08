@@ -26,3 +26,15 @@ private:
 
 	void handleWallCollision();
 };
+
+class MovingGameObject : public GameObject
+{
+public:
+	MovingGameObject(const char* textureSheet, int xStartingPosition, int yStartingPosition, int startingVelocityX, int startingVelocityY);
+	void updatePosition();
+	void setVelocity(int veloX, int veloY);
+private:
+	int xVelocity;
+	int yVelocity;
+	void handleWallCollision();
+};

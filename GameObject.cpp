@@ -72,3 +72,14 @@ std::string GameObject::getID()
 	return ID;
 }
 
+void MovingGameObject::updatePosition()
+{
+}
+
+void MovingGameObject::setVelocity(int veloX, int veloY)
+{
+}
+
+void MovingGameObject::handleWallCollision()
+{
+}
