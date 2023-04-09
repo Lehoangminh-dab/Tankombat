@@ -50,8 +50,8 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new GameObject("Assets/Kratos.png", 0, 30, 0, 1);
-	enemy = new GameObject("Assets/Enemy.png", 400, 200, 1, 0);
+	player = new GameObject("Assets/Kratos.png", "TANK", 0, 30, 32, 32);
+	enemy = new GameObject("Assets/Enemy.png", "TANK", 300, 80, 64, 32);
 	map = new Map();
 }
 
@@ -79,8 +79,6 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	player->update();
-	enemy->update();
 	updateCollision();
 }
 
@@ -157,8 +155,6 @@ void handleObjectsCollision(GameObject* a, GameObject* b)
 
 	if (a->getID() == "TANK" && b->getID() == "TANK")
 	{
-		a->setVelocity(0, 0);
-		b->setVelocity(0, 0);
 	}
 }
 

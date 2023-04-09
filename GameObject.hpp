@@ -4,25 +4,14 @@
 class GameObject
 {
 public:
-	GameObject(const char* textureSheet, int xStartingPosition, int yStartingPosition, int startingVelocityX, int startingVelocityY);
+	GameObject(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition, int width, int height);
 	~GameObject();
-	void update();
 	void render();
-	void setVelocity(int veloX, int veloY);
 	std::string getID();
 	SDL_Rect getHitBox();
 private:
 	std::string ID;
 	SDL_Texture* objectTexture;
 	SDL_Rect sourceRectangle;
-	SDL_Rect destinationRectangle;
 	SDL_Rect hitBox;
-	
-	int xVelocity;
-	int yVelocity;
-
-	int xPosition;
-	int yPosition;
-
-	void handleWallCollision();
 };
