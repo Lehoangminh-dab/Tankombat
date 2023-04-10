@@ -2,13 +2,13 @@
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
 #include "TileMap.hpp"
-GameObject* player;
-GameObject* enemy;
+MovingGameObject* player;
+MovingGameObject* enemy;
 Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
-void handleObjectsCollision(GameObject* a, GameObject* b);
+void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
 void updateCollision();
 
 Game::Game()
@@ -50,8 +50,8 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new GameObject("Assets/Kratos.png", "TANK", 0, 30, 32, 32);
-	enemy = new GameObject("Assets/Enemy.png", "TANK", 300, 80, 64, 32);
+	player = new MovingGameObject("Assets/Kratos.png", "TANK", 0, 300, 32, 32, 1, 0);
+	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 600, 300, 32, 32, -1, 0);
 	map = new Map();
 }
 
@@ -79,6 +79,8 @@ void Game::handleEvents()
 
 void Game::update()
 {
+	player->move();
+	enemy->move();
 	updateCollision();
 }
 
@@ -144,7 +146,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
-void handleObjectsCollision(GameObject* a, GameObject* b)
+void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 {
 	SDL_Rect hitBoxA = a->getHitBox();
 	SDL_Rect hitBoxB = b->getHitBox();
@@ -155,6 +157,8 @@ void handleObjectsCollision(GameObject* a, GameObject* b)
 
 	if (a->getID() == "TANK" && b->getID() == "TANK")
 	{
+		a->setSpeed(0);
+		b->setSpeed(0);
 	}
 }
 
