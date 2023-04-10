@@ -2,13 +2,17 @@
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
 #include "TileMap.hpp"
+#include "Obstacle.hpp"
+
 MovingGameObject* player;
 MovingGameObject* enemy;
+IndestructibleObstacle* obstacle;
 Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
+void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
 void updateCollision();
 
 Game::Game()
@@ -50,8 +54,9 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new MovingGameObject("Assets/Kratos.png", "TANK", 0, 300, 32, 32, 1, 0);
+	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 32, 32, 1, 91);
 	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 600, 300, 32, 32, -1, 0);
+	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 600, 600, 32, 32, 0);
 	map = new Map();
 }
 
@@ -74,13 +79,12 @@ void Game::handleEvents()
 	default:
 		break;
 	}
-
 }
 
 void Game::update()
 {
-	player->move();
-	enemy->move();
+	player->move(player->getSpeed(), player->getRotationAngle());
+	enemy->move(enemy->getSpeed(), player->getRotationAngle());
 	updateCollision();
 }
 
@@ -91,6 +95,7 @@ void Game::render()
 	map->DrawMap();
 	player->render();
 	enemy->render();
+	obstacle->render();
 	SDL_RenderPresent(renderer);
 }
 
@@ -162,7 +167,26 @@ void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 	}
 }
 
+void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle)
+{
+	SDL_Rect movingObjectHitbox = object->getHitBox();
+	SDL_Rect obstacleHitbox = obstacle->getHitBox();
+	if (!checkCollision(movingObjectHitbox, obstacleHitbox))
+	{
+		return;
+	}
+
+	if (object->getID() == "TANK" && obstacle->getID() == "INDESTRUCTIBLE_OBSTACLE")
+	{
+		double oppositeObjectSpeed = (object->getSpeed()) * -1;
+		int objectRotation = object->getRotationAngle();
+		object->move(oppositeObjectSpeed, objectRotation);
+	}
+}
+
 void updateCollision()
 {
+	handleObjectsCollision(player, obstacle);
+	handleObjectsCollision(enemy, obstacle);
 	handleObjectsCollision(player, enemy);
 }

@@ -58,11 +58,11 @@ int GameObject::getRotationAngle()
 	return rotationAngle;
 }
 
-MovingGameObject::MovingGameObject(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition, int width, int height, int startingSpeed, int startingRotationAngle)
+MovingGameObject::MovingGameObject(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition, int width, int height, double startingSpeed, int startingRotationAngle)
 	: gameObject(objectTextureSheet, id, xStartingPosition, yStartingPosition, width, height, startingRotationAngle)
 {
 	speed = startingSpeed;
-	double startingRotationAngleInRadians = startingRotationAngle * (M_PI / 180);
+	double startingRotationAngleInRadians = (double)startingRotationAngle * (M_PI / 180);
 	xVelocity = speed * cos(startingRotationAngleInRadians);
 	yVelocity = speed * sin(startingRotationAngleInRadians);
 }
@@ -92,9 +92,18 @@ SDL_Rect MovingGameObject::getHitBox()
 	return gameObject.getHitBox();
 }
 
-void MovingGameObject::move()
+int MovingGameObject::getRotationAngle()
 {
-	int rotationAngle = gameObject.getRotationAngle();
+	return gameObject.getRotationAngle();
+}
+
+double MovingGameObject::getSpeed()
+{
+	return speed;
+}
+
+void MovingGameObject::move(double speed, int rotationAngle)
+{
 	double rotationAngleInRadians = rotationAngle * (M_PI / 180);
 	xVelocity = speed * cos(rotationAngleInRadians);
 	yVelocity = speed * sin(rotationAngleInRadians);
@@ -108,7 +117,7 @@ void MovingGameObject::move()
 	gameObject.setHitBox(newHitBox.x, newHitBox.y, newHitBox.w, newHitBox.h);
 }
 
-void MovingGameObject::setSpeed(int speedValue)
+void MovingGameObject::setSpeed(double speedValue)
 {
 	speed = speedValue;
 }

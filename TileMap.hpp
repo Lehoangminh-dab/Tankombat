@@ -30,7 +30,7 @@ public:
     Map();
     ~Map();
     void LoadTiles(const char* tileSheetFilePath);
-    bool LoadMap(int arr[20][25]);
+    bool LoadMap();
     void DrawMap();
 private:
     SDL_Rect destinationRect;

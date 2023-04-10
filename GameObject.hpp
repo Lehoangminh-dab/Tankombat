@@ -23,17 +23,19 @@ private:
 class MovingGameObject
 {
 public:
-	MovingGameObject(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition, int width, int height, int startingSpeed, int startingRotationAngle);
+	MovingGameObject(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition, int width, int height, double startingSpeed, int startingRotationAngle);
 	~MovingGameObject();
 	void render();
 	void setRotationAngle(int angle);
 	std::string getID();
 	SDL_Rect getHitBox();
-	void move();
-	void setSpeed(int speed);
+	int getRotationAngle();
+	double getSpeed();
+	void move(double speed, int rotationAngle);
+	void setSpeed(double speedValue);
 private:
 	GameObject gameObject;
-	int speed;
+	double speed;
 	double xVelocity;
 	double yVelocity;
 	bool collidedWithHorizontalWall();
