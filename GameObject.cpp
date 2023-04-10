@@ -27,7 +27,7 @@ GameObject::~GameObject()
 
 void GameObject::render()
 {
-	SDL_RenderCopyEx(Game::renderer, objectTexture, &sourceRectangle, &hitBox, 0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Game::renderer, objectTexture, &sourceRectangle, &hitBox, rotationAngle, NULL, SDL_FLIP_NONE);
 }
 
 void GameObject::setRotationAngle(int angle)
