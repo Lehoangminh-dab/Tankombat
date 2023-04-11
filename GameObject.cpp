@@ -65,6 +65,7 @@ MovingGameObject::MovingGameObject(const char* objectTextureSheet, std::string i
 	double startingRotationAngleInRadians = (double)startingRotationAngle * (M_PI / 180);
 	xVelocity = speed * cos(startingRotationAngleInRadians);
 	yVelocity = speed * sin(startingRotationAngleInRadians);
+	// test
 }
 
 MovingGameObject::~MovingGameObject()
@@ -102,15 +103,16 @@ double MovingGameObject::getSpeed()
 	return speed;
 }
 
-void MovingGameObject::move(double speed, int rotationAngle)
+void MovingGameObject::move()
 {
-	double rotationAngleInRadians = rotationAngle * (M_PI / 180);
+	int rotationAngleInDegrees = gameObject.getRotationAngle();
+	double rotationAngleInRadians = rotationAngleInDegrees * (M_PI / 180);
 	xVelocity = speed * cos(rotationAngleInRadians);
 	yVelocity = speed * sin(rotationAngleInRadians);
 	SDL_Rect newHitBox = gameObject.getHitBox();
 
-	int newPositionX = newHitBox.x + xVelocity;
-	int newPositionY = newHitBox.y + yVelocity;
+	int newPositionX = (double)newHitBox.x + xVelocity;
+	int newPositionY = (double)newHitBox.y + yVelocity;
 
 	newHitBox.x = newPositionX;
 	newHitBox.y = newPositionY;

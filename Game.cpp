@@ -54,9 +54,9 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 32, 32, 1, 91);
-	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 600, 300, 32, 32, -1, 0);
-	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 600, 600, 32, 32, 0);
+	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 32, 32, 10.0, 120);
+	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
+	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0);
 	map = new Map();
 }
 
@@ -83,8 +83,8 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	player->move(player->getSpeed(), player->getRotationAngle());
-	enemy->move(enemy->getSpeed(), player->getRotationAngle());
+	player->move();
+	enemy->move();
 	updateCollision();
 }
 
@@ -180,7 +180,7 @@ void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* ob
 	{
 		double oppositeObjectSpeed = (object->getSpeed()) * -1;
 		int objectRotation = object->getRotationAngle();
-		object->move(oppositeObjectSpeed, objectRotation);
+		object->setSpeed(0);
 	}
 }
 

@@ -145,8 +145,6 @@ bool Map::LoadMap()
 
 				//Move to the next row
 				y += TILE_HEIGHT;
-				//test
-				std::cout << std::endl;
 			}
 		}
 	}

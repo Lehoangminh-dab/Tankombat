@@ -31,7 +31,7 @@ public:
 	SDL_Rect getHitBox();
 	int getRotationAngle();
 	double getSpeed();
-	void move(double speed, int rotationAngle);
+	void move();
 	void setSpeed(double speedValue);
 private:
 	GameObject gameObject;
