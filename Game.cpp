@@ -158,40 +158,59 @@ void updateCollision()
 	handleObjectsCollision(player, enemy);
 
 	// Handle all collisions between tanks and projectiles
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	if (!activeProjectiles.empty())
 	{
-		handleObjectsCollision(player, activeProjectiles[projectileCnt]);
-		handleObjectsCollision(enemy, activeProjectiles[projectileCnt]);
+		for (auto& projectile : activeProjectiles)
+		{
+			handleObjectsCollision(player, projectile);
+			handleObjectsCollision(enemy, projectile);
+		}
 	}
 
 	// Handle all collisions between tanks and indestructible objects
-	for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+	if (!activeIndestructibleObstacles.empty())
 	{
-		handleObjectsCollision(player, activeIndestructibleObstacles[indestructibleObstacleCnt]);
-		handleObjectsCollision(enemy, activeIndestructibleObstacles[indestructibleObstacleCnt]);
+		for (auto& indestructibleObstacle : activeIndestructibleObstacles)
+		{
+			handleObjectsCollision(player, indestructibleObstacle);
+			handleObjectsCollision(enemy, indestructibleObstacle);
+		}
 	}
+
 	// Handle all collisions between projectiles and projectiles
-	for (int firstProjectileCnt = 0; firstProjectileCnt < activeProjectiles.size() - 1; firstProjectileCnt++)
+	if (activeProjectiles.size() > 1)
 	{
-		for (int secondProjectileCnt = firstProjectileCnt + 1; secondProjectileCnt < activeProjectiles.size(); secondProjectileCnt++)
+		for (auto firstProjectile = activeProjectiles.begin(); firstProjectile != activeProjectiles.end() - 1; ++firstProjectile)
 		{
-			handleObjectsCollision(activeProjectiles[firstProjectileCnt], activeProjectiles[secondProjectileCnt]);
+			for (auto secondProjectile = firstProjectile + 1; secondProjectile != activeProjectiles.end(); ++secondProjectile)
+			{
+				handleObjectsCollision(*firstProjectile, *secondProjectile);
+			}
 		}
 	}
+
 	// Handle all collisions between projectiles and indestructible objects
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	if (!activeProjectiles.empty() && !activeIndestructibleObstacles.empty())
 	{
-		for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+		for (auto& projectile : activeProjectiles)
 		{
-			handleObjectsCollision(activeProjectiles[projectileCnt], activeIndestructibleObstacles[indestructibleObstacleCnt]);
+			for (auto& indestructibleObstacle : activeIndestructibleObstacles)
+			{
+				handleObjectsCollision(projectile, indestructibleObstacle);
+			}
 		}
 	}
+
 	// Handle all collisions between projectiles and walls
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	if (!activeProjectiles.empty())
 	{
-		handleProjectileWallCollision(activeProjectiles[projectileCnt]);
+		for (auto& projectile : activeProjectiles)
+		{
+			handleProjectileWallCollision(projectile);
+		}
 	}
 }
+
 
 bool checkCollision(SDL_Rect a, SDL_Rect b)
 {
