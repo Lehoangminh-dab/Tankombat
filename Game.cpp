@@ -51,7 +51,7 @@ void Game::init(const char* title, bool fullscreen)
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{	
 		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
-		renderer = SDL_CreateRenderer(window, -1, 0);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		if (renderer == NULL)
 		{
 			std::cout << "Renderer failed to init. Error: " << SDL_GetError() << std::endl;
