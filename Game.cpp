@@ -1,9 +1,16 @@
+#include <vector>
 #include "Game.hpp"
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
 #include "TileMap.hpp"
 #include "Obstacle.hpp"
+#include "Projectile.hpp"
 
+// Object constants
+const double PROJECTILE_SPEED = 10.0;
+
+// Object storers
+std::vector<Projectile*> projectiles;
 MovingGameObject* player;
 MovingGameObject* enemy;
 IndestructibleObstacle* obstacle;
@@ -13,6 +20,8 @@ SDL_Renderer* Game::renderer = nullptr;
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
 void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
+void handleObjectsCollision(MovingGameObject* object, Projectile projectile);
+
 void updateCollision();
 
 Game::Game()
@@ -54,7 +63,7 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 32, 32, 10.0, 120);
+	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 5.0, 120);
 	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
 	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0);
 	map = new Map();
@@ -84,6 +93,7 @@ void Game::handleEvents()
 void Game::update()
 {
 	player->move();
+	player->setRotationAngle(player->getRotationAngle() + 6);
 	enemy->move();
 	updateCollision();
 }

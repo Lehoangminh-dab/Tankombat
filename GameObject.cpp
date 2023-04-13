@@ -35,6 +35,11 @@ void GameObject::setRotationAngle(int angle)
 	rotationAngle = angle;
 }
 
+void GameObject::setSourceRectangle(SDL_Rect srcRect)
+{
+	sourceRectangle = srcRect;
+}
+
 std::string GameObject::getID()
 {
 	return ID;
@@ -81,6 +86,11 @@ void MovingGameObject::render()
 void MovingGameObject::setRotationAngle(int angle)
 {
 	gameObject.setRotationAngle(angle);
+}
+
+void MovingGameObject::setSourceRectangle(SDL_Rect srcRect)
+{
+	gameObject.setSourceRectangle(srcRect);
 }
 
 std::string MovingGameObject::getID()

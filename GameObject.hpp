@@ -8,6 +8,7 @@ public:
 	~GameObject();
 	void render();
 	void setRotationAngle(int angle);
+	void setSourceRectangle(SDL_Rect srcRect);
 	void setHitBox(int x, int y, int w, int h);
 	std::string getID();
 	SDL_Rect getHitBox();
@@ -16,8 +17,8 @@ private:
 	std::string ID;
 	SDL_Texture* objectTexture;
 	SDL_Rect sourceRectangle;
-	int rotationAngle;
 	SDL_Rect hitBox;
+	int rotationAngle;
 };
 
 class MovingGameObject
@@ -27,11 +28,12 @@ public:
 	~MovingGameObject();
 	void render();
 	void setRotationAngle(int angle);
+	void setSourceRectangle(SDL_Rect srcRect);
+	void move();
 	std::string getID();
 	SDL_Rect getHitBox();
 	int getRotationAngle();
 	double getSpeed();
-	void move();
 	void setSpeed(double speedValue);
 private:
 	GameObject gameObject;
