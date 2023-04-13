@@ -7,7 +7,7 @@
 #include "Projectile.hpp"
 
 // Object constants
-const double PROJECTILE_SPEED = 10.0;
+const double PROJECTILE_SPEED = 1.0;
 const int PROJECTILE_WIDTH = 32;
 const int PROJECTILE_HEIGHT = 32;
 
@@ -70,7 +70,7 @@ void Game::init(const char* title, bool fullscreen)
 
 
 	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 0, 0);
-	projectile = new Projectile("Assets/Objects/Projectile.png", 400, 300, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, 10.0, 30);
+	projectile = new Projectile("Assets/Objects/Projectile.png", 400, 300, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 0);
 	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
 	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0);
 	map = new Map();
@@ -172,6 +172,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 void updateCollision()
 {
+	handleWallCollision(projectile);
 	handleObjectsCollision(player, obstacle);
 	handleObjectsCollision(enemy, obstacle);
 	handleObjectsCollision(player, enemy);
@@ -180,7 +181,6 @@ void updateCollision()
 void handleWallCollision(Projectile* projectile)
 {
 	SDL_Rect projectileHitBox = projectile->getHitBox();
-	// Handle collision with vertical borders
 	if (projectileHitBox.x < 0 || projectileHitBox.x + projectileHitBox.w > Game::SCREEN_WIDTH || projectileHitBox.y < 0 || projectileHitBox.y > Game::SCREEN_HEIGHT)
 	{
 		projectile->setCollisionStatus(true);

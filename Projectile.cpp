@@ -25,28 +25,28 @@ Projectile::~Projectile()
 
 void Projectile::render()
 {
-	//if (collided)
-	//{
-	//	if ((frame / 4) < TEXTURE_SHEET_FRAME_COUNT)
-	//	{
-	//		currentClip = textureSheetClips[frame / 4];
-	//		movingGameObject.setSourceRectangle(currentClip);
-	//		frame++;
-	//	}
-	//	else
-	//	{
-	//		detonationComplete = true;
-	//	}
-	//}
+	if (collided)
+	{
+		if ((frame / 4) < TEXTURE_SHEET_FRAME_COUNT)
+		{
+			currentClip = textureSheetClips[frame / 4];
+			movingGameObject.setSourceRectangle(currentClip);
+			frame++;
+		}
+		else
+		{
+			detonationComplete = true;
+		}
+	}
 	movingGameObject.render();
 }
 
 void Projectile::update()
 {
-	//if (!collided)
-	//{
+	if (!collided)
+	{
 		movingGameObject.move();
-	//}
+	}
 }
 
 void Projectile::setCollisionStatus(bool collisionStatus)
