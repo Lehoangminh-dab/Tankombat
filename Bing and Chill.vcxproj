@@ -140,6 +140,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
@@ -148,6 +149,7 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Projectile.hpp" />
+    <ClInclude Include="Tank.hpp" />
     <ClInclude Include="TextureManager.hpp" />
     <ClInclude Include="TileMap.hpp" />
   </ItemGroup>

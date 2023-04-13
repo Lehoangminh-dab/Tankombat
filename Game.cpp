@@ -6,13 +6,14 @@
 #include "Obstacle.hpp"
 #include "Projectile.hpp"
 
-// Object constants
-const double PROJECTILE_SPEED = 3.0;
+// Projctile constants
+const double PROJECTILE_SPEED = 10.0;
 const int PROJECTILE_WIDTH = 32;
 const int PROJECTILE_HEIGHT = 32;
 
 // Object storers
 std::vector<Projectile*> activeProjectiles;
+std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
 
 MovingGameObject* player;
 MovingGameObject* enemy;
@@ -22,10 +23,13 @@ Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
-void handleWallCollision(Projectile* projectile);
+
 void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
-void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
 void handleObjectsCollision(MovingGameObject* object, Projectile* projectile);
+void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
+void handleObjectsCollision(Projectile* a, Projectile* b);
+void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle);
+void handleProjectileWallCollision(Projectile* projectile);
 
 void updateCollision();
 
@@ -70,9 +74,9 @@ void Game::init(const char* title, bool fullscreen)
 
 
 	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 0, 0);
-	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 400, 300, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 0));
 	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
-	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0);
+	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 0));
+	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
 }
 
@@ -99,13 +103,16 @@ void Game::handleEvents()
 
 void Game::update()
 {
+	// Update all tanks
 	player->move();
 	player->setRotationAngle(player->getRotationAngle() + 6);
+	enemy->move();
+	// Update all projectiles
 	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 	{
 		if (activeProjectiles[projectileCnt]->getDetonationStatus() == true)
 		{
-			activeProjectiles[projectileCnt]->~Projectile();
+			//activeProjectiles[projectileCnt]->~Projectile();
 			activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
 		}
 		else
@@ -113,18 +120,23 @@ void Game::update()
 			activeProjectiles[projectileCnt]->update();
 		}
 	}
-	enemy->move();
 	updateCollision();
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
-	// Stuff to render
+	// Render the map
 	map->DrawMap();
+	// Render all tanks
 	player->render();
 	enemy->render();
-	obstacle->render();
+	// Render all indestructible obstacles
+	for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+	{
+		activeIndestructibleObstacles[indestructibleObstacleCnt]->render();
+	}
+	// Render all projectiles
 	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 	{
 		activeProjectiles[projectileCnt]->render();
@@ -138,6 +150,47 @@ void Game::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "Game cleaned" << std::endl;
+}
+
+void updateCollision()
+{
+	// Handle all collisions between tanks and tanks
+	handleObjectsCollision(player, enemy);
+
+	// Handle all collisions between tanks and projectiles
+	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	{
+		handleObjectsCollision(player, activeProjectiles[projectileCnt]);
+		handleObjectsCollision(enemy, activeProjectiles[projectileCnt]);
+	}
+
+	// Handle all collisions between tanks and indestructible objects
+	for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+	{
+		handleObjectsCollision(player, activeIndestructibleObstacles[indestructibleObstacleCnt]);
+		handleObjectsCollision(enemy, activeIndestructibleObstacles[indestructibleObstacleCnt]);
+	}
+	// Handle all collisions between projectiles and projectiles
+	for (int firstProjectileCnt = 0; firstProjectileCnt < activeProjectiles.size() - 1; firstProjectileCnt++)
+	{
+		for (int secondProjectileCnt = firstProjectileCnt + 1; secondProjectileCnt < activeProjectiles.size(); secondProjectileCnt++)
+		{
+			handleObjectsCollision(activeProjectiles[firstProjectileCnt], activeProjectiles[secondProjectileCnt]);
+		}
+	}
+	// Handle all collisions between projectiles and indestructible objects
+	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	{
+		for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+		{
+			handleObjectsCollision(activeProjectiles[projectileCnt], activeIndestructibleObstacles[indestructibleObstacleCnt]);
+		}
+	}
+	// Handle all collisions between projectiles and walls
+	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	{
+		handleProjectileWallCollision(activeProjectiles[projectileCnt]);
+	}
 }
 
 bool checkCollision(SDL_Rect a, SDL_Rect b)
@@ -184,25 +237,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
-void updateCollision()
-{
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
-	{
-		handleWallCollision(activeProjectiles[projectileCnt]);
-	}
-	handleObjectsCollision(player, obstacle);
-	handleObjectsCollision(enemy, obstacle);
-	handleObjectsCollision(player, enemy);
-}
 
-void handleWallCollision(Projectile* projectile)
-{
-	SDL_Rect projectileHitBox = projectile->getHitBox();
-	if (projectileHitBox.x < 0 || projectileHitBox.x + projectileHitBox.w > Game::SCREEN_WIDTH || projectileHitBox.y < 0 || projectileHitBox.y > Game::SCREEN_HEIGHT)
-	{
-		projectile->setCollisionStatus(true);
-	}
-}
 
 void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 {
@@ -218,6 +253,18 @@ void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 		a->setSpeed(0);
 		b->setSpeed(0);
 	}
+}
+
+void handleObjectsCollision(MovingGameObject* object, Projectile* projectile)
+{
+	SDL_Rect objectHitBox = object->getHitBox();
+	SDL_Rect projectileHitBox = projectile->getHitBox();
+	bool objectsCollided = checkCollision(objectHitBox, projectileHitBox);
+	if (!objectsCollided)
+	{
+		return;
+	}
+	projectile->setCollisionStatus(true);
 }
 
 void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle)
@@ -237,15 +284,38 @@ void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* ob
 	}
 }
 
-void handleObjectsCollision(MovingGameObject* object, Projectile* projectile)
+
+void handleObjectsCollision(Projectile* a, Projectile* b)
 {
-	SDL_Rect objectHitBox = object->getHitBox();
+	SDL_Rect hitBoxA = a->getHitBox();
+	SDL_Rect hitBoxB = b->getHitBox();
+	if (!checkCollision(hitBoxA, hitBoxB))
+	{
+		return;
+	}
+	a->setCollisionStatus(true);
+	b->setCollisionStatus(true);
+}
+
+void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle)
+{
 	SDL_Rect projectileHitBox = projectile->getHitBox();
-	bool objectsCollided = checkCollision(objectHitBox, projectileHitBox);
-	if (!objectsCollided)
+	SDL_Rect obstacleHitBox = obstacle->getHitBox();
+	if (!checkCollision(projectileHitBox, obstacleHitBox))
 	{
 		return;
 	}
 	projectile->setCollisionStatus(true);
 }
 
+void handleProjectileWallCollision(Projectile* projectile)
+{
+	SDL_Rect projectileHitBox = projectile->getHitBox();
+	if (projectileHitBox.x < 0 || 
+		projectileHitBox.x + projectileHitBox.w > Game::SCREEN_WIDTH || 
+		projectileHitBox.y < 0 || 
+		projectileHitBox.y > Game::SCREEN_HEIGHT)
+	{
+		projectile->setCollisionStatus(true);
+	}
+}
