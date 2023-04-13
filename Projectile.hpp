@@ -5,11 +5,12 @@
 class Projectile
 {
 public:
-	Projectile(const char* textureSheetPath, int xPos, int yPos, double speed, int rotationAngle);
+	Projectile(const char* textureSheetPath, int xPos, int yPos, int width, int height, double speed, int rotationAngle);
 	~Projectile();
 	void render();
 	void update();
-	bool setCollisionStatus(bool collisionStatus);
+	void setCollisionStatus(bool collisionStatus);
+	SDL_Rect getHitBox();
 	bool getCollisionStatus();
 	bool getDetonationStatus();
 private:

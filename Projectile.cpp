@@ -1,7 +1,7 @@
 #include "Projectile.hpp"
 
-Projectile::Projectile(const char* textureSheetPath, int xPos, int yPos, double speed, int rotationAngle)
-	: movingGameObject(textureSheetPath, "PROJECTILE", xPos, yPos, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, speed, rotationAngle)
+Projectile::Projectile(const char* textureSheetPath, int xPos, int yPos, int width, int height, double speed, int rotationAngle)
+	: movingGameObject(textureSheetPath, "PROJECTILE", xPos, yPos, width, height, speed, rotationAngle)
 {
 	collided = false;
 	detonationComplete = false;
@@ -25,30 +25,38 @@ Projectile::~Projectile()
 
 void Projectile::render()
 {
-	if (collided && frame / 4 < TEXTURE_SHEET_FRAME_COUNT)
-	{
-		currentClip = textureSheetClips[frame / 4];
-		movingGameObject.setSourceRectangle(currentClip);
-		frame++;
-	}
-	else if (collided && frame / 4 >= TEXTURE_SHEET_FRAME_COUNT)
-	{
-		detonationComplete = true;
-	}
+	//if (collided)
+	//{
+	//	if ((frame / 4) < TEXTURE_SHEET_FRAME_COUNT)
+	//	{
+	//		currentClip = textureSheetClips[frame / 4];
+	//		movingGameObject.setSourceRectangle(currentClip);
+	//		frame++;
+	//	}
+	//	else
+	//	{
+	//		detonationComplete = true;
+	//	}
+	//}
 	movingGameObject.render();
 }
 
 void Projectile::update()
 {
-	if (!collided)
-	{
+	//if (!collided)
+	//{
 		movingGameObject.move();
-	}
+	//}
 }
 
-bool Projectile::setCollisionStatus(bool collisionStatus)
+void Projectile::setCollisionStatus(bool collisionStatus)
 {
 	collided = collisionStatus;
+}
+
+SDL_Rect Projectile::getHitBox()
+{
+	return movingGameObject.getHitBox();
 }
 
 bool Projectile::getCollisionStatus()

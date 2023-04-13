@@ -8,19 +8,24 @@
 
 // Object constants
 const double PROJECTILE_SPEED = 10.0;
+const int PROJECTILE_WIDTH = 32;
+const int PROJECTILE_HEIGHT = 32;
 
 // Object storers
-std::vector<Projectile*> projectiles;
+
 MovingGameObject* player;
 MovingGameObject* enemy;
+Projectile* projectile;
+
 IndestructibleObstacle* obstacle;
 Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
+void handleWallCollision(Projectile* projectile);
 void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
 void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
-void handleObjectsCollision(MovingGameObject* object, Projectile projectile);
+void handleObjectsCollision(MovingGameObject* object, Projectile* projectile);
 
 void updateCollision();
 
@@ -63,7 +68,9 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 5.0, 120);
+
+	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 0, 0);
+	projectile = new Projectile("Assets/Objects/Projectile.png", 400, 300, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, 10.0, 30);
 	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
 	obstacle = new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0);
 	map = new Map();
@@ -94,6 +101,7 @@ void Game::update()
 {
 	player->move();
 	player->setRotationAngle(player->getRotationAngle() + 6);
+	projectile->update();
 	enemy->move();
 	updateCollision();
 }
@@ -106,6 +114,7 @@ void Game::render()
 	player->render();
 	enemy->render();
 	obstacle->render();
+	projectile->render();
 	SDL_RenderPresent(renderer);
 }
 
@@ -161,6 +170,23 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
+void updateCollision()
+{
+	handleObjectsCollision(player, obstacle);
+	handleObjectsCollision(enemy, obstacle);
+	handleObjectsCollision(player, enemy);
+}
+
+void handleWallCollision(Projectile* projectile)
+{
+	SDL_Rect projectileHitBox = projectile->getHitBox();
+	// Handle collision with vertical borders
+	if (projectileHitBox.x < 0 || projectileHitBox.x + projectileHitBox.w > Game::SCREEN_WIDTH || projectileHitBox.y < 0 || projectileHitBox.y > Game::SCREEN_HEIGHT)
+	{
+		projectile->setCollisionStatus(true);
+	}
+}
+
 void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 {
 	SDL_Rect hitBoxA = a->getHitBox();
@@ -194,9 +220,15 @@ void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* ob
 	}
 }
 
-void updateCollision()
+void handleObjectsCollision(MovingGameObject* object, Projectile* projectile)
 {
-	handleObjectsCollision(player, obstacle);
-	handleObjectsCollision(enemy, obstacle);
-	handleObjectsCollision(player, enemy);
+	SDL_Rect objectHitBox = object->getHitBox();
+	SDL_Rect projectileHitBox = projectile->getHitBox();
+	bool objectsCollided = checkCollision(objectHitBox, projectileHitBox);
+	if (!objectsCollided)
+	{
+		return;
+	}
+	projectile->setCollisionStatus(true);
 }
+
