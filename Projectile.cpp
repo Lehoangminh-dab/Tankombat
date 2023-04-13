@@ -1,5 +1,7 @@
 #include "Projectile.hpp"
 
+const int ANIMATION_DELAY_IN_FRAMES = 5;
+
 Projectile::Projectile(const char* textureSheetPath, int xPos, int yPos, int width, int height, double speed, int rotationAngle)
 	: movingGameObject(textureSheetPath, "PROJECTILE", xPos, yPos, width, height, speed, rotationAngle)
 {
@@ -15,7 +17,7 @@ Projectile::Projectile(const char* textureSheetPath, int xPos, int yPos, int wid
 	}
 
 	frame = 0;
-	currentClip = textureSheetClips[frame / 4];
+	currentClip = textureSheetClips[frame / ANIMATION_DELAY_IN_FRAMES];
 }
 
 Projectile::~Projectile()
@@ -27,9 +29,9 @@ void Projectile::render()
 {
 	if (collided)
 	{
-		if ((frame / 4) < TEXTURE_SHEET_FRAME_COUNT)
+		if ((frame / ANIMATION_DELAY_IN_FRAMES) < TEXTURE_SHEET_FRAME_COUNT)
 		{
-			currentClip = textureSheetClips[frame / 4];
+			currentClip = textureSheetClips[frame / ANIMATION_DELAY_IN_FRAMES];
 			movingGameObject.setSourceRectangle(currentClip);
 			frame++;
 		}
