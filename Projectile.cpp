@@ -10,10 +10,10 @@ Projectile::Projectile(const char* textureSheetPath, int xPos, int yPos, int wid
 
 	for (int frame_cnt = 0; frame_cnt < TEXTURE_SHEET_FRAME_COUNT; frame_cnt++)
 	{
-		textureSheetClips[frame_cnt].x = frame_cnt * PROJECTILE_WIDTH;
+		textureSheetClips[frame_cnt].x = frame_cnt * 32;
 		textureSheetClips[frame_cnt].y = 0;
-		textureSheetClips[frame_cnt].w = PROJECTILE_WIDTH;
-		textureSheetClips[frame_cnt].h = PROJECTILE_HEIGHT;
+		textureSheetClips[frame_cnt].w = 32;
+		textureSheetClips[frame_cnt].h = 32;
 	}
 
 	frame = 0;

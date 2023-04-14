@@ -3,9 +3,11 @@
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
 #include "TileMap.hpp"
-#include "Obstacle.hpp"
 #include "Projectile.hpp"
+#include "Tank.hpp"
+#include "Obstacle.hpp"
 
+const int NUM_OF_PLAYERS = 4;
 // Projctile constants
 const double PROJECTILE_SPEED = 10.0;
 const int PROJECTILE_WIDTH = 32;
@@ -14,9 +16,7 @@ const int PROJECTILE_HEIGHT = 32;
 // Object storers
 std::vector<Projectile*> activeProjectiles;
 std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
-
-MovingGameObject* player;
-MovingGameObject* enemy;
+std::vector<Tank*>activeTanks;
 
 IndestructibleObstacle* obstacle;
 Map* map;
@@ -24,18 +24,29 @@ SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 
-void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
-void handleObjectsCollision(MovingGameObject* object, Projectile* projectile);
-void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
+void handleObjectsCollision(Tank* a, Tank* b);
+void handleObjectsCollision(Tank* object, Projectile* projectile);
+void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle);
 void handleObjectsCollision(Projectile* a, Projectile* b);
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle);
 void handleProjectileWallCollision(Projectile* projectile);
 
+void executeKeyPressed(Tank* tank);
+void executeKeyLifted(Tank* tank);
+
 void updateCollision();
+
 
 Game::Game()
 {
-
+	PLAYER_KEYS[0] = SDLK_x;
+	PLAYER_KEYS[1] = SDLK_m;
+	PLAYER_KEYS[2] = SDLK_RIGHT;
+	PLAYER_KEYS[3] = SDLK_q;
+	for (int i = 0; i < 4; i++)
+	{
+		KEY_PRESSED[i] = false;
+	}
 }
 
 Game::~Game()
@@ -72,14 +83,13 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-
-	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 0, 0);
-	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
-	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 0));
+	activeTanks.push_back(new Tank("Assets/Objects/TankOne.png", "PLAYER_ONE", 0, 0));
+	activeTanks.push_back(new Tank("Assets/Objects/TankTwo.png", "PLAYER_TWO", 300, 300));
+	activeTanks.push_back(new Tank("Assets/Objects/TankThree.png", "PLAYER_THREE", 400, 400));
+	activeTanks.push_back(new Tank("Assets/Objects/TankFour.png", "PLAYER_FOUR", 600, 600));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
 }
-
 
 
 bool Game::isRunning()
@@ -89,12 +99,36 @@ bool Game::isRunning()
 
 void Game::handleEvents()
 {
+	if (activeTanks.size() < 4)
+	{
+		std::cout << "WARNING: The number of tanks is currently lower than 4. Some controls will attempt to access a null memory location." << std::endl;
+	}
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	switch (event.type)
 	{
 	case SDL_QUIT:
 		gameRunning = false;
+		break;
+	case SDL_KEYDOWN: // These controls are assuming that there are 4 players, will need to change dynamically.
+		for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
+		{
+			if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && !KEY_PRESSED[playerCnt])
+			{
+				executeKeyPressed(activeTanks[playerCnt]);
+				KEY_PRESSED[playerCnt] = true;
+			}
+		}
+		break;
+	case SDL_KEYUP:
+		for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
+		{
+			if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && KEY_PRESSED[playerCnt])
+			{
+				executeKeyLifted(activeTanks[playerCnt]);
+				KEY_PRESSED[playerCnt] = false;
+			}
+		}
 		break;
 	default:
 		break;
@@ -104,20 +138,23 @@ void Game::handleEvents()
 void Game::update()
 {
 	// Update all tanks
-	player->move();
-	player->setRotationAngle(player->getRotationAngle() + 6);
-	enemy->move();
-	// Update all projectiles
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	for (auto tankIt = activeTanks.begin(); tankIt != activeTanks.end(); )
 	{
-		if (activeProjectiles[projectileCnt]->getDetonationStatus() == true)
+		(*tankIt)->updateMovement();
+	}
+
+	// Update all projectiles
+	for (auto projectileIt = activeProjectiles.begin(); projectileIt != activeProjectiles.end(); ) 
+	{
+		if ((*projectileIt)->getDetonationStatus() == true) 
 		{
-			//activeProjectiles[projectileCnt]->~Projectile();
-			activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
+			delete* projectileIt;
+			projectileIt = activeProjectiles.erase(projectileIt);
 		}
-		else
+		else 
 		{
-			activeProjectiles[projectileCnt]->update();
+			(*projectileIt)->update();
+			++projectileIt;
 		}
 	}
 	updateCollision();
@@ -126,20 +163,35 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
+	
 	// Render the map
 	map->DrawMap();
+
 	// Render all tanks
-	player->render();
-	enemy->render();
-	// Render all indestructible obstacles
-	for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+	if (!activeTanks.empty())
 	{
-		activeIndestructibleObstacles[indestructibleObstacleCnt]->render();
+		for (auto tank : activeTanks)
+		{
+			tank->render();
+		}
 	}
-	// Render all projectiles
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+
+	// Render all indestructible obstacles
+	if (!activeIndestructibleObstacles.empty()) 
 	{
-		activeProjectiles[projectileCnt]->render();
+		for (auto indestructibleObstacle : activeIndestructibleObstacles) 
+		{
+			indestructibleObstacle->render();
+		}
+	}
+
+	// Render all projectiles
+	if (!activeProjectiles.empty()) 
+	{
+		for (auto projectile : activeProjectiles) 
+		{
+			projectile->render();
+		}
 	}
 	SDL_RenderPresent(renderer);
 }
@@ -155,25 +207,38 @@ void Game::clean()
 void updateCollision()
 {
 	// Handle all collisions between tanks and tanks
-	handleObjectsCollision(player, enemy);
+	if (!activeTanks.size() > 1)
+	{
+		for (auto firstTank = activeProjectiles.begin(); firstTank != activeProjectiles.end() - 1; ++firstTank)
+		{
+			for (auto secondTank = firstTank + 1; secondTank != activeProjectiles.end(); ++secondTank)
+			{
+				handleObjectsCollision(*firstTank, *secondTank);
+			}
+		}
+	}
 
 	// Handle all collisions between tanks and projectiles
-	if (!activeProjectiles.empty())
+	if (!activeProjectiles.empty() && !activeTanks.empty())
 	{
-		for (auto& projectile : activeProjectiles)
+		for (auto& tank : activeTanks)
 		{
-			handleObjectsCollision(player, projectile);
-			handleObjectsCollision(enemy, projectile);
+			for (auto& projectile : activeProjectiles)
+			{
+				handleObjectsCollision(tank, projectile);
+			}
 		}
 	}
 
 	// Handle all collisions between tanks and indestructible objects
-	if (!activeIndestructibleObstacles.empty())
+	if (!activeTanks.empty() && !activeIndestructibleObstacles.empty())
 	{
-		for (auto& indestructibleObstacle : activeIndestructibleObstacles)
+		for (auto& tank : activeTanks)
 		{
-			handleObjectsCollision(player, indestructibleObstacle);
-			handleObjectsCollision(enemy, indestructibleObstacle);
+			for (auto& indestructibleObstacle : activeIndestructibleObstacles)
+			{
+				handleObjectsCollision(tank, indestructibleObstacle);
+			}
 		}
 	}
 
@@ -210,7 +275,6 @@ void updateCollision()
 		}
 	}
 }
-
 
 bool checkCollision(SDL_Rect a, SDL_Rect b)
 {
@@ -258,7 +322,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 
 
-void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
+void handleObjectsCollision(Tank* a, Tank* b)
 {
 	SDL_Rect hitBoxA = a->getHitBox();
 	SDL_Rect hitBoxB = b->getHitBox();
@@ -266,41 +330,37 @@ void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 	{
 		return;
 	}
-
-	if (a->getID() == "TANK" && b->getID() == "TANK")
-	{
-		a->setSpeed(0);
-		b->setSpeed(0);
-	}
+	
+	// NOTE: This may not work as two tanks remain forever collided
+	a->setSpeed(0);
+	b->setSpeed(0);
 }
 
-void handleObjectsCollision(MovingGameObject* object, Projectile* projectile)
+void handleObjectsCollision(Tank* tank, Projectile* projectile)
 {
-	SDL_Rect objectHitBox = object->getHitBox();
+	SDL_Rect tankHitBox = tank->getHitBox();
 	SDL_Rect projectileHitBox = projectile->getHitBox();
-	bool objectsCollided = checkCollision(objectHitBox, projectileHitBox);
+	bool objectsCollided = checkCollision(tankHitBox, projectileHitBox);
 	if (!objectsCollided)
 	{
 		return;
 	}
+	// Note: This may backfire as the projectile is spawned right on top of the tank
+	tank->setDestroyedState(true);
 	projectile->setCollisionStatus(true);
 }
 
-void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle)
+void handleObjectsCollision(Tank* tank, IndestructibleObstacle* obstacle)
 {
-	SDL_Rect movingObjectHitbox = object->getHitBox();
+	SDL_Rect tankHitbox = tank->getHitBox();
 	SDL_Rect obstacleHitbox = obstacle->getHitBox();
-	if (!checkCollision(movingObjectHitbox, obstacleHitbox))
+	if (!checkCollision(tankHitbox, obstacleHitbox))
 	{
 		return;
 	}
-
-	if (object->getID() == "TANK" && obstacle->getID() == "INDESTRUCTIBLE_OBSTACLE")
-	{
-		double oppositeObjectSpeed = (object->getSpeed()) * -1;
-		int objectRotation = object->getRotationAngle();
-		object->setSpeed(0);
-	}
+	
+	// Note: This may not work as tank remains forever collided
+	tank->setSpeed(0);
 }
 
 
@@ -337,4 +397,16 @@ void handleProjectileWallCollision(Projectile* projectile)
 	{
 		projectile->setCollisionStatus(true);
 	}
+}
+
+void executeKeyPressed(Tank* tank) // The moment the key is pressed, execute this ONCE
+{
+	tank->shoot(activeProjectiles);
+	tank->setBulletShotState(true);
+	tank->setMovementState(true);
+}
+
+void executeKeyLifted(Tank* tank)
+{
+	tank->setMovementState(false);
 }

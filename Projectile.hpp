@@ -13,12 +13,13 @@ public:
 	SDL_Rect getHitBox();
 	bool getCollisionStatus();
 	bool getDetonationStatus();
+	static const double PROJECTILE_SPEED = 10.0;
+	static const int PROJECTILE_WIDTH = 32;
+	static const int PROJECTILE_HEIGHT = 32;
 private:
 	MovingGameObject movingGameObject;
 	bool collided;
 	bool detonationComplete;
-	const int PROJECTILE_WIDTH = 32;
-	const int PROJECTILE_HEIGHT = 32;
 	static const int TEXTURE_SHEET_FRAME_COUNT = 3;
 	SDL_Rect textureSheetClips[TEXTURE_SHEET_FRAME_COUNT];
 	int frame;
