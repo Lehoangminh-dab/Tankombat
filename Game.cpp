@@ -13,6 +13,7 @@ const int PROJECTILE_WIDTH = 32;
 const int PROJECTILE_HEIGHT = 32;
 
 // Object storers
+std::vector<Tank*> activeTanks;
 std::vector<Projectile*> activeProjectiles;
 std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
 
@@ -74,10 +75,10 @@ void Game::init(const char* title, bool fullscreen)
 	}
 
 
-	player = new Tank("Assets/Objects/Tank.png", "PLAYER_ONE", 100, 300);
+	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_ONE", 100, 300));
 	// test: Let a tank move
-	player->setMovementState(true);
-	enemy = new Tank("Assets/Objects/Tank.png", "PLAYER_TWO", 200, 400);
+	activeTanks[0]->setMovementState(true);
+	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_TWO", 200, 400));
 	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 60));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
@@ -107,8 +108,10 @@ void Game::handleEvents()
 void Game::update()
 {
 	// Update all tanks
-	player->updateMovement();
-	enemy->updateMovement();
+	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
+	{
+		activeTanks[tankCnt]->updateMovement();
+	}
 	// Update all projectiles
 	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 	{
@@ -131,8 +134,10 @@ void Game::render()
 	// Render the map
 	map->DrawMap();
 	// Render all tanks
-	player->render();
-	enemy->render();
+	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
+	{
+		activeTanks[tankCnt]->render();
+	}
 	// Render all indestructible obstacles
 	for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
 	{
@@ -157,25 +162,38 @@ void Game::clean()
 void updateCollision()
 {
 	// Handle all collisions between tanks and tanks
-	handleObjectsCollision(player, enemy);
+	if (activeTanks.size() > 1)
+	{
+		for (auto firstTank = activeTanks.begin(); firstTank != activeTanks.end() - 1; ++firstTank)
+		{
+			for (auto secondTank = firstTank + 1; secondTank != activeTanks.end(); ++secondTank)
+			{
+				handleObjectsCollision(*firstTank, *secondTank);
+			}
+		}
+	}
 
 	// Handle all collisions between tanks and projectiles
-	if (!activeProjectiles.empty())
+	if (!activeProjectiles.empty() && !activeTanks.empty())
 	{
 		for (auto& projectile : activeProjectiles)
 		{
-			handleObjectsCollision(player, projectile);
-			handleObjectsCollision(enemy, projectile);
+			for (auto& tank : activeTanks)
+			{
+				handleObjectsCollision(tank, projectile);
+			}
 		}
 	}
 
 	// Handle all collisions between tanks and indestructible objects
-	if (!activeIndestructibleObstacles.empty())
+	if (!activeTanks.empty() && !activeIndestructibleObstacles.empty())
 	{
-		for (auto& indestructibleObstacle : activeIndestructibleObstacles)
+		for (auto& tank : activeTanks)
 		{
-			handleObjectsCollision(player, indestructibleObstacle);
-			handleObjectsCollision(enemy, indestructibleObstacle);
+			for (auto& indestructibleObstacle : activeIndestructibleObstacles)
+			{
+				handleObjectsCollision(tank, indestructibleObstacle);
+			}
 		}
 	}
 
