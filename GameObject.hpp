@@ -34,12 +34,15 @@ public:
 	SDL_Rect getHitBox();
 	int getRotationAngle();
 	double getSpeed();
+	double getVelocityX();
+	double getVelocityY();
+	void setHitBox(int x, int y, int w, int h);
 	void setSpeed(double speedValue);
+	bool collidedWithHorizontalWall();
+	bool collidedWithVerticalWall();
 private:
 	GameObject gameObject;
 	double speed;
 	double xVelocity;
 	double yVelocity;
-	bool collidedWithHorizontalWall();
-	bool collidedWithVerticalWall();
 };

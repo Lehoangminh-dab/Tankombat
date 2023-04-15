@@ -113,6 +113,21 @@ double MovingGameObject::getSpeed()
 	return speed;
 }
 
+double MovingGameObject::getVelocityX()
+{
+	return xVelocity;
+}
+
+double MovingGameObject::getVelocityY()
+{
+	return yVelocity;
+}
+
+void MovingGameObject::setHitBox(int x, int y, int w, int h)
+{
+	gameObject.setHitBox(x, y, w, h);
+}
+
 void MovingGameObject::move()
 {
 	int rotationAngleInDegrees = gameObject.getRotationAngle();
@@ -137,7 +152,7 @@ void MovingGameObject::setSpeed(double speedValue)
 bool MovingGameObject::collidedWithHorizontalWall()
 {
 	SDL_Rect hitBox = gameObject.getHitBox();
-	if (hitBox.y < 0 || hitBox.y > Game::SCREEN_HEIGHT)
+	if (hitBox.y < 0 || hitBox.y + hitBox.h > Game::SCREEN_HEIGHT)
 	{
 		return true;
 	}
@@ -147,7 +162,7 @@ bool MovingGameObject::collidedWithHorizontalWall()
 bool MovingGameObject::collidedWithVerticalWall()
 {
 	SDL_Rect hitBox = gameObject.getHitBox();
-	if (hitBox.x < 0 || hitBox.x > Game::SCREEN_WIDTH)
+	if (hitBox.x < 0 || hitBox.x + hitBox.w > Game::SCREEN_WIDTH)
 	{
 		return true;
 	}

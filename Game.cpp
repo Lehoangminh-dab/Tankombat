@@ -5,6 +5,7 @@
 #include "TileMap.hpp"
 #include "Obstacle.hpp"
 #include "Projectile.hpp"
+#include "Tank.hpp"
 
 // Projctile constants
 const double PROJECTILE_SPEED = 10.0;
@@ -15,8 +16,8 @@ const int PROJECTILE_HEIGHT = 32;
 std::vector<Projectile*> activeProjectiles;
 std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
 
-MovingGameObject* player;
-MovingGameObject* enemy;
+Tank* player;
+Tank* enemy;
 
 IndestructibleObstacle* obstacle;
 Map* map;
@@ -24,9 +25,9 @@ SDL_Renderer* Game::renderer = nullptr;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 
-void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b);
-void handleObjectsCollision(MovingGameObject* object, Projectile* projectile);
-void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle);
+void handleObjectsCollision(Tank* a, Tank* b);
+void handleObjectsCollision(Tank* object, Projectile* projectile);
+void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle);
 void handleObjectsCollision(Projectile* a, Projectile* b);
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle);
 void handleProjectileWallCollision(Projectile* projectile);
@@ -73,9 +74,11 @@ void Game::init(const char* title, bool fullscreen)
 	}
 
 
-	player = new MovingGameObject("Assets/Kratos.png", "TANK", 500, 300, 64, 64, 0, 0);
-	enemy = new MovingGameObject("Assets/Enemy.png", "TANK", 800, 800, 32, 32, 0, 0);
-	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 0));
+	player = new Tank("Assets/Objects/Tank.png", "PLAYER_ONE", 100, 300);
+	// test: Let a tank move
+	player->setMovementState(true);
+	enemy = new Tank("Assets/Objects/Tank.png", "PLAYER_TWO", 200, 400);
+	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 60));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
 }
@@ -104,9 +107,8 @@ void Game::handleEvents()
 void Game::update()
 {
 	// Update all tanks
-	player->move();
-	player->setRotationAngle(player->getRotationAngle() + 6);
-	enemy->move();
+	player->updateMovement();
+	enemy->updateMovement();
 	// Update all projectiles
 	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 	{
@@ -258,7 +260,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 
 
-void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
+void handleObjectsCollision(Tank* a, Tank* b)
 {
 	SDL_Rect hitBoxA = a->getHitBox();
 	SDL_Rect hitBoxB = b->getHitBox();
@@ -266,15 +268,11 @@ void handleObjectsCollision(MovingGameObject* a, MovingGameObject* b)
 	{
 		return;
 	}
-
-	if (a->getID() == "TANK" && b->getID() == "TANK")
-	{
-		a->setSpeed(0);
-		b->setSpeed(0);
-	}
+	a->setSpeed(0);
+	b->setSpeed(0);
 }
 
-void handleObjectsCollision(MovingGameObject* object, Projectile* projectile)
+void handleObjectsCollision(Tank* object, Projectile* projectile)
 {
 	SDL_Rect objectHitBox = object->getHitBox();
 	SDL_Rect projectileHitBox = projectile->getHitBox();
@@ -283,10 +281,11 @@ void handleObjectsCollision(MovingGameObject* object, Projectile* projectile)
 	{
 		return;
 	}
+	object->setDestroyedState(true);
 	projectile->setCollisionStatus(true);
 }
 
-void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* obstacle)
+void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle)
 {
 	SDL_Rect movingObjectHitbox = object->getHitBox();
 	SDL_Rect obstacleHitbox = obstacle->getHitBox();
@@ -294,13 +293,9 @@ void handleObjectsCollision(MovingGameObject* object, IndestructibleObstacle* ob
 	{
 		return;
 	}
-
-	if (object->getID() == "TANK" && obstacle->getID() == "INDESTRUCTIBLE_OBSTACLE")
-	{
-		double oppositeObjectSpeed = (object->getSpeed()) * -1;
-		int objectRotation = object->getRotationAngle();
-		object->setSpeed(0);
-	}
+	double oppositeObjectSpeed = (object->getSpeed()) * -1;
+	int objectRotation = object->getRotationAngle();
+	object->setSpeed(0);
 }
 
 
