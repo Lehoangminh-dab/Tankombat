@@ -3,9 +3,9 @@
 
 const int PROJECTILE_WIDTH = 32;
 const int PROJECTILE_HEIGHT = 32;
-const double PROJECTILE_SPEED = 10.0;
-const int TANK_WIDTH = 64;
-const int TANK_HEIGHT = 64;
+const double PROJECTILE_SPEED = 15.0;
+const int TANK_WIDTH = 32;
+const int TANK_HEIGHT = 32;
 const int TANK_SPEED = 10.0;
 const int ROTATION_SPEED = 6;
 const int ANIMATION_DELAY_IN_FRAMES = 5;
@@ -75,7 +75,7 @@ void Tank::shoot(std::vector<Projectile*>& activeProjectiles)
 	int currentRotation = getRotationAngle();
 	int currentPosX = currentTankHitBox.x;
 	int currentPosY = currentTankHitBox.y;
-	activeProjectiles.push_back(new Projectile("Assets/Object/Projectile.png", currentPosX, currentPosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 400, 400, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
 }
 
 void Tank::render()

@@ -7,7 +7,13 @@
 #include "Projectile.hpp"
 #include "Tank.hpp"
 
-// Projctile constants
+// Control variables
+int PLAYER_KEYS[4];
+bool KEY_PRESSED[4];
+
+// Projectile constants
+const int NUM_OF_PLAYERS = 4;
+
 const double PROJECTILE_SPEED = 10.0;
 const int PROJECTILE_WIDTH = 32;
 const int PROJECTILE_HEIGHT = 32;
@@ -17,10 +23,9 @@ std::vector<Tank*> activeTanks;
 std::vector<Projectile*> activeProjectiles;
 std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
 
-Tank* player;
-Tank* enemy;
+void executeKeyPressed(Tank* tank);
+void executeKeyLifted(Tank* tank);
 
-IndestructibleObstacle* obstacle;
 Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
@@ -29,15 +34,22 @@ bool checkCollision(SDL_Rect a, SDL_Rect b);
 void handleObjectsCollision(Tank* a, Tank* b);
 void handleObjectsCollision(Tank* object, Projectile* projectile);
 void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle);
-void handleObjectsCollision(Projectile* a, Projectile* b);
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle);
 void handleProjectileWallCollision(Projectile* projectile);
 
+bool keyPressed = false;
 void updateCollision();
 
 Game::Game()
 {
-
+	PLAYER_KEYS[0] = SDLK_x;
+	PLAYER_KEYS[1] = SDLK_m;
+	PLAYER_KEYS[2] = SDLK_RIGHT;
+	PLAYER_KEYS[3] = SDLK_q;
+	for (int i = 0; i < 4; i++)
+	{
+		KEY_PRESSED[i] = false;
+	}
 }
 
 Game::~Game()
@@ -76,8 +88,6 @@ void Game::init(const char* title, bool fullscreen)
 
 
 	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_ONE", 100, 300));
-	// test: Let a tank move
-	activeTanks[0]->setMovementState(true);
 	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_TWO", 200, 400));
 	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 60));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
@@ -99,6 +109,26 @@ void Game::handleEvents()
 	{
 	case SDL_QUIT:
 		gameRunning = false;
+		break;
+	case SDL_KEYDOWN:
+		for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
+		{
+			if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && !KEY_PRESSED[playerCnt])
+			{
+				executeKeyPressed(activeTanks[playerCnt]);
+				KEY_PRESSED[playerCnt] = true;
+			}
+		}
+		break;
+	case SDL_KEYUP:
+		for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
+		{
+			if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && KEY_PRESSED[playerCnt])
+			{
+				executeKeyLifted(activeTanks[playerCnt]);
+				KEY_PRESSED[playerCnt] = false;
+			}
+		}
 		break;
 	default:
 		break;
@@ -193,18 +223,6 @@ void updateCollision()
 			for (auto& indestructibleObstacle : activeIndestructibleObstacles)
 			{
 				handleObjectsCollision(tank, indestructibleObstacle);
-			}
-		}
-	}
-
-	// Handle all collisions between projectiles and projectiles
-	if (activeProjectiles.size() > 1)
-	{
-		for (auto firstProjectile = activeProjectiles.begin(); firstProjectile != activeProjectiles.end() - 1; ++firstProjectile)
-		{
-			for (auto secondProjectile = firstProjectile + 1; secondProjectile != activeProjectiles.end(); ++secondProjectile)
-			{
-				handleObjectsCollision(*firstProjectile, *secondProjectile);
 			}
 		}
 	}
@@ -350,4 +368,16 @@ void handleProjectileWallCollision(Projectile* projectile)
 	{
 		projectile->setCollisionStatus(true);
 	}
+}
+
+void executeKeyPressed(Tank* tank) // The moment the key is pressed, execute this ONCE
+{
+	tank->shoot(activeProjectiles);
+	tank->setBulletShotState(true);
+	tank->setMovementState(true);
+}
+
+void executeKeyLifted(Tank* tank)
+{
+	tank->setMovementState(false);
 }
