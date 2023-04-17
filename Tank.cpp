@@ -4,8 +4,10 @@
 const int PROJECTILE_WIDTH = 32;
 const int PROJECTILE_HEIGHT = 32;
 const double PROJECTILE_SPEED = 15.0;
-const int TANK_WIDTH = 32;
-const int TANK_HEIGHT = 32;
+const int PROJECTILE_DISTANCE_FROM_TANK = 32;
+
+const int TANK_WIDTH = 48;
+const int TANK_HEIGHT = 48;
 const int TANK_SPEED = 10.0;
 const int ROTATION_SPEED = 6;
 const int ANIMATION_DELAY_IN_FRAMES = 5;
@@ -14,16 +16,16 @@ Tank::Tank(const char* objectTextureSheet, std::string id, int xStartingPosition
 	: movingGameObject(objectTextureSheet, id, xStartingPosition, yStartingPosition, TANK_WIDTH, TANK_HEIGHT, 0, 30)
 {
 
-	for (int frame_cnt = 0; frame_cnt < NORMAL_FRAME_COUNT; frame_cnt++)
+	for (int frame_cnt = 0; frame_cnt < TANK_FRAME_COUNT; frame_cnt++)
 	{
-		normalTextureSheetClips[frame_cnt].x = frame_cnt * 32;
-		normalTextureSheetClips[frame_cnt].y = 0;
-		normalTextureSheetClips[frame_cnt].w = 32;
-		normalTextureSheetClips[frame_cnt].h = 32;
+		textureSheetClips[frame_cnt].x = frame_cnt * 32;
+		textureSheetClips[frame_cnt].y = 0;
+		textureSheetClips[frame_cnt].w = 32;
+		textureSheetClips[frame_cnt].h = 32;
 	}
 
 	frame = 0;
-	currentClip = normalTextureSheetClips[0];
+	currentClip = textureSheetClips[0];
 
 	isRotatingClockWise = true;
 	isMoving = false;
@@ -71,30 +73,33 @@ void Tank::shoot(std::vector<Projectile*>& activeProjectiles)
 		return;
 	}
 	isRotatingClockWise = !isRotatingClockWise;
-	SDL_Rect currentTankHitBox = getHitBox();
+	SDL_Rect tankHitBox = getHitBox();
+	double tankSpeed = movingGameObject.getSpeed();
+	std::string tankID = movingGameObject.getID();
 	int currentRotation = getRotationAngle();
-	int currentPosX = currentTankHitBox.x;
-	int currentPosY = currentTankHitBox.y;
-	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 400, 400, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	double currentRotationInRadians = currentRotation * M_PI / 180;
+	int projectilePosX = tankHitBox.x + (TANK_WIDTH - PROJECTILE_WIDTH) / 2;
+	int projectilePosY = tankHitBox.y + (TANK_HEIGHT - PROJECTILE_HEIGHT) / 2;
+	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", tankID,  projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
 }
 
 void Tank::render()
 {
 	if (isDestroyed)
 	{
-		currentClip = normalTextureSheetClips[3];
+		currentClip = textureSheetClips[3];
 	}
 
 	else if (bulletShot)
 	{
-		if ((frame / ANIMATION_DELAY_IN_FRAMES) < NORMAL_FRAME_COUNT)
+		if ((frame / ANIMATION_DELAY_IN_FRAMES) < TANK_FRAME_COUNT)
 		{
-			currentClip = normalTextureSheetClips[frame / ANIMATION_DELAY_IN_FRAMES];
+			currentClip = textureSheetClips[frame / ANIMATION_DELAY_IN_FRAMES];
 			frame++;
 		}
 		else
 		{
-			currentClip = normalTextureSheetClips[0];
+			currentClip = textureSheetClips[0];
 			frame = 0;
 			bulletShot = false;
 		}
@@ -127,6 +132,11 @@ void Tank::setSpeed(double speedValue)
 void Tank::setDestroyedState(bool destroyedState)
 {
 	isDestroyed = destroyedState;
+}
+
+std::string Tank::getID()
+{
+	return movingGameObject.getID();
 }
 
 double Tank::getSpeed()

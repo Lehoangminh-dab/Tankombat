@@ -2,8 +2,8 @@
 
 const int ANIMATION_DELAY_IN_FRAMES = 5;
 
-Projectile::Projectile(const char* textureSheetPath, int xPos, int yPos, int width, int height, double speed, int rotationAngle)
-	: movingGameObject(textureSheetPath, "PROJECTILE", xPos, yPos, width, height, speed, rotationAngle)
+Projectile::Projectile(const char* textureSheetPath, std::string id, int xPos, int yPos, int width, int height, double speed, int rotationAngle)
+	: movingGameObject(textureSheetPath, id, xPos, yPos, width, height, speed, rotationAngle)
 {
 	collided = false;
 	detonationComplete = false;
@@ -59,6 +59,11 @@ void Projectile::setCollisionStatus(bool collisionStatus)
 SDL_Rect Projectile::getHitBox()
 {
 	return movingGameObject.getHitBox();
+}
+
+std::string Projectile::getID()
+{
+	return movingGameObject.getID();
 }
 
 bool Projectile::getCollisionStatus()

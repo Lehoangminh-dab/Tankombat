@@ -43,9 +43,9 @@ void updateCollision();
 Game::Game()
 {
 	PLAYER_KEYS[0] = SDLK_x;
-	PLAYER_KEYS[1] = SDLK_m;
-	PLAYER_KEYS[2] = SDLK_RIGHT;
-	PLAYER_KEYS[3] = SDLK_q;
+	PLAYER_KEYS[1] = SDLK_RSHIFT;
+	PLAYER_KEYS[2] = SDLK_1;
+	PLAYER_KEYS[3] = SDLK_BACKSPACE;
 	for (int i = 0; i < 4; i++)
 	{
 		KEY_PRESSED[i] = false;
@@ -89,7 +89,6 @@ void Game::init(const char* title, bool fullscreen)
 
 	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_ONE", 100, 300));
 	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_TWO", 200, 400));
-	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", 0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, 60));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
 }
@@ -317,8 +316,11 @@ void handleObjectsCollision(Tank* object, Projectile* projectile)
 	{
 		return;
 	}
-	object->setDestroyedState(true);
-	projectile->setCollisionStatus(true);
+	if (object->getID() != projectile->getID())
+	{
+		object->setDestroyedState(true);
+		projectile->setCollisionStatus(true);
+	}
 }
 
 void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle)
@@ -332,19 +334,6 @@ void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle)
 	double oppositeObjectSpeed = (object->getSpeed()) * -1;
 	int objectRotation = object->getRotationAngle();
 	object->setSpeed(0);
-}
-
-
-void handleObjectsCollision(Projectile* a, Projectile* b)
-{
-	SDL_Rect hitBoxA = a->getHitBox();
-	SDL_Rect hitBoxB = b->getHitBox();
-	if (!checkCollision(hitBoxA, hitBoxB))
-	{
-		return;
-	}
-	a->setCollisionStatus(true);
-	b->setCollisionStatus(true);
 }
 
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle)
@@ -364,7 +353,7 @@ void handleProjectileWallCollision(Projectile* projectile)
 	if (projectileHitBox.x < 0 || 
 		projectileHitBox.x + projectileHitBox.w > Game::SCREEN_WIDTH || 
 		projectileHitBox.y < 0 || 
-		projectileHitBox.y > Game::SCREEN_HEIGHT)
+		projectileHitBox.y + projectileHitBox.h > Game::SCREEN_HEIGHT)
 	{
 		projectile->setCollisionStatus(true);
 	}

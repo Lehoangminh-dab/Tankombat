@@ -16,6 +16,7 @@ public:
 	void setBulletShotState(bool isShot);
 	void setSpeed(double speedValue);
 	void setDestroyedState(bool destroyedState);
+	std::string getID();
 	double getSpeed();
 	SDL_Rect getHitBox();
 	int getRotationAngle();
@@ -27,9 +28,7 @@ private:
 	bool bulletShot;
 	bool isDestroyed;
 	SDL_Rect currentClip;
-	static const int NORMAL_FRAME_COUNT = 4;
-	static const int DESTROYED_FRAME_COUNT = 0;
-	SDL_Rect normalTextureSheetClips[NORMAL_FRAME_COUNT];
-	SDL_Rect destroyedTextureSheetClips[DESTROYED_FRAME_COUNT];
+	static const int TANK_FRAME_COUNT = 4;
+	SDL_Rect textureSheetClips[TANK_FRAME_COUNT];
 	void handleWallCollision();
 };
