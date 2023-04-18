@@ -138,6 +138,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Tank.cpp" />
@@ -147,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Projectile.hpp" />
     <ClInclude Include="Tank.hpp" />

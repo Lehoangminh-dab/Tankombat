@@ -9,22 +9,32 @@ int main(int argc, char* args[])
 	Game* game = new Game();
 	game->init("Dead Engine", false);
 
+	// Menu test
+	game->setMenuState(true);
 	Uint32 frameStartTime;
 	Uint32 frameEndTime;
 	Uint32 ElapsedTimeOfFrame;
 	while (game->isRunning())
 	{         
-		frameStartTime = SDL_GetTicks();
-
-		game->handleEvents();
-		game->update();
-		game->render();
-		
-		frameEndTime = SDL_GetTicks();
-		ElapsedTimeOfFrame = frameEndTime - frameStartTime;
-		if (ElapsedTimeOfFrame < FRAME_DELAY_MILISECONDS)
+		if (game->isInMenu())
 		{
-			SDL_Delay(FRAME_DELAY_MILISECONDS - ElapsedTimeOfFrame);
+			game->handleMenuEvents();
+			game->drawMenu();
+		}
+		else
+		{
+			frameStartTime = SDL_GetTicks();
+
+			game->handleEvents();
+			game->update();
+			game->render();
+		
+			frameEndTime = SDL_GetTicks();
+			ElapsedTimeOfFrame = frameEndTime - frameStartTime;
+			if (ElapsedTimeOfFrame < FRAME_DELAY_MILISECONDS)
+			{
+				SDL_Delay(FRAME_DELAY_MILISECONDS - ElapsedTimeOfFrame);
+			}
 		}
 	}
 

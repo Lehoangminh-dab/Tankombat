@@ -23,6 +23,12 @@ std::vector<Tank*> activeTanks;
 std::vector<Projectile*> activeProjectiles;
 std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
 
+// Texture file paths
+const char* PLAYER_ONE_TEXTURE_PATH = "Assets/Objects/BlueTankSheet.png";
+const char* PLAYER_TWO_TEXTURE_PATH = "Assets/Objects/RedTankSheet.png";
+const char* PLAYER_THREE_TEXTURE_PATH = "Assets/Objects/YellowTankSheet.png";
+const char* PLAYER_FOUR_TEXTURE_PATH = "Assets/Objects/GreenTankSheet.png";
+
 void executeKeyPressed(Tank* tank);
 void executeKeyLifted(Tank* tank);
 
@@ -87,10 +93,15 @@ void Game::init(const char* title, bool fullscreen)
 	}
 
 
-	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_ONE", 100, 300));
-	activeTanks.push_back(new Tank("Assets/Objects/Tank.png", "PLAYER_TWO", 200, 400));
+	activeTanks.push_back(new Tank(PLAYER_ONE_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
+	activeTanks.push_back(new Tank(PLAYER_TWO_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
+}
+
+bool Game::isInMenu()
+{
+	return inMenu;
 }
 
 
@@ -98,6 +109,16 @@ void Game::init(const char* title, bool fullscreen)
 bool Game::isRunning()
 {
 	return gameRunning;
+}
+
+void Game::handleMenuEvents()
+{
+	gameMenu.handleMenuEvents();
+}
+
+void Game::drawMenu()
+{
+	gameMenu.renderMenu();
 }
 
 void Game::handleEvents()
@@ -186,6 +207,11 @@ void Game::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "Game cleaned" << std::endl;
+}
+
+void Game::setMenuState(bool isInMenu)
+{
+	inMenu = isInMenu;
 }
 
 void updateCollision()
