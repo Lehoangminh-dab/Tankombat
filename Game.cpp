@@ -13,6 +13,7 @@ bool KEY_PRESSED[4];
 
 // Asset file Paths
 const char* BLUE_TANK_TEXTURE_PATH = "Assets/Objects/Tank/BlueTankSheet.png";
+const char* RED_TANK_TEXTURE_PATH = "Assets/Objects/Tank/RedTankSheet.png";
 // Projectile constants
 const int NUM_OF_PLAYERS = 4;
 
@@ -90,7 +91,7 @@ void Game::init(const char* title, bool fullscreen)
 
 
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
-	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
+	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
 }
