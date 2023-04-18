@@ -92,7 +92,8 @@ void Tank::render()
 
 	else if (bulletShot)
 	{
-		if ((frame / ANIMATION_DELAY_IN_FRAMES) < TANK_FRAME_COUNT)
+		const int SHOOTING_TANK_FRAME_COUNT = TANK_FRAME_COUNT - 1;
+		if ((frame / ANIMATION_DELAY_IN_FRAMES) < SHOOTING_TANK_FRAME_COUNT)
 		{
 			currentClip = textureSheetClips[frame / ANIMATION_DELAY_IN_FRAMES];
 			frame++;
