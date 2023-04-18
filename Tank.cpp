@@ -6,6 +6,12 @@ const int PROJECTILE_HEIGHT = 32;
 const double PROJECTILE_SPEED = 15.0;
 const int PROJECTILE_DISTANCE_FROM_TANK = 32;
 
+const char* PROJECTILE_PATH_ONE = "Assets/Objects/Projectile/BlueProjectileSheet.png";
+const char* PROJECTILE_PATH_TWO = "Assets/Objects/Projectile/RedProjectileSheet.png";
+const char* PROJECTILE_PATH_THREE = "Assets/Objects/Projectile/GreenProjectileSheet.png";
+const char* PROJECTILE_PATH_FOUR = "Assets/Objects/Projectile/BeigeProjectileSheet.png";
+
+
 const int TANK_WIDTH = 48;
 const int TANK_HEIGHT = 48;
 const int TANK_SPEED = 10.0;
@@ -80,7 +86,26 @@ void Tank::shoot(std::vector<Projectile*>& activeProjectiles)
 	double currentRotationInRadians = currentRotation * M_PI / 180;
 	int projectilePosX = tankHitBox.x + (TANK_WIDTH - PROJECTILE_WIDTH) / 2;
 	int projectilePosY = tankHitBox.y + (TANK_HEIGHT - PROJECTILE_HEIGHT) / 2;
-	activeProjectiles.push_back(new Projectile("Assets/Objects/Projectile.png", tankID,  projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	if (tankID == "PLAYER_ONE")
+	{
+		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_ONE, tankID,  projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	}
+	else if (tankID == "PLAYER_TWO")
+	{
+		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_TWO, tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	}
+	else if (tankID == "PLAYER_THREE")
+	{
+		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_THREE, tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	}
+	else if (tankID == "PLAYER_FOUR")
+	{
+		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_FOUR, tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+	}
+	else 
+	{
+		std::cout << "Tank ID invalid. Projectile cannot be spawned." << std::endl;
+	}
 }
 
 void Tank::render()
