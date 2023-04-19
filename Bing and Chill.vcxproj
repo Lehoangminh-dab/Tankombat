@@ -109,13 +109,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Libraries\SDL2_image-2.6.3\include;C:\Libraries\SDL2-2.26.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Libraries\SDL2_mixer-2.6.3\include;C:\Libraries\SDL2_image-2.6.3\include;C:\Libraries\SDL2-2.26.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Libraries\SDL2_image-2.6.3\lib;C:\Libraries\SDL2-2.26.3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Libraries\SDL2_mixer-2.6.3\lib;C:\Libraries\SDL2_image-2.6.3\lib;C:\Libraries\SDL2-2.26.3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,6 +140,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TileMap.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Projectile.hpp" />
+    <ClInclude Include="SoundManager.hpp" />
     <ClInclude Include="Tank.hpp" />
     <ClInclude Include="TextureManager.hpp" />
     <ClInclude Include="TileMap.hpp" />
