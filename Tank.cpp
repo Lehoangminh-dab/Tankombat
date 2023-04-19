@@ -6,10 +6,10 @@ const int PROJECTILE_HEIGHT = 32;
 const double PROJECTILE_SPEED = 15.0;
 const int PROJECTILE_DISTANCE_FROM_TANK = 32;
 
-const char* PROJECTILE_PATH_ONE = "Assets/Objects/Projectile/BlueProjectileSheet.png";
-const char* PROJECTILE_PATH_TWO = "Assets/Objects/Projectile/RedProjectileSheet.png";
-const char* PROJECTILE_PATH_THREE = "Assets/Objects/Projectile/GreenProjectileSheet.png";
-const char* PROJECTILE_PATH_FOUR = "Assets/Objects/Projectile/BeigeProjectileSheet.png";
+const std::string PROJECTILE_PATH_ONE = "Assets/Objects/Projectile/BlueProjectileSheet.png";
+const std::string PROJECTILE_PATH_TWO = "Assets/Objects/Projectile/RedProjectileSheet.png";
+const std::string PROJECTILE_PATH_THREE = "Assets/Objects/Projectile/GreenProjectileSheet.png";
+const std::string PROJECTILE_PATH_FOUR = "Assets/Objects/Projectile/BeigeProjectileSheet.png";
 
 
 const int TANK_WIDTH = 48;
@@ -86,26 +86,29 @@ void Tank::shoot(std::vector<Projectile*>& activeProjectiles)
 	double currentRotationInRadians = currentRotation * M_PI / 180;
 	int projectilePosX = tankHitBox.x + (TANK_WIDTH - PROJECTILE_WIDTH) / 2;
 	int projectilePosY = tankHitBox.y + (TANK_HEIGHT - PROJECTILE_HEIGHT) / 2;
+	std::string projectilePath;
 	if (tankID == "PLAYER_ONE")
 	{
-		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_ONE, tankID,  projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+		projectilePath = PROJECTILE_PATH_ONE;
 	}
 	else if (tankID == "PLAYER_TWO")
 	{
-		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_TWO, tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+		projectilePath = PROJECTILE_PATH_TWO;
 	}
 	else if (tankID == "PLAYER_THREE")
 	{
-		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_THREE, tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+		projectilePath = PROJECTILE_PATH_THREE;
 	}
 	else if (tankID == "PLAYER_FOUR")
 	{
-		activeProjectiles.push_back(new Projectile(PROJECTILE_PATH_FOUR, tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
+		projectilePath = PROJECTILE_PATH_FOUR;
 	}
 	else 
 	{
 		std::cout << "Tank ID invalid. Projectile cannot be spawned." << std::endl;
 	}
+	soundManager.playTankShootingSound();
+	activeProjectiles.push_back(new Projectile(projectilePath.c_str(), tankID, projectilePosX, projectilePosY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED, currentRotation));
 }
 
 void Tank::render()

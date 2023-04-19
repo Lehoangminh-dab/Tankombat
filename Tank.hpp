@@ -2,6 +2,7 @@
 #include <vector>
 #include "GameObject.hpp"
 #include "Projectile.hpp"
+#include "SoundManager.hpp"
 
 class Tank
 {
@@ -22,6 +23,7 @@ public:
 	int getRotationAngle();
 private:
 	MovingGameObject movingGameObject;
+	SoundManager soundManager;
 	int frame;
 	bool isMoving;
 	bool isRotatingClockWise;

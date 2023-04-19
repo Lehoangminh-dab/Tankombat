@@ -83,7 +83,10 @@ void Game::init(const char* title, bool fullscreen)
 		{
 			SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
 		}
-
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		{
+			std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " <<  Mix_GetError() << std::endl;
+		}
 		gameRunning = true;
 	}
 	else
