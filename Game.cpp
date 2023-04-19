@@ -95,6 +95,7 @@ void Game::init(const char* title, bool fullscreen)
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
+	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map();
 }
