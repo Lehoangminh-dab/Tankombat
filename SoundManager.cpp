@@ -1,5 +1,6 @@
-#include "SoundManager.hpp"
 #include <iostream>
+#include <SDL.h>
+#include "SoundManager.hpp"
 
 const char* TANK_IDLE_SOUND_PATH = "Assets/Sounds/Engine Idle.ogg";
 const char* TANK_MOVING_SOUND_PATH = "Assets/Sounds/Engine Moving.ogg";

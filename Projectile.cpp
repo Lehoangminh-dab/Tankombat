@@ -6,6 +6,7 @@ Projectile::Projectile(const char* textureSheetPath, std::string id, int xPos, i
 	: movingGameObject(textureSheetPath, id, xPos, yPos, width, height, speed, rotationAngle)
 {
 	collided = false;
+	detonationSoundPlayed = false;
 	detonationComplete = false;
 
 	for (int frame_cnt = 0; frame_cnt < TEXTURE_SHEET_FRAME_COUNT; frame_cnt++)
@@ -29,6 +30,11 @@ void Projectile::render()
 {
 	if (collided)
 	{
+		if (!detonationSoundPlayed)
+		{
+			soundManager.playProjectileExplosionSound();
+			detonationSoundPlayed = true;
+		}
 		if ((frame / ANIMATION_DELAY_IN_FRAMES) < TEXTURE_SHEET_FRAME_COUNT)
 		{
 			currentClip = textureSheetClips[frame / ANIMATION_DELAY_IN_FRAMES];

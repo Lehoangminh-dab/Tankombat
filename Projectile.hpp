@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
-
+#include "SoundManager.hpp"
 
 class Projectile
 {
@@ -16,7 +16,9 @@ public:
 	bool getDetonationStatus();
 private:
 	MovingGameObject movingGameObject;
+	SoundManager soundManager;
 	bool collided;
+	bool detonationSoundPlayed;
 	bool detonationComplete;
 	const int PROJECTILE_WIDTH = 32;
 	const int PROJECTILE_HEIGHT = 32;
