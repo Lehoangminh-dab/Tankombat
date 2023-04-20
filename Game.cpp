@@ -39,6 +39,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b);
 void handleObjectsCollision(Tank* a, Tank* b);
 void handleObjectsCollision(Tank* object, Projectile* projectile);
 void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle);
+void handleObjectsCollision(Projectile* a, Projectile* b);
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle);
 void handleProjectileWallCollision(Projectile* projectile);
 
@@ -100,7 +101,7 @@ void Game::init(const char* title, bool fullscreen)
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
 	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
-	map = new Map();
+	map = new Map(activeIndestructibleObstacles);
 }
 
 
@@ -235,7 +236,17 @@ void updateCollision()
 			}
 		}
 	}
-
+	// Handle all collisions between projectiles and projectiles
+	if (activeProjectiles.size() > 1)
+	{
+		for (auto firstProjectile = activeProjectiles.begin(); firstProjectile != activeProjectiles.end() - 1; ++firstProjectile)
+		{
+			for (auto secondProjectile = firstProjectile + 1; secondProjectile != activeProjectiles.end(); ++secondProjectile)
+			{
+				handleObjectsCollision(*firstProjectile, *secondProjectile);
+			}
+		}
+	}
 	// Handle all collisions between projectiles and indestructible objects
 	if (!activeProjectiles.empty() && !activeIndestructibleObstacles.empty())
 	{
@@ -344,6 +355,15 @@ void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle)
 	double oppositeObjectSpeed = (object->getSpeed()) * -1;
 	int objectRotation = object->getRotationAngle();
 	object->setSpeed(0);
+}
+
+void handleObjectsCollision(Projectile* a, Projectile* b)
+{
+	if (a->getID() != b->getID() && checkCollision(a->getHitBox(), b->getHitBox()))
+	{
+		a->setCollisionStatus(true);
+		b->setCollisionStatus(true);
+	}
 }
 
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle)

@@ -1,7 +1,8 @@
+#include <vector>
+#include <fstream>
 #include "TileMap.hpp"
 #include "TextureManager.hpp"
 #include "Game.hpp"
-#include <fstream>
 
 //The dimensions of the level
 const int LEVEL_WIDTH = Game::SCREEN_WIDTH;
@@ -31,6 +32,14 @@ const int TILE_TOPLEFT = 11;
 SDL_Rect tileSheetClips[TOTAL_TILE_SPRITES];
 Tile* tiles[TOTAL_TILES];
 
+// Level 1 - Desert: Obstacle list
+//const int LEVEL_ONE_OBSTACLE_CNT = 3;
+//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
+//	IndestructibleObstacle("Assets/Obstacle.png", 800, 700, 32, 32, 0),
+//	IndestructibleObstacle("Assets/Obstacle.png", 300, 400, 32, 32, 0),
+//	IndestructibleObstacle("Assets/Obstacle.png", 500, 600, 32, 32, 0)
+//};
+
 Tile::Tile(int x, int y, int tileType)
 {
     //Get the offsets
@@ -59,9 +68,10 @@ SDL_Rect Tile::getBox()
     return mBox;
 }
 
-Map::Map()
+Map::Map(std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles)
 {
 	LoadMap();
+	//LoadObstacles(levelOneObstacles, LEVEL_ONE_OBSTACLE_CNT, activeIndestructibleObstacles);
 	LoadTiles("Assets/TileSheet.png");
 	destinationRect.w = 32;
 	destinationRect.h = 32;
@@ -158,5 +168,12 @@ void Map::DrawMap()
 	for (int i = 0; i < TOTAL_TILES; ++i)
 	{
 		TextureManager::Draw(tileSheet, tileSheetClips[tiles[i]->getType()], tiles[i]->getBox());
+	}
+}
+
+void Map::LoadObstacles(IndestructibleObstacle obstacleList[], int obstacleCnt, std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles)
+{
+	for (int i = 0; i < obstacleCnt; i++) {
+		activeIndestructibleObstacles.push_back(&obstacleList[i]);
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.hpp"
+#include "Obstacle.hpp"
 
 class Tile
 {
@@ -27,12 +28,13 @@ private:
 class Map
 {
 public:
-    Map();
+    Map(std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles);
     ~Map();
     void LoadTiles(const char* tileSheetFilePath);
     bool LoadMap();
     void DrawMap();
 private:
+    void LoadObstacles(IndestructibleObstacle obstacleList[], int obstacleCnt, std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles);
     SDL_Rect destinationRect;
     SDL_Texture* tileSheet;
 };
