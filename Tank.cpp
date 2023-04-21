@@ -1,22 +1,6 @@
 #include "Tank.hpp"
 #include "cmath"
-
-const int PROJECTILE_WIDTH = 32;
-const int PROJECTILE_HEIGHT = 32;
-const double PROJECTILE_SPEED = 15.0;
-const int PROJECTILE_DISTANCE_FROM_TANK = 32;
-
-const std::string PROJECTILE_PATH_ONE = "Assets/Objects/Projectile/BlueProjectileSheet.png";
-const std::string PROJECTILE_PATH_TWO = "Assets/Objects/Projectile/RedProjectileSheet.png";
-const std::string PROJECTILE_PATH_THREE = "Assets/Objects/Projectile/GreenProjectileSheet.png";
-const std::string PROJECTILE_PATH_FOUR = "Assets/Objects/Projectile/BeigeProjectileSheet.png";
-
-
-const int TANK_WIDTH = 48;
-const int TANK_HEIGHT = 48;
-const int TANK_SPEED = 10.0;
-const int ROTATION_SPEED = 6;
-const int ANIMATION_DELAY_IN_FRAMES = 5;
+#include "Constants.hpp"
 
 Tank::Tank(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition)
 	: movingGameObject(objectTextureSheet, id, xStartingPosition, yStartingPosition, TANK_WIDTH, TANK_HEIGHT, 0, 30)

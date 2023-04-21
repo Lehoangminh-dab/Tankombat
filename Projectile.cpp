@@ -1,6 +1,5 @@
 #include "Projectile.hpp"
-
-const int ANIMATION_DELAY_IN_FRAMES = 5;
+#include "Constants.hpp"
 
 Projectile::Projectile(const char* textureSheetPath, std::string id, int xPos, int yPos, int width, int height, double speed, int rotationAngle)
 	: movingGameObject(textureSheetPath, id, xPos, yPos, width, height, speed, rotationAngle)

@@ -20,8 +20,6 @@ private:
 	bool collided;
 	bool detonationSoundPlayed;
 	bool detonationComplete;
-	const int PROJECTILE_WIDTH = 32;
-	const int PROJECTILE_HEIGHT = 32;
 	static const int TEXTURE_SHEET_FRAME_COUNT = 3;
 	SDL_Rect textureSheetClips[TEXTURE_SHEET_FRAME_COUNT];
 	int frame;

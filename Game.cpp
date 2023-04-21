@@ -6,22 +6,9 @@
 #include "Obstacle.hpp"
 #include "Projectile.hpp"
 #include "Tank.hpp"
+#include "Constants.hpp"
 
-// Control variables
-int PLAYER_KEYS[4];
-bool KEY_PRESSED[4];
-
-// Asset file Paths
-const char* BLUE_TANK_TEXTURE_PATH = "Assets/Objects/Tank/BlueTankSheet.png";
-const char* RED_TANK_TEXTURE_PATH = "Assets/Objects/Tank/RedTankSheet.png";
-const char* GREEN_TANK_TEXTURE_PATH = "Assets/Objects/Tank/GreenTankSheet.png";
-const char* BEIGE_TANK_TEXTURE_PATH = "Assets/Objects/Tank/BeigeTankSheet.png";
-// Projectile constants
-const int NUM_OF_PLAYERS = 4;
-
-const double PROJECTILE_SPEED = 10.0;
-const int PROJECTILE_WIDTH = 32;
-const int PROJECTILE_HEIGHT = 32;
+bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of which keys have been pressed
 
 // Object storers
 std::vector<Tank*> activeTanks;
@@ -48,14 +35,12 @@ void updateCollision();
 
 Game::Game()
 {
-	PLAYER_KEYS[0] = SDLK_x;
-	PLAYER_KEYS[1] = SDLK_RSHIFT;
-	PLAYER_KEYS[2] = SDLK_1;
-	PLAYER_KEYS[3] = SDLK_BACKSPACE;
-	for (int i = 0; i < 4; i++)
-	{
-		KEY_PRESSED[i] = false;
-	}
+	const int LEVEL_ONE_OBSTACLE_CNT = 3;
+	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
+	//	IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0),
+	//	IndestructibleObstacle("Assets/Obstacle.png", 300, 400, 32, 32, 0),
+	//	IndestructibleObstacle("Assets/Obstacle.png", 500, 600, 32, 32, 0)
+	//};
 }
 
 Game::~Game()
@@ -100,6 +85,10 @@ void Game::init(const char* title, bool fullscreen)
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
 	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
+	//for (int i = 0; i < LEVEL_ONE_OBSTACLE_CNT; i++)
+	//{
+	//	activeIndestructibleObstacles.push_back(&levelOneObstacles[i]);
+	//}
 	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
 	map = new Map(activeIndestructibleObstacles);
 }
@@ -172,7 +161,18 @@ void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Render the map
-	map->DrawMap();
+	SDL_Texture* mapTexture = TextureManager::loadTexture(DESERT_BACKGROUND_PATH);
+	SDL_Rect mapSrc, mapDest;
+	mapSrc.x = 0;
+	mapSrc.y = 0;
+	mapSrc.w = 320;
+	mapSrc.h = 320;
+
+	mapDest.x = 0;
+	mapDest.y = 0;
+	mapDest.w = SCREEN_WIDTH;
+	mapDest.h = SCREEN_HEIGHT;
+	TextureManager::Draw(mapTexture, mapSrc , mapDest);
 	// Render all tanks
 	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
 	{
