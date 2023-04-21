@@ -80,7 +80,7 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
-
+	isPaused = false;
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
@@ -136,25 +136,28 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	// Update all tanks
-	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
+	if (!isPaused)
 	{
-		activeTanks[tankCnt]->updateMovement();
-	}
-	// Update all projectiles
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
-	{
-		if (activeProjectiles[projectileCnt]->getDetonationStatus() == true)
+		// Update all tanks
+		for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
 		{
-			//activeProjectiles[projectileCnt]->~Projectile();
-			activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
+			activeTanks[tankCnt]->updateMovement();
 		}
-		else
+		// Update all projectiles
+		for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 		{
-			activeProjectiles[projectileCnt]->update();
+			if (activeProjectiles[projectileCnt]->getDetonationStatus() == true)
+			{
+				//activeProjectiles[projectileCnt]->~Projectile();
+				activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
+			}
+			else
+			{
+				activeProjectiles[projectileCnt]->update();
+			}
 		}
+		updateCollision();
 	}
-	updateCollision();
 }
 
 void Game::render()

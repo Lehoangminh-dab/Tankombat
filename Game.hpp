@@ -23,5 +23,6 @@ public:
 	static SDL_Renderer* renderer;
 private:
 	bool gameRunning;
+	bool isPaused;
 	SDL_Window* window;
 };
