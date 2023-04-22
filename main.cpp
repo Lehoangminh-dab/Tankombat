@@ -1,6 +1,5 @@
 ﻿#include "Game.hpp"
 
-
 int main(int argc, char* args[])
 {
 	const int FPS = 60;
@@ -14,17 +13,25 @@ int main(int argc, char* args[])
 	Uint32 ElapsedTimeOfFrame;
 	while (game->isRunning())
 	{         
-		frameStartTime = SDL_GetTicks();
-
-		game->handleEvents();
-		game->update();
-		game->render();
-		
-		frameEndTime = SDL_GetTicks();
-		ElapsedTimeOfFrame = frameEndTime - frameStartTime;
-		if (ElapsedTimeOfFrame < FRAME_DELAY_MILISECONDS)
+		if (game->isInMenu())
 		{
-			SDL_Delay(FRAME_DELAY_MILISECONDS - ElapsedTimeOfFrame);
+			game->handleMenuEvents();
+			game->renderMenu();
+		}
+		else
+		{
+			frameStartTime = SDL_GetTicks();
+
+			game->handleEvents();
+			game->update();
+			game->render();
+		
+			frameEndTime = SDL_GetTicks();
+			ElapsedTimeOfFrame = frameEndTime - frameStartTime;
+			if (ElapsedTimeOfFrame < FRAME_DELAY_MILISECONDS)
+			{
+				SDL_Delay(FRAME_DELAY_MILISECONDS - ElapsedTimeOfFrame);
+			}
 		}
 	}
 

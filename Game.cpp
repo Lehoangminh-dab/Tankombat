@@ -35,7 +35,7 @@ void updateCollision();
 
 Game::Game()
 {
-	const int LEVEL_ONE_OBSTACLE_CNT = 3;
+	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
 	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
 	//	IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0),
 	//	IndestructibleObstacle("Assets/Obstacle.png", 300, 400, 32, 32, 0),
@@ -80,24 +80,67 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
+	gameInMenu = true;
 	isPaused = false;
-	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
-	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
-	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
-	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
+	//activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
+	//activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
+	//activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
+	//activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
 	//for (int i = 0; i < LEVEL_ONE_OBSTACLE_CNT; i++)
 	//{
 	//	activeIndestructibleObstacles.push_back(&levelOneObstacles[i]);
 	//}
-	activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
-	map = new Map(activeIndestructibleObstacles);
+	//activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
+	//map = new Map(activeIndestructibleObstacles);
 }
-
 
 
 bool Game::isRunning()
 {
 	return gameRunning;
+}
+
+bool Game::isInMenu()
+{
+	return gameInMenu;
+}
+
+void Game::handleMenuEvents()
+{
+	SDL_Event event;
+	SDL_PollEvent(&event);
+	switch (event.type)
+	{
+	case SDL_QUIT:
+		gameRunning = false;
+		break;
+	default:
+		break;
+	}
+}
+
+void Game::renderMenu()
+{
+	SDL_RenderClear(renderer);
+	// Render Menu Background
+	SDL_Texture* menuBackground = TextureManager::loadTexture("Assets/Maps/sMap.png");
+	SDL_Rect menuSourceRect;
+	SDL_Rect menuDestinationRect;
+	menuSourceRect.x = 0;
+	menuSourceRect.y = 0;
+	menuSourceRect.w = 320;
+	menuSourceRect.h = 320;
+
+	menuDestinationRect.x = 0;
+	menuDestinationRect.y = 0;
+	menuDestinationRect.w = SCREEN_WIDTH;
+	menuDestinationRect.h = SCREEN_HEIGHT;
+
+	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
+	std::cout << "Menu is being rendered" << std::endl;
+	// Render buttons
+
+	SDL_RenderPresent(renderer);
 }
 
 void Game::handleEvents()
