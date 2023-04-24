@@ -26,7 +26,7 @@ public:
 	void clean(); 
 	static SDL_Renderer* renderer;
 private:
-	Button testButton;
+	Button playButton;
 	bool gameRunning;
 	bool gameInMenu;
 	bool isPaused;

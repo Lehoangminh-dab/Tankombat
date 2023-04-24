@@ -33,8 +33,10 @@ void handleProjectileWallCollision(Projectile* projectile);
 bool keyPressed = false;
 void updateCollision();
 
+// Button IDs
+const std::string PLAY_BUTTON_ID = "PLAY_BUTTON";
 Game::Game()
-	: testButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, "TEST_BUTTON")
+	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_ID)
 {
 	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
 	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
@@ -111,10 +113,10 @@ void Game::handleMenuEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	testButton.handle_events(event);
-	if (testButton.isClicked())
+	playButton.handle_events(event);
+	if (playButton.isClicked())
 	{
-		std::cout << "Button is clicked!" << std::endl;
+		gameInMenu = false;
 	}
 	switch (event.type)
 	{
@@ -146,7 +148,7 @@ void Game::renderMenu()
 	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
 	std::cout << "Menu is being rendered" << std::endl;
 	// Render buttons
-	testButton.show();
+	playButton.show();
 	SDL_RenderPresent(renderer);
 }
 
