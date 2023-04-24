@@ -140,7 +140,7 @@ void Game::renderMenu()
 	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
 	std::cout << "Menu is being rendered" << std::endl;
 	// Render buttons
-
+	testButton.show();
 	SDL_RenderPresent(renderer);
 }
 
