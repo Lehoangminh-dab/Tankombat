@@ -8,7 +8,7 @@
 #include "Tank.hpp"
 #include "Constants.hpp"
 
-bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of which keys have been pressed
+bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of which keys have been 
 
 // Object storers
 std::vector<Tank*> activeTanks;
@@ -34,6 +34,7 @@ bool keyPressed = false;
 void updateCollision();
 
 Game::Game()
+	: testButton(0, 0, 600, 200)
 {
 	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
 	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {

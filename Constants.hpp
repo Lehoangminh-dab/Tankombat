@@ -30,3 +30,6 @@ static const int NUM_OF_PLAYERS = 4;
 
 // Control constants
 static const int PLAYER_KEYS[4] = { SDLK_x, SDLK_RSHIFT, SDLK_1, SDLK_BACKSPACE };
+
+// Menu background constants
+static const SDL_Rect menuBackgroundSourceRect;
