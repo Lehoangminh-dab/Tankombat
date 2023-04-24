@@ -34,7 +34,7 @@ bool keyPressed = false;
 void updateCollision();
 
 Game::Game()
-	: testButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT)
+	: testButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, "TEST_BUTTON")
 {
 	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
 	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
@@ -96,6 +96,7 @@ void Game::init(const char* title, bool fullscreen)
 }
 
 
+
 bool Game::isRunning()
 {
 	return gameRunning;
@@ -111,6 +112,10 @@ void Game::handleMenuEvents()
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	testButton.handle_events(event);
+	if (testButton.isClicked())
+	{
+		std::cout << "Button is clicked!" << std::endl;
+	}
 	switch (event.type)
 	{
 	case SDL_QUIT:
