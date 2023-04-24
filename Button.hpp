@@ -12,7 +12,6 @@ public:
 
     //Shows the button on the screen
     void show();
-    std::string getID();
     bool isClicked();
 private:
     //The attributes of the button
