@@ -110,6 +110,7 @@ void Game::handleMenuEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
+	testButton.handle_events(event);
 	switch (event.type)
 	{
 	case SDL_QUIT:
