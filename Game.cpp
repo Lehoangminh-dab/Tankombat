@@ -34,7 +34,7 @@ bool keyPressed = false;
 void updateCollision();
 
 Game::Game()
-	: testButton(0, 0, 600, 200)
+	: testButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT)
 {
 	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
 	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {

@@ -33,3 +33,7 @@ static const int PLAYER_KEYS[4] = { SDLK_x, SDLK_RSHIFT, SDLK_1, SDLK_BACKSPACE 
 
 // Menu background constants
 static const SDL_Rect menuBackgroundSourceRect;
+
+// Button constants
+static const int BUTTON_WIDTH = 300;
+static const int BUTTON_HEIGHT = 100;
