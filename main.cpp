@@ -20,6 +20,7 @@ int main(int argc, char* args[])
 		}
 		else
 		{
+			game->initGamePlay();
 			frameStartTime = SDL_GetTicks();
 
 			game->handleEvents();

@@ -85,6 +85,7 @@ void Game::init(const char* title, bool fullscreen)
 
 	gameInMenu = true;
 	isPaused = false;
+	gameplayInitialized = false;
 	//activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
 	//activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	//activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
@@ -97,6 +98,19 @@ void Game::init(const char* title, bool fullscreen)
 	//map = new Map(activeIndestructibleObstacles);
 }
 
+void Game::initGamePlay()
+{
+	if (gameplayInitialized)
+	{
+		return;
+	}
+	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
+	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
+	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
+	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
+	gameplayInitialized = true;
+	std::cout << "Gameplay Initialized!" << std::endl;
+}
 
 
 bool Game::isRunning()

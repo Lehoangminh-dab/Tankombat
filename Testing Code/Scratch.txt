@@ -30,6 +30,7 @@ Cleaning Code:
     Check all the branches you currently have. 
     Delete the ones that are outdated / no longer has useful data
     Merge the current working one with master
+    Refactor Code, however you can.
 
 Tilemap MAKING:
     Make a map with the desired tile size, screen width and height

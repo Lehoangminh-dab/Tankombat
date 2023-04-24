@@ -16,6 +16,7 @@ public:
 	static const int SCREEN_WIDTH = 1600;
 	static const int SCREEN_HEIGHT = 928;
 	void init(const char* title, bool fullscreen);
+	void initGamePlay();
 	bool isRunning();
 	bool isInMenu();
 	void handleMenuEvents();
@@ -30,5 +31,6 @@ private:
 	bool gameRunning;
 	bool gameInMenu;
 	bool isPaused;
+	bool gameplayInitialized;
 	SDL_Window* window;
 };
