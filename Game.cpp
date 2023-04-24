@@ -34,9 +34,8 @@ bool keyPressed = false;
 void updateCollision();
 
 // Button IDs
-const std::string PLAY_BUTTON_ID = "PLAY_BUTTON";
 Game::Game()
-	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_ID)
+	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT)
 {
 	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
 	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {

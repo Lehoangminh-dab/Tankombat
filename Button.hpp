@@ -5,7 +5,7 @@ class Button
 {
 public:
     //Initialize the variables
-    Button(int x, int y, int w, int h, std::string buttonID);
+    Button(int x, int y, int w, int h);
 
     //Handles events and set the button's sprite region
     void handle_events(SDL_Event event);
@@ -21,5 +21,4 @@ private:
     //The part of the button sprite sheet that will be shown
     SDL_Rect* clip;
     bool buttonClicked;
-    std::string ID;
 };

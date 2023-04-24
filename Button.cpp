@@ -5,7 +5,7 @@ const int CLIP_MOUSEOUT = 0;
 const int CLIP_MOUSEOVER = 1;
 SDL_Rect clips[2];
 
-Button::Button(int x, int y, int w, int h, std::string buttonID)
+Button::Button(int x, int y, int w, int h)
 {
     // Test: Set clips 
     clips[CLIP_MOUSEOUT].x = 0;
@@ -27,7 +27,6 @@ Button::Button(int x, int y, int w, int h, std::string buttonID)
     //Set the default sprite
     clip = &clips[CLIP_MOUSEOUT];
 
-    ID = buttonID;
 }
 
 void Button::handle_events(SDL_Event event)
@@ -97,11 +96,6 @@ void Button::show()
     //Show the button
     SDL_Texture* buttonTexture = TextureManager::loadTexture("Assets/Menu/PlayButton.png");
     TextureManager::Draw(buttonTexture, *clip, box);
-}
-
-std::string Button::getID()
-{
-    return ID;
 }
 
 bool Button::isClicked()
