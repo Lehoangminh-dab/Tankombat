@@ -21,8 +21,6 @@ const int TILE_WATER = 2;
 const int TILE_OBSTACLE_WALL = 3;
 
 SDL_Rect tileSheetClips[TOTAL_TILE_SPRITES];
-//Tile* tiles[TOTAL_TILES];
-
 
 Tile::Tile(int x, int y, int tileType)
 {
