@@ -5,23 +5,24 @@
 #include "Game.hpp"
 
 // Texture file paths
-const std::string TILE_SHEET_PATH = "Assets/TileSheet.png";
+const std::string TILE_SHEET_PATH = "Assets/Maps/TileSheet.png";
 
 //The dimensions of the level
 const int LEVEL_WIDTH = Game::SCREEN_WIDTH;
 const int LEVEL_HEIGHT = Game::SCREEN_HEIGHT;
+
+//The different tile sprites
+const int TILE_DIRT = 0;
+const int TILE_GRASS = 1;
+const int TILE_WATER = 2;
 
 //Tile constants
 const int SOURCE_TILE_SIZE = 32;
 const int TILE_WIDTH = 16;
 const int TILE_HEIGHT = 16;
 const int TOTAL_TILES = (LEVEL_WIDTH / TILE_WIDTH) * (LEVEL_HEIGHT / TILE_HEIGHT);
-const int TOTAL_TILE_SPRITES = 3;
+const int TOTAL_TILE_SPRITES = 4;
 
-//The different tile sprites
-const int TILE_DIRT = 0;
-const int TILE_GRASS = 1;
-const int TILE_WATER = 2;
 // Obstacle tiles
 const int TILE_OBSTACLE_WALL = 3;
 
