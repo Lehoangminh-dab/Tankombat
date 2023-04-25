@@ -26,15 +26,25 @@ public:
 	void clean(); 
 	static SDL_Renderer* renderer;
 private:
+	// Main menu buttons
 	Button playButton;
+
 	// Pause menu buttons
 	Button resumeButton;
+	Button quitButton;
+
+	// Game state flags
 	bool gameRunning;
 	bool gameInMenu;
 	bool gamePaused;
 	bool gameWon;
 	bool gameplayInitialized;
+
+
 	SDL_Window* window;
+
+	// Pause menu functions
 	void renderPauseMenu();
 	void handlePauseMenuEvents(SDL_Event event);
+	void quitToMainMenu();
 };

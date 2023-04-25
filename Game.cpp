@@ -13,6 +13,7 @@ bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of 
 // Texture File Paths
 const std::string PLAY_BUTTON_PATH = "Assets/Menu/PlayButton.png";
 const std::string RESUME_BUTTON_PATH = "Assets/Menu/ResumeButton.png";
+const std::string QUIT_BUTTON_PATH = "Assets/Menu/QuitButton.png";
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
 const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
@@ -49,7 +50,8 @@ void updateCollision();
 // Button IDs
 Game::Game()
 	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH),
-	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH)
+	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH),
+	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH)
 {
 }
 
@@ -145,6 +147,7 @@ void Game::handleMenuEvents()
 	if (playButton.isClicked())
 	{
 		gameInMenu = false;
+		playButton.resetClickedState();
 	}
 
 	switch (event.type)
@@ -598,14 +601,16 @@ void Game::renderPauseMenu()
 	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
 	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
 
-	// Render the menu buttons
+	// Render the pause menu buttons
 	resumeButton.show();
+	quitButton.show();
 }
 
 void Game::handlePauseMenuEvents(SDL_Event event)
 {
 	// Check which button is clicked
 	resumeButton.handle_events(event);
+	quitButton.handle_events(event);
 
 	// Execute corresponding clicked actions
 	if (resumeButton.isClicked())
@@ -613,4 +618,35 @@ void Game::handlePauseMenuEvents(SDL_Event event)
 		gamePaused = false;
 		resumeButton.resetClickedState();
 	}
+	if (quitButton.isClicked())
+	{
+		quitToMainMenu();
+		quitButton.resetClickedState();
+	}
+}
+
+void Game::quitToMainMenu()
+{
+	// Clear all gameplay objects
+
+	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++) // Clear all tank objects
+	{
+		activeTanks[tankCnt]->~Tank();
+		activeTanks.erase(activeTanks.begin() + tankCnt);
+	}
+
+	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++) // Clear all projectile objects
+	{
+		activeProjectiles[projectileCnt]->~Projectile();
+		activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
+	}
+
+	map->~Map(); // Clear the map
+
+	// Set game to in menu
+	gameInMenu = true;
+	// Reset gameplay initialization state
+	gameplayInitialized = false;
+	// Reset game in pause menu state
+	gamePaused = false;
 }
