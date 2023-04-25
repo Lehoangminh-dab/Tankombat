@@ -26,14 +26,13 @@ Tilemap FUNCTIONALITY:
     COMPILE - Check if tanks will collide with the new tiles.
 
 Add Game Title
+Make the Game Pause when ESC key is pressed
 -----------------------------------------------------------------------------------------------------
 
 Fix Collision
     Tanks and Tanks' collision
-    Tanks and Tiles' collision
     Fix unstable tank collision with tilemaps
 
-Make the Game Pause when ESC key is pressed
 
 Make Game Winning State
     Pause when a player has won

@@ -35,4 +35,6 @@ private:
 	bool gameWon;
 	bool gameplayInitialized;
 	SDL_Window* window;
+	void renderPauseMenu();
+	void handlePauseMenuEvents(SDL_Event event);
 };

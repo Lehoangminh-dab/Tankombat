@@ -29,6 +29,7 @@ int main(int argc, char* args[])
 			{
 				game->update();
 			}
+
 			game->render();
 		
 			frameEndTime = SDL_GetTicks();
