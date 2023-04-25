@@ -25,7 +25,10 @@ int main(int argc, char* args[])
 			frameStartTime = SDL_GetTicks();
 
 			game->handleEvents();
-			game->update();
+			if (!game->isPaused())
+			{
+				game->update();
+			}
 			game->render();
 		
 			frameEndTime = SDL_GetTicks();

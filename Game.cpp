@@ -95,7 +95,7 @@ void Game::init(const char* title, bool fullscreen)
 
 	// Initialize game flags
 	gameInMenu = true;
-	isPaused = false;
+	gamePaused = false;
 	gameplayInitialized = false;
 	// Initialize fonts
 	gFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 28);
@@ -125,6 +125,11 @@ bool Game::isRunning()
 bool Game::isInMenu()
 {
 	return gameInMenu;
+}
+
+bool Game::isPaused()
+{
+	return gamePaused;
 }
 
 void Game::handleMenuEvents()
@@ -166,10 +171,11 @@ void Game::renderMenu()
 	menuDestinationRect.h = SCREEN_HEIGHT;
 
 	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
-	std::cout << "Menu is being rendered" << std::endl;
+
 	// Render buttons
 	playButton.show();
-	// Draw game title
+
+	// Render game title
 	SDL_Rect fontDestRectangle;
 	fontDestRectangle.x = 0;
 	fontDestRectangle.y = 0;
@@ -180,7 +186,6 @@ void Game::renderMenu()
 
 	// Presenting all the textures
 	SDL_RenderPresent(renderer);
-
 }
 
 void Game::handleEvents()
@@ -193,22 +198,39 @@ void Game::handleEvents()
 		gameRunning = false;
 		break;
 	case SDL_KEYDOWN:
-		for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
+		if (!gamePaused)
 		{
-			if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && !KEY_PRESSED[playerCnt])
+			for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
 			{
-				executeKeyPressed(activeTanks[playerCnt]);
-				KEY_PRESSED[playerCnt] = true;
+				if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && !KEY_PRESSED[playerCnt])
+				{
+					executeKeyPressed(activeTanks[playerCnt]);
+					KEY_PRESSED[playerCnt] = true;
+				}
 			}
 		}
+		// Pausing tests
+		if (event.key.keysym.sym == SDLK_ESCAPE)
+		{
+			gamePaused = true;
+		}
+		
+		if (event.key.keysym.sym == SDLK_RETURN)
+		{
+			gamePaused = false;
+		}
+
 		break;
 	case SDL_KEYUP:
-		for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
+		if (!gamePaused)
 		{
-			if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && KEY_PRESSED[playerCnt])
+			for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
 			{
-				executeKeyLifted(activeTanks[playerCnt]);
-				KEY_PRESSED[playerCnt] = false;
+				if (event.key.keysym.sym == PLAYER_KEYS[playerCnt] && KEY_PRESSED[playerCnt])
+				{
+					executeKeyLifted(activeTanks[playerCnt]);
+					KEY_PRESSED[playerCnt] = false;
+				}
 			}
 		}
 		break;
@@ -219,28 +241,25 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	if (!isPaused)
+	// Update all tanks
+	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
 	{
-		// Update all tanks
-		for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
-		{
-			activeTanks[tankCnt]->updateMovement();
-		}
-		// Update all projectiles
-		for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
-		{
-			if (activeProjectiles[projectileCnt]->getDetonationStatus() == true)
-			{
-				//activeProjectiles[projectileCnt]->~Projectile();
-				activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
-			}
-			else
-			{
-				activeProjectiles[projectileCnt]->update();
-			}
-		}
-		updateCollision();
+		activeTanks[tankCnt]->updateMovement();
 	}
+	// Update all projectiles
+	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+	{
+		if (activeProjectiles[projectileCnt]->getDetonationStatus() == true)
+		{
+			activeProjectiles[projectileCnt]->~Projectile();
+			activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
+		}
+		else
+		{
+			activeProjectiles[projectileCnt]->update();
+		}
+	}
+	updateCollision();
 }
 
 void Game::render()
@@ -248,18 +267,7 @@ void Game::render()
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Render the map
 	map->DrawMap(tiles);
-	//SDL_Texture* mapTexture = TextureManager::loadTexture(DESERT_BACKGROUND_PATH);
-	//SDL_Rect mapSrc, mapDest;
-	//mapSrc.x = 0;
-	//mapSrc.y = 0;
-	//mapSrc.w = 320;
-	//mapSrc.h = 320;
 
-	//mapDest.x = 0;
-	//mapDest.y = 0;
-	//mapDest.w = SCREEN_WIDTH;
-	//mapDest.h = SCREEN_HEIGHT;
-	//TextureManager::Draw(mapTexture, mapSrc , mapDest);
 	// Render all tanks
 	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
 	{
@@ -275,6 +283,7 @@ void Game::render()
 	{
 		activeProjectiles[projectileCnt]->render();
 	}
+	// Presenting the textures
 	SDL_RenderPresent(renderer);
 }
 

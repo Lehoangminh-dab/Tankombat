@@ -9,7 +9,6 @@ Buttons TEST:
 
 Buttons FUNCTIONALITY:
     Change isInMenu to false on MOUSE CLICKED
-    
 
 Buttons FUNCTIONALITY TEST:
     Check if when clicked, the game initializes tanks and the button is no longer rendered.
@@ -22,19 +21,38 @@ Tilemap FUNCTIONALITY:
     COMPILE - Check if new tiles are rendered
     Write new handleObjectsCollision(Tank a, ObstacleTile b)
         Check how IndestructibleObstacle is written
------------------------------------------------------------------------------------------------------
     Write and add handleObjectsCollision to the main update loop
     Change 3 random tiles in the Desert.map the the new TILE_OBSTACLE_WALL
     COMPILE - Check if tanks will collide with the new tiles.
 
+Add Game Title
+-----------------------------------------------------------------------------------------------------
 
 Fix Collision
     Tanks and Tanks' collision
     Tanks and Tiles' collision
     Fix unstable tank collision with tilemaps
 
+Make the Game Pause when ESC key is pressed
+
 Make Game Winning State
-Add Game Title
+    Pause when a player has won
+    Display "PLAYER...WINS" (Based on the tanks' ID)
+Make Pause screen
+    ELSE
+        Render Pause Background
+        Render Pause Buttons
+        Handle Pause Events   
+        
+Add Game Tutorial
+
+Add Game Music
+
+
+Cleaning Code:
+    Check all the branches you currently have. 
+    Merge the current working one with master (DON'T FUCKING DELETE ANY BRANCHES, YOU MAY LOSE DATA)
+
 Assets Making
     Tilemap MAKING:
         Make a map with the desired tile size, screen width and height
@@ -45,13 +63,7 @@ Assets Making
         COMPILE - See if it manages to render
         COMPILE - SEE if it manages to check collision
     Cleaning Tank Assets
-Make Pause screen
-Add Game Tutorial
-Add Game Music
 
-Cleaning Code:
-    Check all the branches you currently have. 
-    Merge the current working one with master (DON'T FUCKING DELETE ANY BRANCHES, YOU MAY LOSE DATA)
 
 Cleaning Code, one last time.
     Film the demo

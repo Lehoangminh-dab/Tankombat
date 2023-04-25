@@ -17,6 +17,7 @@ public:
 	void initGamePlay();
 	bool isRunning();
 	bool isInMenu();
+	bool isPaused();
 	void handleMenuEvents();
 	void renderMenu();
 	void handleEvents();
@@ -28,7 +29,7 @@ private:
 	Button playButton;
 	bool gameRunning;
 	bool gameInMenu;
-	bool isPaused;
+	bool gamePaused;
 	bool gameplayInitialized;
 	SDL_Window* window;
 };
