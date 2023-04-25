@@ -21,6 +21,7 @@ public:
 	double getSpeed();
 	SDL_Rect getHitBox();
 	int getRotationAngle();
+	void handleTileCollision();
 private:
 	MovingGameObject movingGameObject;
 	SoundManager soundManager;

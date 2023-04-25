@@ -322,6 +322,15 @@ void updateCollision()
 		}
 	}
 
+	// Handle all collisions between tanks and obstacles
+	if (!activeTanks.empty())
+	{
+		for (auto& tank : activeTanks)
+		{
+			handleObjectsCollision(tank, tiles);
+		}
+	}
+
 	// Handle all collisions between projectiles and obstacles
 	if (!activeProjectiles.empty())
 	{
@@ -449,28 +458,24 @@ void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obst
 	projectile->setCollisionStatus(true);
 }
 
-//void handleObjectsCollision(Tank* tank, Tile* tiles[])
-//{
-//	SDL_Rect tankHitBox = tank->getHitBox();
-//	SDL_Rect tileHitBox;
-//	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
-//	{
-//		int tileType = tiles[tileCnt]->getType();
-//		if (tileType == TILE_OBSTACLE_WALL)
-//		{
-//			tileHitBox = tiles[tileCnt]->getBox();
-//			if (tankHitBox.x < tileHitBox.x || tankHitBox.x + tankHitBox.w >
-//			{
-//				
-//			}
-//		}
-//	}
-//
-//	if (tankHitBox.x < 0 ||
-//		tankHitBox.x + tankHitBox.w > SCREEN_WIDTH ||
-//		tankHitBox.y < 0 ||
-//		tankHitBox.y + tankHitBox.h > SCREEN_HEIGHT)
-//}
+void handleObjectsCollision(Tank* tank, Tile* tiles[])
+{
+	SDL_Rect tankHitBox = tank->getHitBox();
+	SDL_Rect tileHitBox;
+	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
+	{
+		int tileType = tiles[tileCnt]->getType();
+		if (tileType == TILE_OBSTACLE_WALL)
+		{
+			tileHitBox = tiles[tileCnt]->getBox();
+			if (checkCollision(tankHitBox, tileHitBox))
+			{
+				std::cout << "Tank has collided with tile" << std::endl;
+				tank->handleTileCollision();
+			}
+		}
+	}
+}
 
 void handleObjectsCollision(Projectile* projectile, Tile* tiles[])
 {

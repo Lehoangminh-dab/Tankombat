@@ -167,6 +167,18 @@ int Tank::getRotationAngle()
 	return movingGameObject.getRotationAngle();
 }
 
+void Tank::handleTileCollision()
+{
+	SDL_Rect newHitBox = movingGameObject.getHitBox();
+	double currentVelocityX = movingGameObject.getVelocityX();
+	double currentVelocityY = movingGameObject.getVelocityY();
+	int roundedVelocityX = std::ceil(currentVelocityX);
+	int roundedVelocityY = std::ceil(currentVelocityY);
+	newHitBox.x -= roundedVelocityX;
+	newHitBox.y -= roundedVelocityY;
+	movingGameObject.setHitBox(newHitBox.x, newHitBox.y, newHitBox.w, newHitBox.h);
+}
+
 void Tank::handleWallCollision()
 {
 	if (movingGameObject.collidedWithHorizontalWall())
