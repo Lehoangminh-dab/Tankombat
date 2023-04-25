@@ -32,6 +32,8 @@ void handleObjectsCollision(Tank* object, Projectile* projectile);
 void handleObjectsCollision(Tank* object, IndestructibleObstacle* obstacle);
 void handleObjectsCollision(Projectile* a, Projectile* b);
 void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obstacle);
+void handleObjectsCollision(Tank* tank, Tile* tiles[]);
+void handleObjectsCollision(Projectile* projectile, Tile* tiles[]);
 void handleProjectileWallCollision(Projectile* projectile);
 
 bool keyPressed = false;
@@ -320,6 +322,15 @@ void updateCollision()
 		}
 	}
 
+	// Handle all collisions between projectiles and obstacles
+	if (!activeProjectiles.empty())
+	{
+		for (auto& projectile : activeProjectiles)
+		{
+			handleObjectsCollision(projectile, tiles);
+		}
+	}
+
 	// Handle all collisions between projectiles and walls
 	if (!activeProjectiles.empty())
 	{
@@ -438,6 +449,47 @@ void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obst
 	projectile->setCollisionStatus(true);
 }
 
+//void handleObjectsCollision(Tank* tank, Tile* tiles[])
+//{
+//	SDL_Rect tankHitBox = tank->getHitBox();
+//	SDL_Rect tileHitBox;
+//	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
+//	{
+//		int tileType = tiles[tileCnt]->getType();
+//		if (tileType == TILE_OBSTACLE_WALL)
+//		{
+//			tileHitBox = tiles[tileCnt]->getBox();
+//			if (tankHitBox.x < tileHitBox.x || tankHitBox.x + tankHitBox.w >
+//			{
+//				
+//			}
+//		}
+//	}
+//
+//	if (tankHitBox.x < 0 ||
+//		tankHitBox.x + tankHitBox.w > SCREEN_WIDTH ||
+//		tankHitBox.y < 0 ||
+//		tankHitBox.y + tankHitBox.h > SCREEN_HEIGHT)
+//}
+
+void handleObjectsCollision(Projectile* projectile, Tile* tiles[])
+{
+	SDL_Rect projectileHitBox = projectile->getHitBox();
+	SDL_Rect tileHitBox;
+	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
+	{
+		int tileType = tiles[tileCnt]->getType();
+		if (tileType == TILE_OBSTACLE_WALL)
+		{
+			tileHitBox = tiles[tileCnt]->getBox();	
+			if (checkCollision(projectileHitBox, tileHitBox))
+			{
+				projectile->setCollisionStatus(true);
+			}
+		}
+	}
+}
+
 void handleProjectileWallCollision(Projectile* projectile)
 {
 	SDL_Rect projectileHitBox = projectile->getHitBox();
@@ -449,6 +501,7 @@ void handleProjectileWallCollision(Projectile* projectile)
 		projectile->setCollisionStatus(true);
 	}
 }
+
 
 void executeKeyPressed(Tank* tank) // The moment the key is pressed, execute this ONCE
 {

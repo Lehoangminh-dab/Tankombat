@@ -12,14 +12,6 @@ const std::string TILE_SHEET_PATH = "Assets/Maps/TileSheet.png";
 const int LEVEL_WIDTH = SCREEN_WIDTH;
 const int LEVEL_HEIGHT = SCREEN_HEIGHT;
 
-//The different tile sprites
-const int TILE_DIRT = 0;
-const int TILE_GRASS = 1;
-const int TILE_WATER = 2;
-
-// Obstacle tiles
-const int TILE_OBSTACLE_WALL = 3;
-
 SDL_Rect tileSheetClips[TOTAL_TILE_SPRITES];
 
 Tile::Tile(int x, int y, int tileType)

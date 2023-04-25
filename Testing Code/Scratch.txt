@@ -22,28 +22,35 @@ Tilemap FUNCTIONALITY:
     COMPILE - Check if new tiles are rendered
     Write new handleObjectsCollision(Tank a, ObstacleTile b)
         Check how IndestructibleObstacle is written
-    Add handleObjectsCollision to the main update loop
+-----------------------------------------------------------------------------------------------------
+    Write and add handleObjectsCollision to the main update loop
     Change 3 random tiles in the Desert.map the the new TILE_OBSTACLE_WALL
     COMPILE - Check if tanks will collide with the new tiles.
 
-Tilemap MAKING:
-    Make a map with the desired tile size, screen width and height
-    - Export it to .txt (may have to ask Kien for this one)
-    Rewrite screen width and height
-    Rewrite loadMap file to the new map file
-    Rewrite tile sizes to 32
-    COMPILE - See if it manages to render
-    COMPILE - SEE if it manages to check collision
 
 Fix Collision
+    Tanks and Tanks' collision
+    Tanks and Tiles' collision
+
+Make Game Winning State
+Add Game Title
+Assets Making
+    Tilemap MAKING:
+        Make a map with the desired tile size, screen width and height
+        - Export it to .txt (may have to ask Kien for this one)
+        Rewrite screen width and height
+        Rewrite loadMap file to the new map file
+        Rewrite tile sizes to 32
+        COMPILE - See if it manages to render
+        COMPILE - SEE if it manages to check collision
+    Cleaning Tank Assets
+Make Pause screen
+Add Game Tutorial
+Add Game Music
 
 Cleaning Code:
     Check all the branches you currently have. 
-    Delete the ones that are outdated / no longer has useful data
-    Merge the current working one with master
-    READ Util lesson from Lazy Foo: https://lazyfoo.net/articles/article07/index.php
-    Refactor Code, however you can (Do it slowly, one at a time, write the process down)
-
+    Merge the current working one with master (DON'T FUCKING DELETE ANY BRANCHES, YOU MAY LOSE DATA)
 
 Cleaning Code, one last time.
     Film the demo
@@ -51,9 +58,6 @@ Cleaning Code, one last time.
     blah blah
     (Just take reference from Trung for this one)
 
-Make Game Winning State
-Make Pause screen
-Add Game Title
-Add Game Tutorial
-Add Game Music
+
+
 

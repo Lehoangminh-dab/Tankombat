@@ -42,9 +42,15 @@ static const SDL_Rect menuBackgroundSourceRect;
 static const int BUTTON_WIDTH = 300;
 static const int BUTTON_HEIGHT = 100;
 
-//Tile constants
+// Tile constants
 static const int SOURCE_TILE_SIZE = 32;
 static const int TILE_WIDTH = 16;
 static const int TILE_HEIGHT = 16;
 static const int TOTAL_TILES = (SCREEN_WIDTH / TILE_WIDTH) * (SCREEN_HEIGHT / TILE_HEIGHT);
 static const int TOTAL_TILE_SPRITES = 4;
+
+// The different tile types
+static const int TILE_DIRT = 0;
+static const int TILE_GRASS = 1;
+static const int TILE_WATER = 2;
+static const int TILE_OBSTACLE_WALL = 3;
