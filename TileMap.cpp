@@ -19,15 +19,8 @@ const int TOTAL_TILE_SPRITES = 3;
 const int TILE_DIRT = 0;
 const int TILE_GRASS = 1;
 const int TILE_WATER = 2;
-const int TILE_CENTER = 3;
-const int TILE_TOP = 4;
-const int TILE_TOPRIGHT = 5;
-const int TILE_RIGHT = 6;
-const int TILE_BOTTOMRIGHT = 7;
-const int TILE_BOTTOM = 8;
-const int TILE_BOTTOMLEFT = 9;
-const int TILE_LEFT = 10;
-const int TILE_TOPLEFT = 11;
+// Obstacle tiles
+const int TILE_OBSTACLE_WALL = 3;
 
 SDL_Rect tileSheetClips[TOTAL_TILE_SPRITES];
 Tile* tiles[TOTAL_TILES];

@@ -26,12 +26,6 @@ Tilemap FUNCTIONALITY:
     Change 3 random tiles in the Desert.map the the new TILE_OBSTACLE_WALL
     COMPILE - Check if tanks will collide with the new tiles.
 
-Cleaning Code:
-    Check all the branches you currently have. 
-    Delete the ones that are outdated / no longer has useful data
-    Merge the current working one with master
-    Refactor Code, however you can.
-
 Tilemap MAKING:
     Make a map with the desired tile size, screen width and height
     - Export it to .txt (may have to ask Kien for this one)
@@ -41,9 +35,21 @@ Tilemap MAKING:
     COMPILE - See if it manages to render
     COMPILE - SEE if it manages to check collision
 
+Cleaning Code:
+    Check all the branches you currently have. 
+    Delete the ones that are outdated / no longer has useful data
+    Merge the current working one with master
+    READ Util lesson from Lazy Foo: https://lazyfoo.net/articles/article07/index.php
+    Refactor Code, however you can (Do it slowly, one at a time, write the process down)
+
+
 Cleaning Code, one last time.
     Film the demo
     Write the readme
     blah blah
     (Just take reference from Trung for this one)
+
+Make Game Winning State
+Make Pause screen
+Add Game Music
 
