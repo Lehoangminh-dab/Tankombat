@@ -71,19 +71,19 @@ void Tank::shoot(std::vector<Projectile*>& activeProjectiles)
 	int projectilePosX = tankHitBox.x + (TANK_WIDTH - PROJECTILE_WIDTH) / 2;
 	int projectilePosY = tankHitBox.y + (TANK_HEIGHT - PROJECTILE_HEIGHT) / 2;
 	std::string projectilePath;
-	if (tankID == "PLAYER_ONE")
+	if (tankID == PLAYER_ONE_ID)
 	{
 		projectilePath = PROJECTILE_PATH_ONE;
 	}
-	else if (tankID == "PLAYER_TWO")
+	else if (tankID == PLAYER_TWO_ID)
 	{
 		projectilePath = PROJECTILE_PATH_TWO;
 	}
-	else if (tankID == "PLAYER_THREE")
+	else if (tankID == PLAYER_THREE_ID)
 	{
 		projectilePath = PROJECTILE_PATH_THREE;
 	}
-	else if (tankID == "PLAYER_FOUR")
+	else if (tankID == PLAYER_FOUR_ID)
 	{
 		projectilePath = PROJECTILE_PATH_FOUR;
 	}
@@ -145,6 +145,11 @@ void Tank::setSpeed(double speedValue)
 void Tank::setDestroyedState(bool destroyedState)
 {
 	isDestroyed = destroyedState;
+}
+
+bool Tank::getDestroyedState()
+{
+	return isDestroyed;
 }
 
 std::string Tank::getID()

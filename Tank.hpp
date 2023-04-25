@@ -17,6 +17,7 @@ public:
 	void setBulletShotState(bool isShot);
 	void setSpeed(double speedValue);
 	void setDestroyedState(bool destroyedState);
+	bool getDestroyedState();
 	std::string getID();
 	double getSpeed();
 	SDL_Rect getHitBox();

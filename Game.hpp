@@ -27,9 +27,12 @@ public:
 	static SDL_Renderer* renderer;
 private:
 	Button playButton;
+	// Pause menu buttons
+	Button resumeButton;
 	bool gameRunning;
 	bool gameInMenu;
 	bool gamePaused;
+	bool gameWon;
 	bool gameplayInitialized;
 	SDL_Window* window;
 };

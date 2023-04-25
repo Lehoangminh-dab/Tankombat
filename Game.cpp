@@ -13,7 +13,9 @@ bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of 
 // Texture File Paths
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
-
+const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
+const int MENU_TEXTBOX_WIDTH = 600;
+const int MENU_TEXTBOX_HEIGHT = 600;
 // Fonts
 TTF_Font* gFont = NULL;
 
@@ -40,12 +42,15 @@ void handleObjectsCollision(Tank* tank, Tile* tiles[]);
 void handleObjectsCollision(Projectile* projectile, Tile* tiles[]);
 void handleProjectileWallCollision(Projectile* projectile);
 
+void renderPauseMenu();
+
 bool keyPressed = false;
 void updateCollision();
 
 // Button IDs
 Game::Game()
-	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT)
+	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT),
+	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT)
 {
 }
 
@@ -108,10 +113,10 @@ void Game::initGamePlay()
 		return;
 	}
 	map = new Map(tiles);
-	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
-	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
-	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
-	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
+	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 100, 300));
+	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
+	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
+	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
 	gameplayInitialized = true;
 	std::cout << "Gameplay Initialized!" << std::endl;
 }
@@ -198,7 +203,11 @@ void Game::handleEvents()
 		gameRunning = false;
 		break;
 	case SDL_KEYDOWN:
-		if (!gamePaused)
+		if (gameWon)
+		{
+			executeKeyLifted(activeTanks[0]);
+		}
+		else if (!gamePaused)
 		{
 			for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
 			{
@@ -209,6 +218,7 @@ void Game::handleEvents()
 				}
 			}
 		}
+
 		// Pausing tests
 		if (event.key.keysym.sym == SDLK_ESCAPE)
 		{
@@ -219,7 +229,6 @@ void Game::handleEvents()
 		{
 			gamePaused = false;
 		}
-
 		break;
 	case SDL_KEYUP:
 		if (!gamePaused)
@@ -241,11 +250,17 @@ void Game::handleEvents()
 
 void Game::update()
 {
+	int destroyedTanks = 0;
 	// Update all tanks
 	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
 	{
 		activeTanks[tankCnt]->updateMovement();
+		if (activeTanks[tankCnt]->getDestroyedState())
+		{
+			destroyedTanks++;
+		}
 	}
+
 	// Update all projectiles
 	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 	{
@@ -260,6 +275,11 @@ void Game::update()
 		}
 	}
 	updateCollision();
+	// Check if any player(s) has won
+	if (destroyedTanks == activeTanks.size() - 1)
+	{
+		gameWon = true;
+	}
 }
 
 void Game::render()
@@ -282,6 +302,12 @@ void Game::render()
 	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
 	{
 		activeProjectiles[projectileCnt]->render();
+	}
+
+	// Render pause menu if game is paused
+	if (gamePaused)
+	{
+		renderPauseMenu();
 	}
 	// Presenting the textures
 	SDL_RenderPresent(renderer);
@@ -537,6 +563,26 @@ void handleProjectileWallCollision(Projectile* projectile)
 	{
 		projectile->setCollisionStatus(true);
 	}
+}
+
+void renderPauseMenu()
+{
+	// Render the menu background
+	SDL_Texture* menuTextbox = TextureManager::loadTexture(MENU_TEXTBOX_PATH.c_str());
+
+	SDL_Rect menuSrcRect;
+	menuSrcRect.x = 0;
+	menuSrcRect.y = 0;
+	menuSrcRect.w = MENU_TEXTBOX_WIDTH;
+	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
+
+	SDL_Rect menuDestRect;
+	// Pause Menu size
+	menuDestRect.w = 600;
+	menuDestRect.h = 600;
+	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
+	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
+	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
 }
 
 

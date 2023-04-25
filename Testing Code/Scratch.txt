@@ -38,13 +38,32 @@ Make the Game Pause when ESC key is pressed
 Make Game Winning State
     Pause when a player has won
     Display "PLAYER...WINS" (Based on the tanks' ID)
+
 Make Pause screen
-    ELSE
-        Render Pause Background
-        Render Pause Buttons
-        Handle Pause Events   
-        
+    Get basic background asset to display text on 
+    Render Pause Background
+    Add Pause Buttons
+        Continue
+        Restart
+        Quit
+    Render Pause Buttons
+    Handle Pause Events   
+
 Add Game Tutorial
+    Add tutorialButton
+    Initialize, render, handleMenuEvents (test this with std::cout)
+    COMPILE - See if everything works
+    Add renderTutorialScreen
+    Add backButton
+
+Add Exit Button
+    Add button to Game
+    Initialize, render, handleMenuEvents
+    COMPILE - See if you can exit the game
+
+Center the game Title
+
+
 
 Add Game Music
 
