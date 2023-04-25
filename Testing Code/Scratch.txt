@@ -31,6 +31,7 @@ Tilemap FUNCTIONALITY:
 Fix Collision
     Tanks and Tanks' collision
     Tanks and Tiles' collision
+    Fix unstable tank collision with tilemaps
 
 Make Game Winning State
 Add Game Title

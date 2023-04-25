@@ -12,6 +12,10 @@ bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of 
 
 // Texture File Paths
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
+const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
+
+// Fonts
+TTF_Font* gFont = NULL;
 
 // Object storers
 std::vector<Tank*> activeTanks;
@@ -75,6 +79,13 @@ void Game::init(const char* title, bool fullscreen)
 		{
 			std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " <<  Mix_GetError() << std::endl;
 		}
+
+		if (TTF_Init() == -1)
+		{
+			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+			gameRunning = false;
+		}
+
 		gameRunning = true;
 	}
 	else
@@ -86,6 +97,8 @@ void Game::init(const char* title, bool fullscreen)
 	gameInMenu = true;
 	isPaused = false;
 	gameplayInitialized = false;
+	// Initialize fonts
+	gFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 28);
 }
 
 void Game::initGamePlay()
@@ -156,7 +169,18 @@ void Game::renderMenu()
 	std::cout << "Menu is being rendered" << std::endl;
 	// Render buttons
 	playButton.show();
+	// Draw game title
+	SDL_Rect fontDestRectangle;
+	fontDestRectangle.x = 0;
+	fontDestRectangle.y = 0;
+	fontDestRectangle.w = 600;
+	fontDestRectangle.h = 200;
+	SDL_Color titleTextColor = { 247, 227, 5 };
+	TextureManager::DrawText(gFont, "TankKombat", titleTextColor, fontDestRectangle);
+
+	// Presenting all the textures
 	SDL_RenderPresent(renderer);
+
 }
 
 void Game::handleEvents()
@@ -470,7 +494,6 @@ void handleObjectsCollision(Tank* tank, Tile* tiles[])
 			tileHitBox = tiles[tileCnt]->getBox();
 			if (checkCollision(tankHitBox, tileHitBox))
 			{
-				std::cout << "Tank has collided with tile" << std::endl;
 				tank->handleTileCollision();
 			}
 		}
