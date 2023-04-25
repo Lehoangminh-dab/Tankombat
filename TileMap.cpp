@@ -4,6 +4,9 @@
 #include "TextureManager.hpp"
 #include "Game.hpp"
 
+// Texture file paths
+const std::string TILE_SHEET_PATH = "Assets/TileSheet.png";
+
 //The dimensions of the level
 const int LEVEL_WIDTH = Game::SCREEN_WIDTH;
 const int LEVEL_HEIGHT = Game::SCREEN_HEIGHT;
@@ -61,11 +64,10 @@ SDL_Rect Tile::getBox()
     return mBox;
 }
 
-Map::Map(std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles)
+Map::Map()
 {
 	LoadMap();
-	//LoadObstacles(levelOneObstacles, LEVEL_ONE_OBSTACLE_CNT, activeIndestructibleObstacles);
-	LoadTiles("Assets/TileSheet.png");
+	LoadTiles(TILE_SHEET_PATH.c_str());
 	destinationRect.w = 32;
 	destinationRect.h = 32;
 	destinationRect.x = 0;

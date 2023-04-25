@@ -28,7 +28,7 @@ private:
 class Map
 {
 public:
-    Map(std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles);
+    Map();
     ~Map();
     void LoadTiles(const char* tileSheetFilePath);
     bool LoadMap();

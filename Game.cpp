@@ -10,6 +10,9 @@
 
 bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of which keys have been 
 
+// Texture File Paths
+const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
+
 // Object storers
 std::vector<Tank*> activeTanks;
 std::vector<Projectile*> activeProjectiles;
@@ -37,12 +40,6 @@ void updateCollision();
 Game::Game()
 	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT)
 {
-	//const int LEVEL_ONE_OBSTACLE_CNT = 3;
-	//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
-	//	IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0),
-	//	IndestructibleObstacle("Assets/Obstacle.png", 300, 400, 32, 32, 0),
-	//	IndestructibleObstacle("Assets/Obstacle.png", 500, 600, 32, 32, 0)
-	//};
 }
 
 Game::~Game()
@@ -82,19 +79,10 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
+	// Initialize game flags
 	gameInMenu = true;
 	isPaused = false;
 	gameplayInitialized = false;
-	//activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
-	//activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
-	//activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
-	//activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, "PLAYER_FOUR", 600, 500));
-	//for (int i = 0; i < LEVEL_ONE_OBSTACLE_CNT; i++)
-	//{
-	//	activeIndestructibleObstacles.push_back(&levelOneObstacles[i]);
-	//}
-	//activeIndestructibleObstacles.push_back(new IndestructibleObstacle("Assets/Obstacle.png", 900, 800, 32, 32, 0));
-	//map = new Map(activeIndestructibleObstacles);
 }
 
 void Game::initGamePlay()
@@ -103,6 +91,7 @@ void Game::initGamePlay()
 	{
 		return;
 	}
+	map = new Map();
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
@@ -127,10 +116,12 @@ void Game::handleMenuEvents()
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	playButton.handle_events(event);
+
 	if (playButton.isClicked())
 	{
 		gameInMenu = false;
 	}
+
 	switch (event.type)
 	{
 	case SDL_QUIT:
@@ -145,7 +136,7 @@ void Game::renderMenu()
 {
 	SDL_RenderClear(renderer);
 	// Render Menu Background
-	SDL_Texture* menuBackground = TextureManager::loadTexture("Assets/Maps/sMap.png");
+	SDL_Texture* menuBackground = TextureManager::loadTexture(MENU_BACKGROUND_PATH.c_str());
 	SDL_Rect menuSourceRect;
 	SDL_Rect menuDestinationRect;
 	menuSourceRect.x = 0;
@@ -229,18 +220,19 @@ void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Render the map
-	SDL_Texture* mapTexture = TextureManager::loadTexture(DESERT_BACKGROUND_PATH);
-	SDL_Rect mapSrc, mapDest;
-	mapSrc.x = 0;
-	mapSrc.y = 0;
-	mapSrc.w = 320;
-	mapSrc.h = 320;
+	map->DrawMap();
+	//SDL_Texture* mapTexture = TextureManager::loadTexture(DESERT_BACKGROUND_PATH);
+	//SDL_Rect mapSrc, mapDest;
+	//mapSrc.x = 0;
+	//mapSrc.y = 0;
+	//mapSrc.w = 320;
+	//mapSrc.h = 320;
 
-	mapDest.x = 0;
-	mapDest.y = 0;
-	mapDest.w = SCREEN_WIDTH;
-	mapDest.h = SCREEN_HEIGHT;
-	TextureManager::Draw(mapTexture, mapSrc , mapDest);
+	//mapDest.x = 0;
+	//mapDest.y = 0;
+	//mapDest.w = SCREEN_WIDTH;
+	//mapDest.h = SCREEN_HEIGHT;
+	//TextureManager::Draw(mapTexture, mapSrc , mapDest);
 	// Render all tanks
 	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
 	{
