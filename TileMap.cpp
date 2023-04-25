@@ -3,39 +3,26 @@
 #include "TileMap.hpp"
 #include "TextureManager.hpp"
 #include "Game.hpp"
+#include "Constants.hpp"
 
 // Texture file paths
 const std::string TILE_SHEET_PATH = "Assets/Maps/TileSheet.png";
 
 //The dimensions of the level
-const int LEVEL_WIDTH = Game::SCREEN_WIDTH;
-const int LEVEL_HEIGHT = Game::SCREEN_HEIGHT;
+const int LEVEL_WIDTH = SCREEN_WIDTH;
+const int LEVEL_HEIGHT = SCREEN_HEIGHT;
 
 //The different tile sprites
 const int TILE_DIRT = 0;
 const int TILE_GRASS = 1;
 const int TILE_WATER = 2;
 
-//Tile constants
-const int SOURCE_TILE_SIZE = 32;
-const int TILE_WIDTH = 16;
-const int TILE_HEIGHT = 16;
-const int TOTAL_TILES = (LEVEL_WIDTH / TILE_WIDTH) * (LEVEL_HEIGHT / TILE_HEIGHT);
-const int TOTAL_TILE_SPRITES = 4;
-
 // Obstacle tiles
 const int TILE_OBSTACLE_WALL = 3;
 
 SDL_Rect tileSheetClips[TOTAL_TILE_SPRITES];
-Tile* tiles[TOTAL_TILES];
+//Tile* tiles[TOTAL_TILES];
 
-// Level 1 - Desert: Obstacle list
-//const int LEVEL_ONE_OBSTACLE_CNT = 3;
-//IndestructibleObstacle levelOneObstacles[LEVEL_ONE_OBSTACLE_CNT] = {
-//	IndestructibleObstacle("Assets/Obstacle.png", 800, 700, 32, 32, 0),
-//	IndestructibleObstacle("Assets/Obstacle.png", 300, 400, 32, 32, 0),
-//	IndestructibleObstacle("Assets/Obstacle.png", 500, 600, 32, 32, 0)
-//};
 
 Tile::Tile(int x, int y, int tileType)
 {
@@ -65,14 +52,18 @@ SDL_Rect Tile::getBox()
     return mBox;
 }
 
-Map::Map()
+Map::Map(Tile* tiles[])
 {
-	LoadMap();
+	LoadMap(tiles);
 	LoadTiles(TILE_SHEET_PATH.c_str());
 	destinationRect.w = 32;
 	destinationRect.h = 32;
 	destinationRect.x = 0;
 	destinationRect.y = 0;
+}
+
+Map::~Map()
+{
 }
 
 
@@ -89,7 +80,7 @@ void Map::LoadTiles(const char* tileSheetFilePath)
 	}
 }
 
-bool Map::LoadMap()
+bool Map::LoadMap(Tile* tiles[])
 {
 	//Success flag
 	bool tilesLoaded = true;
@@ -159,7 +150,7 @@ bool Map::LoadMap()
 	return tilesLoaded;
 }
 
-void Map::DrawMap()
+void Map::DrawMap(Tile* tiles[])
 {
 	for (int i = 0; i < TOTAL_TILES; ++i)
 	{
@@ -167,9 +158,3 @@ void Map::DrawMap()
 	}
 }
 
-void Map::LoadObstacles(IndestructibleObstacle obstacleList[], int obstacleCnt, std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles)
-{
-	for (int i = 0; i < obstacleCnt; i++) {
-		activeIndestructibleObstacles.push_back(&obstacleList[i]);
-	}
-}

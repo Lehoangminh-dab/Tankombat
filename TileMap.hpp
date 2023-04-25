@@ -28,13 +28,12 @@ private:
 class Map
 {
 public:
-    Map();
+    Map(Tile* tiles[]);
     ~Map();
     void LoadTiles(const char* tileSheetFilePath);
-    bool LoadMap();
-    void DrawMap();
+    bool LoadMap(Tile* tiles[]);
+    void DrawMap(Tile* tiles[]);
 private:
-    void LoadObstacles(IndestructibleObstacle obstacleList[], int obstacleCnt, std::vector<IndestructibleObstacle*>& activeIndestructibleObstacles);
     SDL_Rect destinationRect;
     SDL_Texture* tileSheet;
 };

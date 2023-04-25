@@ -1,4 +1,8 @@
 #pragma once
+//Screen dimensions
+static const int SCREEN_WIDTH = 1600;
+static const int SCREEN_HEIGHT = 928;
+
 // Projectile and tank constants
 static const std::string PROJECTILE_PATH_ONE = "Assets/Objects/Projectile/BlueProjectileSheet.png";
 static const std::string PROJECTILE_PATH_TWO = "Assets/Objects/Projectile/RedProjectileSheet.png";
@@ -37,3 +41,10 @@ static const SDL_Rect menuBackgroundSourceRect;
 // Button constants
 static const int BUTTON_WIDTH = 300;
 static const int BUTTON_HEIGHT = 100;
+
+//Tile constants
+static const int SOURCE_TILE_SIZE = 32;
+static const int TILE_WIDTH = 16;
+static const int TILE_HEIGHT = 16;
+static const int TOTAL_TILES = (SCREEN_WIDTH / TILE_WIDTH) * (SCREEN_HEIGHT / TILE_HEIGHT);
+static const int TOTAL_TILE_SPRITES = 4;

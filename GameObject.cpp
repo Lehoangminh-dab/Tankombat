@@ -1,6 +1,7 @@
 #include "GameObject.hpp"
 #include "TextureManager.hpp"
 #include <cmath>
+#include "Constants.hpp"
 
 const int SOURCE_TEXTURE_SIZE = 32;
 GameObject::GameObject(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition, int width, int height, int startingRotationAngle)
@@ -152,7 +153,7 @@ void MovingGameObject::setSpeed(double speedValue)
 bool MovingGameObject::collidedWithHorizontalWall()
 {
 	SDL_Rect hitBox = gameObject.getHitBox();
-	if (hitBox.y < 0 || hitBox.y + hitBox.h > Game::SCREEN_HEIGHT)
+	if (hitBox.y < 0 || hitBox.y + hitBox.h > SCREEN_HEIGHT)
 	{
 		return true;
 	}
@@ -162,7 +163,7 @@ bool MovingGameObject::collidedWithHorizontalWall()
 bool MovingGameObject::collidedWithVerticalWall()
 {
 	SDL_Rect hitBox = gameObject.getHitBox();
-	if (hitBox.x < 0 || hitBox.x + hitBox.w > Game::SCREEN_WIDTH)
+	if (hitBox.x < 0 || hitBox.x + hitBox.w > SCREEN_WIDTH)
 	{
 		return true;
 	}

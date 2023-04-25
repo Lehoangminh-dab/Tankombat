@@ -17,6 +17,7 @@ const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 std::vector<Tank*> activeTanks;
 std::vector<Projectile*> activeProjectiles;
 std::vector<IndestructibleObstacle*> activeIndestructibleObstacles;
+Tile* tiles[TOTAL_TILES];
 
 void executeKeyPressed(Tank* tank);
 void executeKeyLifted(Tank* tank);
@@ -91,7 +92,7 @@ void Game::initGamePlay()
 	{
 		return;
 	}
-	map = new Map();
+	map = new Map(tiles);
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, "PLAYER_ONE", 100, 300));
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, "PLAYER_TWO", 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, "PLAYER_THREE", 300, 500));
@@ -220,7 +221,7 @@ void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
 	// Render the map
-	map->DrawMap();
+	map->DrawMap(tiles);
 	//SDL_Texture* mapTexture = TextureManager::loadTexture(DESERT_BACKGROUND_PATH);
 	//SDL_Rect mapSrc, mapDest;
 	//mapSrc.x = 0;
@@ -441,9 +442,9 @@ void handleProjectileWallCollision(Projectile* projectile)
 {
 	SDL_Rect projectileHitBox = projectile->getHitBox();
 	if (projectileHitBox.x < 0 || 
-		projectileHitBox.x + projectileHitBox.w > Game::SCREEN_WIDTH || 
+		projectileHitBox.x + projectileHitBox.w > SCREEN_WIDTH || 
 		projectileHitBox.y < 0 || 
-		projectileHitBox.y + projectileHitBox.h > Game::SCREEN_HEIGHT)
+		projectileHitBox.y + projectileHitBox.h > SCREEN_HEIGHT)
 	{
 		projectile->setCollisionStatus(true);
 	}

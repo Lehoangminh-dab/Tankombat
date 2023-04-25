@@ -35,6 +35,8 @@ Tilemap MAKING:
     COMPILE - See if it manages to render
     COMPILE - SEE if it manages to check collision
 
+Fix Collision
+
 Cleaning Code:
     Check all the branches you currently have. 
     Delete the ones that are outdated / no longer has useful data
@@ -51,5 +53,7 @@ Cleaning Code, one last time.
 
 Make Game Winning State
 Make Pause screen
+Add Game Title
+Add Game Tutorial
 Add Game Music
 
