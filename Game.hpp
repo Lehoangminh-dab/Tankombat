@@ -14,7 +14,7 @@ public:
 	~Game();
 
 	void init(const char* title, bool fullscreen);
-	void initGamePlay();
+	void initGameplay();
 	bool isRunning();
 	bool isInMenu();
 	bool isPaused();

@@ -29,15 +29,6 @@ Add Game Title
 Make the Game Pause when ESC key is pressed
 -----------------------------------------------------------------------------------------------------
 
-Fix Collision
-    Tanks and Tanks' collision
-    Fix unstable tank collision with tilemaps
-
-
-Make Game Winning State
-    Pause when a player has won
-    Display "PLAYER...WINS" (Based on the tanks' ID)
-
 Make Pause screen
     Get basic background asset to display text on 
     Render Pause Background
@@ -47,6 +38,18 @@ Make Pause screen
         Quit
     Render Pause Buttons
     Handle Pause Events   
+
+Add Game Music
+
+Fix Collision
+    Tanks and Tanks' collision
+    Fix unstable tank collision with tilemaps
+
+Make Game Winning State
+    SPECIAL Pause when a player has won
+    Render textbox so that it fits the already existing restart and quit buttons
+    Display "PLAYER...WINS" (Based on the tanks' ID)
+    Render the restart and quit buttons
 
 Add Game Tutorial
     Add tutorialButton
@@ -60,18 +63,8 @@ Add Exit Button
     Initialize, render, handleMenuEvents
     COMPILE - See if you can exit the game
 
-Center the game Title
-
-
-
-Add Game Music
-
-
-Cleaning Code:
-    Check all the branches you currently have. 
-    Merge the current working one with master (DON'T FUCKING DELETE ANY BRANCHES, YOU MAY LOSE DATA)
-
 Assets Making
+    Center the game Title
     Tilemap MAKING:
         Make a map with the desired tile size, screen width and height
         - Export it to .txt (may have to ask Kien for this one)
@@ -83,7 +76,9 @@ Assets Making
     Cleaning Tank Assets
 
 
-Cleaning Code, one last time.
+Cleaning Code.
+    Check all the branches you currently have. 
+    Merge the current working one with master (DON'T FUCKING DELETE ANY BRANCHES, YOU MAY LOSE DATA)
     Film the demo
     Write the readme
     blah blah

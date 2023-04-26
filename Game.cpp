@@ -34,6 +34,7 @@ void executeKeyLifted(Tank* tank);
 Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 
+// Collision functions
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 
 void handleObjectsCollision(Tank* a, Tank* b);
@@ -46,6 +47,9 @@ void handleObjectsCollision(Projectile* projectile, Tile* tiles[]);
 void handleProjectileWallCollision(Projectile* projectile);
 
 void updateCollision();
+
+// Utility functions
+void cleanGameplayResources();
 
 // Button IDs
 Game::Game()
@@ -107,7 +111,7 @@ void Game::init(const char* title, bool fullscreen)
 	gFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 28);
 }
 
-void Game::initGamePlay()
+void Game::initGameplay()
 {
 	if (gameplayInitialized)
 	{
@@ -118,7 +122,11 @@ void Game::initGamePlay()
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
 	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
+
+	// Reset flags
+	gameWon = false;
 	gameplayInitialized = true;
+	// Confirmation to console
 	std::cout << "Gameplay Initialized!" << std::endl;
 }
 
@@ -415,6 +423,7 @@ void updateCollision()
 }
 
 
+
 bool checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	//The sides of the rectangles
@@ -583,6 +592,10 @@ void executeKeyLifted(Tank* tank)
 	tank->setMovementState(false);
 }
 
+void cleanGameplayResources()
+{
+}
+
 void Game::renderPauseMenu()
 {
 	// Render the menu background
@@ -628,25 +641,34 @@ void Game::handlePauseMenuEvents(SDL_Event event)
 void Game::quitToMainMenu()
 {
 	// Clear all gameplay objects
-
-	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++) // Clear all tank objects
+	for (int tankCnt = activeTanks.size() - 1; tankCnt >= 0; tankCnt--) // Clear all tank objects
 	{
-		activeTanks[tankCnt]->~Tank();
-		activeTanks.erase(activeTanks.begin() + tankCnt);
+		delete activeTanks[tankCnt];
+		activeTanks.pop_back();
 	}
 
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++) // Clear all projectile objects
+	std::cout << "Remaining Tanks Left: " << activeTanks.size() << std::endl;
+
+	for (int projectileCnt = activeProjectiles.size() - 1; projectileCnt >= 0; projectileCnt--) // Clear all projectile objects
 	{
-		activeProjectiles[projectileCnt]->~Projectile();
-		activeProjectiles.erase(activeProjectiles.begin() + projectileCnt);
+		delete activeProjectiles[projectileCnt];
+		activeProjectiles.pop_back();
 	}
 
-	map->~Map(); // Clear the map
+	std::cout << "Remaining Projectiles Left: " << activeProjectiles.size() << std::endl;
+	// Clear the map
+	map->~Map(); 
+	//for (int i = 0; i < TOTAL_TILES; ++i)
+	//{
+	//	if (tiles[i] != nullptr) // Ensure the object is not null
+	//	{
+	//		delete tiles[i]; // Delete the object
+	//		tiles[i] = nullptr; // Set the pointer to null to avoid using a dangling pointer
+	//	}
+	//}
 
-	// Set game to in menu
-	gameInMenu = true;
-	// Reset gameplay initialization state
-	gameplayInitialized = false;
-	// Reset game in pause menu state
-	gamePaused = false;
+	// Reset flags
+	gameInMenu = true; // Set game to in menu
+	gameplayInitialized = false; // Reset gameplay initialization state
+	gamePaused = false; // Reset game in pause menu state
 }
