@@ -17,6 +17,8 @@ const std::string QUIT_BUTTON_PATH = "Assets/Menu/QuitButton.png";
 const std::string RESTART_BUTTON_PATH = "Assets/Menu/RestartButton.png";
 
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
+
+const std::string TITLE_FONT_PATH = "Assets/Fonts/TestFont.ttf";
 const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
 
 const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
@@ -28,7 +30,8 @@ const int WON_MENU_TEXTBOX_WIDTH = 600;
 const int WON_MENU_TEXTBOX_HEIGHT = 600;
 
 // Fonts
-TTF_Font* gFont = NULL;
+TTF_Font* gameTitleFont = NULL;
+TTF_Font* globalFont = NULL;
 
 // Object storers
 std::vector<Tank*> activeTanks;
@@ -119,7 +122,8 @@ void Game::init(const char* title, bool fullscreen)
 	gamePaused = false;
 	gameplayInitialized = false;
 	// Initialize fonts
-	gFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 28);
+	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 28);
+	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 16);
 }
 
 void Game::initGameplay()
@@ -207,7 +211,7 @@ void Game::renderMenu()
 	fontDestRectangle.w = 600;
 	fontDestRectangle.h = 200;
 	SDL_Color titleTextColor = { 247, 227, 5 };
-	TextureManager::DrawText(gFont, "TankKombat", titleTextColor, fontDestRectangle);
+	TextureManager::DrawText(gameTitleFont, "TankKombat", titleTextColor, fontDestRectangle);
 
 	// Presenting all the textures
 	SDL_RenderPresent(renderer);
@@ -232,14 +236,18 @@ void Game::handleEvents()
 		break;
 	}
 
-	// Handle gameplay buttons
+	if (gameWon)
+	{
+		handleWonMenuEvents(event);
+	}
+
 	if (gamePaused)
 	{
 		handlePauseMenuEvents(event);
 	}
-
 	else
 	{
+		// Handle gameplay buttons
 		switch (event.type)
 		{
 		case SDL_KEYDOWN:
@@ -253,12 +261,12 @@ void Game::handleEvents()
 						KEY_PRESSED[playerCnt] = true;
 					}
 				}
+				if (event.key.keysym.sym == SDLK_ESCAPE)
+				{
+					gamePaused = true;
+				}
 			}
 
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-			{
-				gamePaused = true;
-			}
 			break;
 		case SDL_KEYUP:
 			for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
@@ -732,7 +740,7 @@ void Game::quitToMainMenu()
 
 void Game::renderWonMenu()
 {
-	// Render the winning menu background
+	// Render the won menu background
 	SDL_Texture* wonMenuTextbox = TextureManager::loadTexture(WON_MENU_TEXTBOX_PATH.c_str());
 	SDL_Rect srcRect;
 	srcRect.x = 0;
@@ -746,4 +754,45 @@ void Game::renderWonMenu()
 	destRect.x = (SCREEN_WIDTH - destRect.w) / 2;
 	destRect.y = (SCREEN_HEIGHT - destRect.h) / 2;
 	TextureManager::Draw(wonMenuTextbox, srcRect, destRect);
+
+	// Render winning announcement
+	std::string winningTankID;
+	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
+	{
+		if (!activeTanks[tankCnt]->getDestroyedState())
+		{
+			winningTankID = activeTanks[tankCnt]->getID();
+		}
+	}
+
+	std::string winAnnouncement = winningTankID + " WINS! ";
+
+	SDL_Rect announcementDestRectangle;
+	announcementDestRectangle.w = 600;
+	announcementDestRectangle.h = 200;
+	announcementDestRectangle.x = (SCREEN_WIDTH - announcementDestRectangle.w) / 2;
+	announcementDestRectangle.y = 200;
+	SDL_Color announcementTextColor = { 0, 0, 0 };
+	TextureManager::DrawText(globalFont, winAnnouncement, announcementTextColor, announcementDestRectangle);
+
+	// Render the won menu buttons
+	restartButton.show();
+	quitButton.show();
+}
+
+void Game::handleWonMenuEvents(SDL_Event event)
+{
+	restartButton.handle_events(event);
+	quitButton.handle_events(event);
+
+	if (restartButton.isClicked())
+	{
+		restartGameplay();
+		restartButton.resetClickedState();
+	}
+	else if (quitButton.isClicked())
+	{
+		quitToMainMenu();
+		quitButton.resetClickedState();
+	}
 }
