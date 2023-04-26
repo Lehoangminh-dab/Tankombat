@@ -298,30 +298,33 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(renderer); // Clear what's in the renderer's buffer
-	// Render the map
-	map->DrawMap(tiles);
+	if (gameplayInitialized)
+	{
+		// Render the map
+		map->DrawMap(tiles);
+		// Render all tanks
+		for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
+		{
+			activeTanks[tankCnt]->render();
+		}
+		// Render all indestructible obstacles
+		for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
+		{
+			activeIndestructibleObstacles[indestructibleObstacleCnt]->render();
+		}
+		// Render all projectiles
+		for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
+		{
+			activeProjectiles[projectileCnt]->render();
+		}
+		// Render pause menu if game is paused
 
-	// Render all tanks
-	for (int tankCnt = 0; tankCnt < activeTanks.size(); tankCnt++)
-	{
-		activeTanks[tankCnt]->render();
-	}
-	// Render all indestructible obstacles
-	for (int indestructibleObstacleCnt = 0; indestructibleObstacleCnt < activeIndestructibleObstacles.size(); indestructibleObstacleCnt++)
-	{
-		activeIndestructibleObstacles[indestructibleObstacleCnt]->render();
-	}
-	// Render all projectiles
-	for (int projectileCnt = 0; projectileCnt < activeProjectiles.size(); projectileCnt++)
-	{
-		activeProjectiles[projectileCnt]->render();
+		if (gamePaused)
+		{
+			renderPauseMenu();
+		}
 	}
 
-	// Render pause menu if game is paused
-	if (gamePaused)
-	{
-		renderPauseMenu();
-	}
 	// Presenting the textures
 	SDL_RenderPresent(renderer);
 }
@@ -658,15 +661,10 @@ void Game::quitToMainMenu()
 	std::cout << "Remaining Projectiles Left: " << activeProjectiles.size() << std::endl;
 	// Clear the map
 	map->~Map(); 
-	//for (int i = 0; i < TOTAL_TILES; ++i)
-	//{
-	//	if (tiles[i] != nullptr) // Ensure the object is not null
-	//	{
-	//		delete tiles[i]; // Delete the object
-	//		tiles[i] = nullptr; // Set the pointer to null to avoid using a dangling pointer
-	//	}
-	//}
-
+	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
+	{
+		delete tiles[tileCnt];
+	}
 	// Reset flags
 	gameInMenu = true; // Set game to in menu
 	gameplayInitialized = false; // Reset gameplay initialization state
