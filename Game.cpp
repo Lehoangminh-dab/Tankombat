@@ -22,7 +22,8 @@ const std::string EXIT_BUTTON_PATH = "Assets/Menu/ExitButton.png";
 
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 
-const std::string TITLE_FONT_PATH = "Assets/Fonts/TestFont.ttf";
+const std::string TITLE_FONT_PATH = "Assets/Fonts/Helvetica Neue LT Std 107 Extra Black Condensed.ttf";
+const std::string TITLE_STARS_TEXTURE_PATH = "Assets/Menu/Main Title Stars.png";
 const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
 
 const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
@@ -77,14 +78,13 @@ void cleanGameplayResources();
 
 // Button IDs
 Game::Game()
-	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH, true),
-	tutorialButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
+	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2 + 50, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH, true),
+	tutorialButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2 + 200, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
 	tutorialBackButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BACK_BUTTON_PATH, false),
-	exitButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, 700, BUTTON_WIDTH, BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
+	exitButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2 + 350, BUTTON_WIDTH, BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
 	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
 	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
 	restartButton(600, 500, BUTTON_WIDTH, BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
-
 {
 }
 
@@ -141,7 +141,7 @@ void Game::init(const char* title, bool fullscreen)
 	gameplayInitialized = false;
 	gameInTutorial = false;
 	// Initialize fonts
-	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 28);
+	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 160);
 	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 16);
 }
 
@@ -209,12 +209,18 @@ void Game::renderMenu()
 	if (!gameInTutorial)
 	{
 		// Render game title
-		SDL_Rect fontDestRectangle;
-		fontDestRectangle.x = 0;
-		fontDestRectangle.y = 0;
-		fontDestRectangle.w = 600;
-		fontDestRectangle.h = 200;
-		TextureManager::DrawText(gameTitleFont, "TankKombat", TITLE_TEXT_COLOR, fontDestRectangle);
+		TextureManager::DrawText(gameTitleFont, "Tankombat", TITLE_TEXT_COLOR, 0, 100, true);
+
+		// Render the game title stars
+		SDL_Texture* titleStarsTexture = TextureManager::loadTexture(TITLE_STARS_TEXTURE_PATH.c_str());
+		SDL_Rect titleStarsSrcRect = { 0, 0, 430, 50 };
+		SDL_Rect titleStarsDestRect;
+		titleStarsDestRect.w = 800;
+		titleStarsDestRect.h = 100;
+		titleStarsDestRect.x = (SCREEN_WIDTH - titleStarsDestRect.w) / 2;
+		titleStarsDestRect.y = 250;
+		TextureManager::Draw(titleStarsTexture, titleStarsSrcRect, titleStarsDestRect);
+		SDL_DestroyTexture(titleStarsTexture);
 
 		// Render buttons
 		playButton.show();
@@ -233,20 +239,21 @@ void Game::renderMenu()
 
 void Game::renderBackground(std::string backgroundFilePath)
 {
-	SDL_Texture* menuBackground = TextureManager::loadTexture(backgroundFilePath.c_str());
-	SDL_Rect menuSourceRect;
-	SDL_Rect menuDestinationRect;
-	menuSourceRect.x = 0;
-	menuSourceRect.y = 0;
-	menuSourceRect.w = 320;
-	menuSourceRect.h = 320;
+	SDL_Texture* background = TextureManager::loadTexture(backgroundFilePath.c_str());
+	SDL_Rect sourceRect;
+	SDL_Rect destinationRect;
+	sourceRect.x = 0;
+	sourceRect.y = 0;
+	sourceRect.w = 320;
+	sourceRect.h = 320;
 
-	menuDestinationRect.x = 0;
-	menuDestinationRect.y = 0;
-	menuDestinationRect.w = SCREEN_WIDTH;
-	menuDestinationRect.h = SCREEN_HEIGHT;
+	destinationRect.x = 0;
+	destinationRect.y = 0;
+	destinationRect.w = SCREEN_WIDTH;
+	destinationRect.h = SCREEN_HEIGHT;
 
-	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
+	TextureManager::Draw(background, sourceRect, destinationRect);
+	SDL_DestroyTexture(background);
 }
 
 void Game::renderTutorialScreen()
@@ -267,7 +274,9 @@ void Game::renderTutorialScreen()
 	tutorialDestRect.y = (SCREEN_HEIGHT - tutorialDestRect.h) / 2;
 
 	TextureManager::Draw(tutorialTextbox, tutorialSrcRect, tutorialDestRect);
-	// Render the tutorial text
+	SDL_DestroyTexture(tutorialTextbox);
+
+	// Render the tutorial title text
 
 	// Setting each line's text
 	std::string tutorialTextPlayerOne = "Player 1 (Blue): Press X to shoot and move forward";
@@ -302,10 +311,10 @@ void Game::renderTutorialScreen()
 	playerFourTextDest.h = 200;
 
 	// Rendering the lines of text
-	TextureManager::DrawText(globalFont, tutorialTextPlayerOne, TUTORIAL_FONT_COLOR, playerOneTextDest);
-	TextureManager::DrawText(globalFont, tutorialTextPlayerTwo, TUTORIAL_FONT_COLOR, playerTwoTextDest);
-	TextureManager::DrawText(globalFont, tutorialTextPlayerThree, TUTORIAL_FONT_COLOR, playerThreeTextDest);
-	TextureManager::DrawText(globalFont, tutorialTextPlayerFour, TUTORIAL_FONT_COLOR, playerFourTextDest);
+	//TextureManager::DrawText(globalFont, tutorialTextPlayerOne, TUTORIAL_FONT_COLOR, playerOneTextDest);
+	//TextureManager::DrawText(globalFont, tutorialTextPlayerTwo, TUTORIAL_FONT_COLOR, playerTwoTextDest);
+	//TextureManager::DrawText(globalFont, tutorialTextPlayerThree, TUTORIAL_FONT_COLOR, playerThreeTextDest);
+	//TextureManager::DrawText(globalFont, tutorialTextPlayerFour, TUTORIAL_FONT_COLOR, playerFourTextDest);
 
 	// Render the tutorial menu buttons
 	tutorialBackButton.show();
@@ -328,6 +337,7 @@ void Game::renderPauseMenu()
 	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
 	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
 	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
+	SDL_DestroyTexture(menuTextbox);
 
 	// Render the pause menu buttons
 	resumeButton.show();
@@ -863,6 +873,7 @@ void Game::renderWonMenu()
 	destRect.x = (SCREEN_WIDTH - destRect.w) / 2;
 	destRect.y = (SCREEN_HEIGHT - destRect.h) / 2;
 	TextureManager::Draw(wonMenuTextbox, srcRect, destRect);
+	SDL_DestroyTexture(wonMenuTextbox);
 
 	// Render winning announcement
 	std::string winningTankID;
@@ -881,7 +892,7 @@ void Game::renderWonMenu()
 	announcementDestRectangle.h = 200;
 	announcementDestRectangle.x = (SCREEN_WIDTH - announcementDestRectangle.w) / 2;
 	announcementDestRectangle.y = 200;
-	TextureManager::DrawText(globalFont, winAnnouncement, ANNOUNCEMENT_TEXT_COLOR, announcementDestRectangle);
+	/*TextureManager::DrawText(globalFont, winAnnouncement, ANNOUNCEMENT_TEXT_COLOR, announcementDestRectangle);*/
 
 	// Render the won menu buttons
 	restartButton.show();

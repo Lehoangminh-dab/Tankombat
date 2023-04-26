@@ -1,6 +1,12 @@
 Make 2 folders: An official Folder and a Temp folder for you to manipulate shit
 Change Main Menu Music
 Add Encounter Theme to Gameplay
+Change Title:
+    Get battlefield 1949 Font  
+    Make the Line + Stars Picture. Then remove the background
+    Render the Picture and adjust till fit
+Change Menu Buttons:
+    Reposition the 3 buttons till fit
 ----------------------------------------------------------------------------------------------------
 Change SCREEN DIMENSIONS and make corresponding adjustments to the desert.map file for temporary
 testing
@@ -14,9 +20,3 @@ Make the Tilemap
     COMPILE - See if it manages to render
     COMPILE - SEE if it manages to check collision
     
-Change Title:
-    Get battlefield 1949 Font  
-    Make the Line + Stars Picture. Then remove the background
-    Render the Picture and adjust till fit
-Change Menu Buttons:
-    Reposition the 3 buttons till fit

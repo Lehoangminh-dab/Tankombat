@@ -1,4 +1,5 @@
 #include "TextureManager.hpp"
+#include "Constants.hpp"
 
 SDL_Texture* TextureManager::loadTexture(const char* textureFilePath)
 {
@@ -17,7 +18,7 @@ void TextureManager::Draw(SDL_Texture* texture, SDL_Rect sourceRectangle, SDL_Re
 	SDL_RenderCopy(Game::renderer, texture, &sourceRectangle, &destinationRectangle);
 }
 
-void TextureManager::DrawText(TTF_Font* font, std::string textureText, SDL_Color textColor, SDL_Rect destinationRectangle)
+void TextureManager::DrawText(TTF_Font* font, std::string textureText, SDL_Color textColor, int x, int y, bool centered)
 {
     //Render text surface
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText.c_str(), textColor);
@@ -49,5 +50,21 @@ void TextureManager::DrawText(TTF_Font* font, std::string textureText, SDL_Color
         //Get rid of old surface
         SDL_FreeSurface(textSurface);
     }
+
+    SDL_Rect destinationRectangle;
+    if (centered)
+    {
+        destinationRectangle.x = (SCREEN_WIDTH - sourceRectangle.w) / 2;
+    }
+    else
+    {
+        destinationRectangle.x = x;
+    }
+
+    destinationRectangle.y = y;
+    destinationRectangle.w = sourceRectangle.w;
+    destinationRectangle.h = sourceRectangle.h;
+
     Draw(textTexture, sourceRectangle, destinationRectangle);
+    SDL_DestroyTexture(textTexture);
 }

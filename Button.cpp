@@ -117,9 +117,9 @@ void Button::handle_events(SDL_Event event)
 
 void Button::show()
 {
-    //Show the button
     SDL_Texture* buttonTexture = TextureManager::loadTexture(texturePath.c_str());
     TextureManager::Draw(buttonTexture, *clip, box);
+    SDL_DestroyTexture(buttonTexture);
 }
 
 bool Button::isClicked()
