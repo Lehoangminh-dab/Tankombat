@@ -2,7 +2,8 @@
 #include <SDL.h>
 #include "SoundManager.hpp"
 
-const char* MAIN_MENU_SONG_PATH = "Assets/Sounds/Mortal Kombat Theme.mp3";
+const char* MAIN_MENU_SONG_PATH = "Assets/Sounds/Battlefield 1943 Theme.mp3";
+const char* GAMEPLAY_SONG_PATH = "Assets/Sounds/Encounter remix.mp3";
 const char* TANK_IDLE_SOUND_PATH = "Assets/Sounds/Engine Idle.ogg";
 const char* TANK_MOVING_SOUND_PATH = "Assets/Sounds/Engine Moving.ogg";
 const char* TANK_SHOOTING_SOUND_PATH = "Assets/Sounds/Tank Shooting.ogg";
@@ -22,6 +23,11 @@ void SoundManager::loadSounds()
 	if (mainMenuSong == NULL)
 	{
 		std::cout << "Failed to load main menu song! SDL_mixer Error: " << Mix_GetError() << std::endl;
+	}
+	gameplaySong = Mix_LoadMUS(GAMEPLAY_SONG_PATH);
+	if (gameplaySong == NULL)
+	{
+		std::cout << "Failed to load gameplay song! SDL_mixer Error: " << Mix_GetError() << std::endl;
 	}
 	tankIdleSound = Mix_LoadWAV(TANK_IDLE_SOUND_PATH);
 	if (tankIdleSound == NULL)
@@ -48,6 +54,11 @@ void SoundManager::loadSounds()
 void SoundManager::playMainMenuSong()
 {
 	Mix_PlayMusic(mainMenuSong, -1);
+}
+
+void SoundManager::playGameplaySong()
+{
+	Mix_PlayMusic(gameplaySong, -1);
 }
 
 void SoundManager::playTankIdleSound()

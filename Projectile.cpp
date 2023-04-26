@@ -4,6 +4,9 @@
 Projectile::Projectile(const char* textureSheetPath, std::string id, int xPos, int yPos, int width, int height, double speed, int rotationAngle)
 	: movingGameObject(textureSheetPath, id, xPos, yPos, width, height, speed, rotationAngle)
 {
+	// Initialize projectile's sound manager
+	soundManager.loadSounds();
+
 	collided = false;
 	detonationSoundPlayed = false;
 	detonationComplete = false;

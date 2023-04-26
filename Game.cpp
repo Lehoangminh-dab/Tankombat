@@ -42,7 +42,7 @@ TTF_Font* gameTitleFont = NULL;
 TTF_Font* globalFont = NULL;
 
 // Font colors
-const SDL_Color TITLE_TEXT_COLOR = { 247, 227, 5 };
+const SDL_Color TITLE_TEXT_COLOR = { 0, 0, 0 };
 const SDL_Color TUTORIAL_FONT_COLOR = { 0, 0 ,0 };
 const SDL_Color ANNOUNCEMENT_TEXT_COLOR = { 0, 0, 0 };
 
@@ -352,11 +352,15 @@ void Game::handlePauseMenuEvents(SDL_Event event)
 	else if (restartButton.isClicked())
 	{
 		restartGameplay();
+		// Stop gameplay music
+		Mix_HaltMusic();
 		restartButton.resetClickedState();
 	}
 	else if (quitButton.isClicked())
 	{
 		quitToMainMenu();
+		// Stop gameplay music
+		Mix_HaltMusic();
 		quitButton.resetClickedState();
 	}
 }
@@ -372,7 +376,7 @@ void Game::handleTutorialScreenEvents(SDL_Event event)
 	}
 }
 
-void Game::renderTutorialScreen()
+void Game::renderLoadingScreen()
 {
 
 }
@@ -389,6 +393,8 @@ void Game::initGameplay()
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
 	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
 
+	// Play gameplay music
+	soundManager.playGameplaySong();
 	// Reset flags
 	gameWon = false;
 	gameplayInitialized = true;
