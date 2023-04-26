@@ -15,6 +15,7 @@ int main(int argc, char* args[])
 	{         
 		if (game->isInMenu())
 		{
+			game->updateMenu();
 			game->handleMenuEvents();
 			game->renderMenu();
 		}

@@ -5,7 +5,7 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include "Button.hpp"
-
+#include "SoundManager.hpp"
 
 class Game
 {
@@ -14,18 +14,26 @@ public:
 	~Game();
 
 	void init(const char* title, bool fullscreen);
+	void clean(); 
+
 	void initGameplay();
-	bool isRunning();
-	bool isInMenu();
-	bool isPaused();
-	void handleMenuEvents();
-	void renderMenu();
 	void handleEvents();
 	void update();
 	void render();
-	void clean(); 
+
+	void handleMenuEvents();
+	void updateMenu();
+	void renderMenu();
+
+	void renderLoadingScreen();
+
+	bool isRunning();
+	bool isInMenu();
+	bool isPaused();
+
 	static SDL_Renderer* renderer;
 private:
+	SoundManager soundManager;
 	// Main menu buttons
 	Button playButton;
 
@@ -42,6 +50,9 @@ private:
 	bool gameplayInitialized;
 
 	SDL_Window* window;
+
+	// General menu functions
+	void renderBackground(std::string backgroundFilePath);
 
 	// Pause menu functions
 	void renderPauseMenu();

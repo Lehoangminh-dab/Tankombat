@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "SoundManager.hpp"
 
+const char* MAIN_MENU_SONG_PATH = "Assets/Sounds/Mortal Kombat Theme.mp3";
 const char* TANK_IDLE_SOUND_PATH = "Assets/Sounds/Engine Idle.ogg";
 const char* TANK_MOVING_SOUND_PATH = "Assets/Sounds/Engine Moving.ogg";
 const char* TANK_SHOOTING_SOUND_PATH = "Assets/Sounds/Tank Shooting.ogg";
@@ -9,6 +10,19 @@ const char* PROJECTILE_EXPLOSION_SOUND_PATH = "Assets/Sounds/Projectile Explosio
 
 SoundManager::SoundManager()
 {
+}
+
+SoundManager::~SoundManager()
+{
+}
+
+void SoundManager::loadSounds()
+{
+	mainMenuSong = Mix_LoadMUS(MAIN_MENU_SONG_PATH);
+	if (mainMenuSong == NULL)
+	{
+		std::cout << "Failed to load main menu song! SDL_mixer Error: " << Mix_GetError() << std::endl;
+	}
 	tankIdleSound = Mix_LoadWAV(TANK_IDLE_SOUND_PATH);
 	if (tankIdleSound == NULL)
 	{
@@ -31,8 +45,9 @@ SoundManager::SoundManager()
 	}
 }
 
-SoundManager::~SoundManager()
+void SoundManager::playMainMenuSong()
 {
+	Mix_PlayMusic(mainMenuSong, -1);
 }
 
 void SoundManager::playTankIdleSound()

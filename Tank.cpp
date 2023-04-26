@@ -21,6 +21,8 @@ Tank::Tank(const char* objectTextureSheet, std::string id, int xStartingPosition
 	isMoving = false;
 	bulletShot = false;
 	isDestroyed = false;
+
+	soundManager.loadSounds();
 }
 
 Tank::~Tank()

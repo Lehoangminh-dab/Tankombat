@@ -88,6 +88,7 @@ void Game::init(const char* title, bool fullscreen)
 		{
 			SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
 		}
+
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		{
 			std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " <<  Mix_GetError() << std::endl;
@@ -106,6 +107,7 @@ void Game::init(const char* title, bool fullscreen)
 		gameRunning = false;
 	}
 
+	soundManager.loadSounds();
 	// Initialize game flags
 	gameInMenu = true;
 	gamePaused = false;
@@ -158,6 +160,7 @@ void Game::handleMenuEvents()
 	if (playButton.isClicked())
 	{
 		gameInMenu = false;
+		Mix_HaltMusic();
 		playButton.resetClickedState();
 	}
 
@@ -171,24 +174,22 @@ void Game::handleMenuEvents()
 	}
 }
 
+void Game::updateMenu()
+{
+	// Play menu theme
+	if (Mix_PlayingMusic() == 0)
+	{
+		soundManager.playMainMenuSong();
+		std::cout << "Music Played!" << std::endl;
+	}
+}
+
 void Game::renderMenu()
 {
 	SDL_RenderClear(renderer);
+
 	// Render Menu Background
-	SDL_Texture* menuBackground = TextureManager::loadTexture(MENU_BACKGROUND_PATH.c_str());
-	SDL_Rect menuSourceRect;
-	SDL_Rect menuDestinationRect;
-	menuSourceRect.x = 0;
-	menuSourceRect.y = 0;
-	menuSourceRect.w = 320;
-	menuSourceRect.h = 320;
-
-	menuDestinationRect.x = 0;
-	menuDestinationRect.y = 0;
-	menuDestinationRect.w = SCREEN_WIDTH;
-	menuDestinationRect.h = SCREEN_HEIGHT;
-
-	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
+	renderBackground(MENU_BACKGROUND_PATH);
 
 	// Render buttons
 	playButton.show();
@@ -204,6 +205,11 @@ void Game::renderMenu()
 
 	// Presenting all the textures
 	SDL_RenderPresent(renderer);
+}
+
+void Game::renderLoadingScreen()
+{
+	
 }
 
 void Game::handleEvents()
@@ -623,6 +629,24 @@ void cleanGameplayResources()
 	{
 		delete tiles[tileCnt];
 	}
+}
+
+void Game::renderBackground(std::string backgroundFilePath)
+{
+	SDL_Texture* menuBackground = TextureManager::loadTexture(backgroundFilePath.c_str());
+	SDL_Rect menuSourceRect;
+	SDL_Rect menuDestinationRect;
+	menuSourceRect.x = 0;
+	menuSourceRect.y = 0;
+	menuSourceRect.w = 320;
+	menuSourceRect.h = 320;
+
+	menuDestinationRect.x = 0;
+	menuDestinationRect.y = 0;
+	menuDestinationRect.w = SCREEN_WIDTH;
+	menuDestinationRect.h = SCREEN_HEIGHT;
+
+	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
 }
 
 void Game::renderPauseMenu()

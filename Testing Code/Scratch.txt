@@ -27,7 +27,6 @@ Tilemap FUNCTIONALITY:
 
 Add Game Title
 Make the Game Pause when ESC key is pressed
------------------------------------------------------------------------------------------------------
 
 Make Pause screen
     Get basic background asset to display text on 
@@ -38,8 +37,9 @@ Make Pause screen
         Quit
     Render Pause Buttons
     Handle Pause Events   
-
 Add Game Music
+-----------------------------------------------------------------------------------------------------
+Add loading screen
 
 Fix Collision
     Tanks and Tanks' collision
@@ -50,9 +50,6 @@ Make Game Winning State
     Render textbox so that it fits the already existing restart and quit buttons
     Display "PLAYER...WINS" (Based on the tanks' ID)
     Render the restart and quit buttons
-
-Add loading screen
-
 
 Add Game Tutorial
     Add tutorialButton
