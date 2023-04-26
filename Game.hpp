@@ -25,7 +25,6 @@ public:
 	void updateMenu();
 	void renderMenu();
 
-	void renderLoadingScreen();
 
 	bool isRunning();
 	bool isInMenu();
@@ -39,6 +38,9 @@ private:
 	Button tutorialButton;
 	Button tutorialBackButton;
 	Button exitButton;
+
+	// Loading Screen Flags
+	int loadingScreenFrame;
 
 	// Pause menu buttons
 	Button resumeButton;
@@ -64,6 +66,9 @@ private:
 
 	void renderTutorialScreen();
 	void handleTutorialScreenEvents(SDL_Event event);
+
+	// Loading screen functions
+	void renderLoadingScreen();
 
 	// Pause menu functions
 	void renderPauseMenu();

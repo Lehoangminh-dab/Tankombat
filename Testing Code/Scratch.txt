@@ -48,6 +48,12 @@ Add Exit Button
     Add button to Game
     Initialize, render, handleMenuEvents
     COMPILE - See if you can exit the game
+Add Game Tutorial
+    Add tutorialButton
+    Initialize, render, handleMenuEvents (test this with std::cout)
+    COMPILE - See if everything works
+    Add renderTutorialScreen
+    Add backButton
 -----------------------------------------------------------------------------------------------------
 Add loading screen
     
@@ -55,13 +61,6 @@ Fix Collision
     Tanks and Tanks' collision
     Fix unstable tank collision with tilemaps
 
-
-Add Game Tutorial
-    Add tutorialButton
-    Initialize, render, handleMenuEvents (test this with std::cout)
-    COMPILE - See if everything works
-    Add renderTutorialScreen
-    Add backButton
 
 
 Assets Making

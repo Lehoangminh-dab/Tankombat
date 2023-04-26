@@ -135,6 +135,7 @@ void Game::init(const char* title, bool fullscreen)
 
 	soundManager.loadSounds();
 	// Initialize game flags
+	loadingScreenFrame = 0;
 	gameInMenu = true;
 	gamePaused = false;
 	gameplayInitialized = false;
@@ -229,6 +230,7 @@ void Game::renderMenu()
 	// Presenting all the textures
 	SDL_RenderPresent(renderer);
 }
+
 void Game::renderBackground(std::string backgroundFilePath)
 {
 	SDL_Texture* menuBackground = TextureManager::loadTexture(backgroundFilePath.c_str());
@@ -368,6 +370,11 @@ void Game::handleTutorialScreenEvents(SDL_Event event)
 		gameInTutorial = false;
 		tutorialBackButton.resetClickedState();
 	}
+}
+
+void Game::renderTutorialScreen()
+{
+
 }
 
 void Game::initGameplay()
@@ -619,8 +626,6 @@ void updateCollision()
 	}
 }
 
-
-
 bool checkCollision(SDL_Rect a, SDL_Rect b)
 {
 	//The sides of the rectangles
@@ -664,8 +669,6 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	//If none of the sides from A are outside B
 	return true;
 }
-
-
 
 void handleObjectsCollision(Tank* a, Tank* b)
 {
