@@ -33,7 +33,7 @@ const std::string WON_MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
 const int WON_MENU_TEXTBOX_WIDTH = 600;
 const int WON_MENU_TEXTBOX_HEIGHT = 600;
 
-const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
+const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Tutorial Textbox.png";
 const int TUTORIAL_TEXTBOX_WIDTH = 600;
 const int TUTORIAL_TEXTBOX_HEIGHT = 600;
 
