@@ -31,6 +31,7 @@ private:
 
 	// Pause menu buttons
 	Button resumeButton;
+	Button restartButton;
 	Button quitButton;
 
 	// Game state flags
@@ -40,11 +41,12 @@ private:
 	bool gameWon;
 	bool gameplayInitialized;
 
-
 	SDL_Window* window;
 
 	// Pause menu functions
 	void renderPauseMenu();
 	void handlePauseMenuEvents(SDL_Event event);
+	void resumeGameplay();
+	void restartGameplay();
 	void quitToMainMenu();
 };

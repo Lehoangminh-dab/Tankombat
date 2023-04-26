@@ -14,6 +14,8 @@ bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of 
 const std::string PLAY_BUTTON_PATH = "Assets/Menu/PlayButton.png";
 const std::string RESUME_BUTTON_PATH = "Assets/Menu/ResumeButton.png";
 const std::string QUIT_BUTTON_PATH = "Assets/Menu/QuitButton.png";
+const std::string RESTART_BUTTON_PATH = "Assets/Menu/RestartButton.png";
+
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
 const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
@@ -55,7 +57,8 @@ void cleanGameplayResources();
 Game::Game()
 	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH),
 	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH),
-	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH)
+	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH),
+	restartButton(600, 500, BUTTON_WIDTH, BUTTON_HEIGHT, RESTART_BUTTON_PATH)
 {
 }
 
@@ -222,6 +225,7 @@ void Game::handleEvents()
 	{
 		handlePauseMenuEvents(event);
 	}
+
 	else
 	{
 		switch (event.type)
@@ -597,52 +601,6 @@ void executeKeyLifted(Tank* tank)
 
 void cleanGameplayResources()
 {
-}
-
-void Game::renderPauseMenu()
-{
-	// Render the menu background
-	SDL_Texture* menuTextbox = TextureManager::loadTexture(MENU_TEXTBOX_PATH.c_str());
-
-	SDL_Rect menuSrcRect;
-	menuSrcRect.x = 0;
-	menuSrcRect.y = 0;
-	menuSrcRect.w = MENU_TEXTBOX_WIDTH;
-	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
-
-	SDL_Rect menuDestRect;
-	menuDestRect.w = 600; // Text box rendering sizes
-	menuDestRect.h = 600;
-	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
-	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
-	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
-
-	// Render the pause menu buttons
-	resumeButton.show();
-	quitButton.show();
-}
-
-void Game::handlePauseMenuEvents(SDL_Event event)
-{
-	// Check which button is clicked
-	resumeButton.handle_events(event);
-	quitButton.handle_events(event);
-
-	// Execute corresponding clicked actions
-	if (resumeButton.isClicked())
-	{
-		gamePaused = false;
-		resumeButton.resetClickedState();
-	}
-	if (quitButton.isClicked())
-	{
-		quitToMainMenu();
-		quitButton.resetClickedState();
-	}
-}
-
-void Game::quitToMainMenu()
-{
 	// Clear all gameplay objects
 	for (int tankCnt = activeTanks.size() - 1; tankCnt >= 0; tankCnt--) // Clear all tank objects
 	{
@@ -665,8 +623,76 @@ void Game::quitToMainMenu()
 	{
 		delete tiles[tileCnt];
 	}
+}
+
+void Game::renderPauseMenu()
+{
+	// Render the menu background
+	SDL_Texture* menuTextbox = TextureManager::loadTexture(MENU_TEXTBOX_PATH.c_str());
+
+	SDL_Rect menuSrcRect;
+	menuSrcRect.x = 0;
+	menuSrcRect.y = 0;
+	menuSrcRect.w = MENU_TEXTBOX_WIDTH;
+	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
+
+	SDL_Rect menuDestRect;
+	menuDestRect.w = 600; // Text box rendering sizes
+	menuDestRect.h = 600;
+	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
+	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
+	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
+
+	// Render the pause menu buttons
+	resumeButton.show();
+	restartButton.show();
+	quitButton.show();
+}
+
+void Game::handlePauseMenuEvents(SDL_Event event)
+{
+	// Check which button is clicked
+	resumeButton.handle_events(event);
+	restartButton.handle_events(event);
+	quitButton.handle_events(event);
+
+
+	// Execute corresponding clicked actions
+	if (resumeButton.isClicked())
+	{
+		resumeGameplay();
+		resumeButton.resetClickedState();
+	}
+	else if (restartButton.isClicked())
+	{
+		restartGameplay();
+		restartButton.resetClickedState();
+	}
+	else if (quitButton.isClicked())
+	{
+		quitToMainMenu();
+		quitButton.resetClickedState();
+	}
+}
+
+void Game::resumeGameplay()
+{
+	gamePaused = false;
+}
+
+void Game::restartGameplay()
+{
+	cleanGameplayResources();
+	gameplayInitialized = false;
+	gamePaused = false;
+}
+
+void Game::quitToMainMenu()
+{
+	cleanGameplayResources();
 	// Reset flags
 	gameInMenu = true; // Set game to in menu
 	gameplayInitialized = false; // Reset gameplay initialization state
 	gamePaused = false; // Reset game in pause menu state
 }
+
