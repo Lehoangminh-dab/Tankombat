@@ -18,9 +18,15 @@ const std::string RESTART_BUTTON_PATH = "Assets/Menu/RestartButton.png";
 
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
+
 const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
 const int MENU_TEXTBOX_WIDTH = 600;
 const int MENU_TEXTBOX_HEIGHT = 600;
+
+const std::string WON_MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
+const int WON_MENU_TEXTBOX_WIDTH = 600;
+const int WON_MENU_TEXTBOX_HEIGHT = 600;
+
 // Fonts
 TTF_Font* gFont = NULL;
 
@@ -253,7 +259,6 @@ void Game::handleEvents()
 			{
 				gamePaused = true;
 			}
-		
 			break;
 		case SDL_KEYUP:
 			for (int playerCnt = 0; playerCnt < NUM_OF_PLAYERS; playerCnt++)
@@ -332,6 +337,10 @@ void Game::render()
 		if (gamePaused)
 		{
 			renderPauseMenu();
+		}
+		else if (gameWon)
+		{
+			renderWonMenu();
 		}
 	}
 
@@ -651,7 +660,7 @@ void Game::renderBackground(std::string backgroundFilePath)
 
 void Game::renderPauseMenu()
 {
-	// Render the menu background
+	// Render the pause menu textbox
 	SDL_Texture* menuTextbox = TextureManager::loadTexture(MENU_TEXTBOX_PATH.c_str());
 
 	SDL_Rect menuSrcRect;
@@ -720,3 +729,21 @@ void Game::quitToMainMenu()
 	gamePaused = false; // Reset game in pause menu state
 }
 
+
+void Game::renderWonMenu()
+{
+	// Render the winning menu background
+	SDL_Texture* wonMenuTextbox = TextureManager::loadTexture(WON_MENU_TEXTBOX_PATH.c_str());
+	SDL_Rect srcRect;
+	srcRect.x = 0;
+	srcRect.y = 0;
+	srcRect.w = WON_MENU_TEXTBOX_WIDTH;
+	srcRect.h = WON_MENU_TEXTBOX_HEIGHT;
+
+	SDL_Rect destRect;
+	destRect.w = 600; // Text box rendering sizes
+	destRect.h = 600;
+	destRect.x = (SCREEN_WIDTH - destRect.w) / 2;
+	destRect.y = (SCREEN_HEIGHT - destRect.h) / 2;
+	TextureManager::Draw(wonMenuTextbox, srcRect, destRect);
+}

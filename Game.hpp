@@ -60,4 +60,8 @@ private:
 	void resumeGameplay();
 	void restartGameplay();
 	void quitToMainMenu();
+
+	// Winning menu functions
+	void renderWonMenu();
+	void handleWonMenuEvents(SDL_Event event);
 };
