@@ -33,7 +33,7 @@ static const char* DESERT_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 static const int NUM_OF_PLAYERS = 4;
 
 // Control constants
-static const int PLAYER_KEYS[4] = { SDLK_x, SDLK_RSHIFT, SDLK_1, SDLK_BACKSPACE };
+static const int PLAYER_KEYS[4] = { SDLK_x, SDLK_RSHIFT, SDLK_TAB, SDLK_BACKSPACE };
 
 // Menu background constants
 static const SDL_Rect menuBackgroundSourceRect;

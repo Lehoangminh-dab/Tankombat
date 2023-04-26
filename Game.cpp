@@ -42,9 +42,9 @@ TTF_Font* gameTitleFont = NULL;
 TTF_Font* globalFont = NULL;
 
 // Font colors
-const SDL_Color titleTextColor = { 247, 227, 5 };
-const SDL_Color tutorialFontColor = { 0, 0 ,0 };
-const SDL_Color announcementTextColor = { 0, 0, 0 };
+const SDL_Color TITLE_TEXT_COLOR = { 247, 227, 5 };
+const SDL_Color TUTORIAL_FONT_COLOR = { 0, 0 ,0 };
+const SDL_Color ANNOUNCEMENT_TEXT_COLOR = { 0, 0, 0 };
 
 // Object storers
 std::vector<Tank*> activeTanks;
@@ -213,7 +213,7 @@ void Game::renderMenu()
 		fontDestRectangle.y = 0;
 		fontDestRectangle.w = 600;
 		fontDestRectangle.h = 200;
-		TextureManager::DrawText(gameTitleFont, "TankKombat", titleTextColor, fontDestRectangle);
+		TextureManager::DrawText(gameTitleFont, "TankKombat", TITLE_TEXT_COLOR, fontDestRectangle);
 
 		// Render buttons
 		playButton.show();
@@ -259,12 +259,51 @@ void Game::renderTutorialScreen()
 	tutorialSrcRect.h = TUTORIAL_TEXTBOX_HEIGHT;
 
 	SDL_Rect tutorialDestRect;
-	tutorialDestRect.w = 600; // Text box rendering sizes
+	tutorialDestRect.w = SCREEN_WIDTH; // Text box rendering sizes
 	tutorialDestRect.h = 600;
 	tutorialDestRect.x = (SCREEN_WIDTH - tutorialDestRect.w) / 2;
 	tutorialDestRect.y = (SCREEN_HEIGHT - tutorialDestRect.h) / 2;
 
 	TextureManager::Draw(tutorialTextbox, tutorialSrcRect, tutorialDestRect);
+	// Render the tutorial text
+
+	// Setting each line's text
+	std::string tutorialTextPlayerOne = "Player 1 (Blue): Press X to shoot and move forward";
+	std::string tutorialTextPlayerTwo = "Player 2 (Red): Press RIGHT SHIFT to shoot and move forward";
+	std::string tutorialTextPlayerThree = "Player 3 (Gray): Press LEFT TAB to shoot and move forward";
+	std::string tutorialTextPlayerFour = "Player 4 (Green): Press BACKSPACE to shoot and move forward";
+
+	// Determining each line's coordinates
+	SDL_Rect playerOneTextDest;
+	SDL_Rect playerTwoTextDest;
+	SDL_Rect playerThreeTextDest;
+	SDL_Rect playerFourTextDest;
+
+	playerOneTextDest.x = tutorialDestRect.x + 50;
+	playerOneTextDest.y = tutorialDestRect.y + 200;
+	playerOneTextDest.w = tutorialDestRect.w - 100;
+	playerOneTextDest.h = 200;
+
+	playerTwoTextDest.x = tutorialDestRect.x + 50;
+	playerTwoTextDest.y = tutorialDestRect.y + 300;
+	playerTwoTextDest.w = tutorialDestRect.w - 100;
+	playerTwoTextDest.h = 200;
+
+	playerThreeTextDest.x = tutorialDestRect.x + 50;
+	playerThreeTextDest.y = tutorialDestRect.y + 400;
+	playerThreeTextDest.w = tutorialDestRect.w - 100;
+	playerThreeTextDest.h = 200;
+
+	playerFourTextDest.x = tutorialDestRect.x + 50;
+	playerFourTextDest.y = tutorialDestRect.y + 500;
+	playerFourTextDest.w = tutorialDestRect.w - 100;
+	playerFourTextDest.h = 200;
+
+	// Rendering the lines of text
+	TextureManager::DrawText(globalFont, tutorialTextPlayerOne, TUTORIAL_FONT_COLOR, playerOneTextDest);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerTwo, TUTORIAL_FONT_COLOR, playerTwoTextDest);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerThree, TUTORIAL_FONT_COLOR, playerThreeTextDest);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerFour, TUTORIAL_FONT_COLOR, playerFourTextDest);
 
 	// Render the tutorial menu buttons
 	tutorialBackButton.show();
@@ -833,7 +872,7 @@ void Game::renderWonMenu()
 	announcementDestRectangle.h = 200;
 	announcementDestRectangle.x = (SCREEN_WIDTH - announcementDestRectangle.w) / 2;
 	announcementDestRectangle.y = 200;
-	TextureManager::DrawText(globalFont, winAnnouncement, announcementTextColor, announcementDestRectangle);
+	TextureManager::DrawText(globalFont, winAnnouncement, ANNOUNCEMENT_TEXT_COLOR, announcementDestRectangle);
 
 	// Render the won menu buttons
 	restartButton.show();
