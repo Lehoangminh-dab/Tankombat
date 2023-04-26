@@ -51,6 +51,9 @@ Make Game Winning State
     Display "PLAYER...WINS" (Based on the tanks' ID)
     Render the restart and quit buttons
 
+Add loading screen
+
+
 Add Game Tutorial
     Add tutorialButton
     Initialize, render, handleMenuEvents (test this with std::cout)
