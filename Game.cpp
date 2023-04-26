@@ -15,6 +15,10 @@ const std::string PLAY_BUTTON_PATH = "Assets/Menu/PlayButton.png";
 const std::string RESUME_BUTTON_PATH = "Assets/Menu/ResumeButton.png";
 const std::string QUIT_BUTTON_PATH = "Assets/Menu/QuitButton.png";
 const std::string RESTART_BUTTON_PATH = "Assets/Menu/RestartButton.png";
+const std::string TUTORIAL_BUTTON_PATH = "Assets/Menu/TutorialButton.png";
+const std::string TUTORIAL_BACK_BUTTON_PATH = "Assets/Menu/TutorialBackButton.png";
+const std::string EXIT_BUTTON_PATH = "Assets/Menu/ExitButton.png";
+
 
 const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
 
@@ -29,9 +33,18 @@ const std::string WON_MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
 const int WON_MENU_TEXTBOX_WIDTH = 600;
 const int WON_MENU_TEXTBOX_HEIGHT = 600;
 
+const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
+const int TUTORIAL_TEXTBOX_WIDTH = 600;
+const int TUTORIAL_TEXTBOX_HEIGHT = 600;
+
 // Fonts
 TTF_Font* gameTitleFont = NULL;
 TTF_Font* globalFont = NULL;
+
+// Font colors
+const SDL_Color titleTextColor = { 247, 227, 5 };
+const SDL_Color tutorialFontColor = { 0, 0 ,0 };
+const SDL_Color announcementTextColor = { 0, 0, 0 };
 
 // Object storers
 std::vector<Tank*> activeTanks;
@@ -64,10 +77,14 @@ void cleanGameplayResources();
 
 // Button IDs
 Game::Game()
-	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH),
-	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH),
-	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH),
-	restartButton(600, 500, BUTTON_WIDTH, BUTTON_HEIGHT, RESTART_BUTTON_PATH)
+	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH, true),
+	tutorialButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
+	tutorialBackButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BACK_BUTTON_PATH, false),
+	exitButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, 700, BUTTON_WIDTH, BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
+	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
+	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
+	restartButton(600, 500, BUTTON_WIDTH, BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
+
 {
 }
 
@@ -121,59 +138,45 @@ void Game::init(const char* title, bool fullscreen)
 	gameInMenu = true;
 	gamePaused = false;
 	gameplayInitialized = false;
+	gameInTutorial = false;
 	// Initialize fonts
 	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 28);
 	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 16);
-}
-
-void Game::initGameplay()
-{
-	if (gameplayInitialized)
-	{
-		return;
-	}
-	map = new Map(tiles);
-	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 100, 300));
-	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
-	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
-	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
-
-	// Reset flags
-	gameWon = false;
-	gameplayInitialized = true;
-	// Confirmation to console
-	std::cout << "Gameplay Initialized!" << std::endl;
-}
-
-
-bool Game::isRunning()
-{
-	return gameRunning;
-}
-
-bool Game::isInMenu()
-{
-	return gameInMenu;
-}
-
-bool Game::isPaused()
-{
-	return gamePaused;
 }
 
 void Game::handleMenuEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	playButton.handle_events(event);
 
-	if (playButton.isClicked())
+	if (!gameInTutorial)
 	{
-		gameInMenu = false;
-		Mix_HaltMusic();
-		playButton.resetClickedState();
-	}
+		playButton.handle_events(event);
+		tutorialButton.handle_events(event);
+		exitButton.handle_events(event);
 
+		if (playButton.isClicked())
+		{
+			gameInMenu = false;
+			Mix_HaltMusic();
+			playButton.resetClickedState();
+		}
+		else if (tutorialButton.isClicked())
+		{
+			renderTutorialScreen();
+			gameInTutorial = true;
+			tutorialButton.resetClickedState();
+		}
+		else if (exitButton.isClicked())
+		{
+			gameRunning = false;
+		}
+	}
+	else
+	{
+		handleTutorialScreenEvents(event);
+	}
+	// Handle X button
 	switch (event.type)
 	{
 	case SDL_QUIT:
@@ -200,26 +203,151 @@ void Game::renderMenu()
 
 	// Render Menu Background
 	renderBackground(MENU_BACKGROUND_PATH);
+	
+	// Render main menu screen
+	if (!gameInTutorial)
+	{
+		// Render game title
+		SDL_Rect fontDestRectangle;
+		fontDestRectangle.x = 0;
+		fontDestRectangle.y = 0;
+		fontDestRectangle.w = 600;
+		fontDestRectangle.h = 200;
+		TextureManager::DrawText(gameTitleFont, "TankKombat", titleTextColor, fontDestRectangle);
 
-	// Render buttons
-	playButton.show();
-
-	// Render game title
-	SDL_Rect fontDestRectangle;
-	fontDestRectangle.x = 0;
-	fontDestRectangle.y = 0;
-	fontDestRectangle.w = 600;
-	fontDestRectangle.h = 200;
-	SDL_Color titleTextColor = { 247, 227, 5 };
-	TextureManager::DrawText(gameTitleFont, "TankKombat", titleTextColor, fontDestRectangle);
-
+		// Render buttons
+		playButton.show();
+		tutorialButton.show();
+		exitButton.show();
+	}
+	// Render tutorial screen
+	else
+	{
+		renderTutorialScreen();
+	}
+	
 	// Presenting all the textures
 	SDL_RenderPresent(renderer);
 }
-
-void Game::renderLoadingScreen()
+void Game::renderBackground(std::string backgroundFilePath)
 {
-	
+	SDL_Texture* menuBackground = TextureManager::loadTexture(backgroundFilePath.c_str());
+	SDL_Rect menuSourceRect;
+	SDL_Rect menuDestinationRect;
+	menuSourceRect.x = 0;
+	menuSourceRect.y = 0;
+	menuSourceRect.w = 320;
+	menuSourceRect.h = 320;
+
+	menuDestinationRect.x = 0;
+	menuDestinationRect.y = 0;
+	menuDestinationRect.w = SCREEN_WIDTH;
+	menuDestinationRect.h = SCREEN_HEIGHT;
+
+	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
+}
+
+void Game::renderTutorialScreen()
+{
+	// Render text box
+	SDL_Texture* tutorialTextbox = TextureManager::loadTexture(TUTORIAL_TEXTBOX_PATH.c_str());
+
+	SDL_Rect tutorialSrcRect;
+	tutorialSrcRect.x = 0;
+	tutorialSrcRect.y = 0;
+	tutorialSrcRect.w = TUTORIAL_TEXTBOX_WIDTH;
+	tutorialSrcRect.h = TUTORIAL_TEXTBOX_HEIGHT;
+
+	SDL_Rect tutorialDestRect;
+	tutorialDestRect.w = 600; // Text box rendering sizes
+	tutorialDestRect.h = 600;
+	tutorialDestRect.x = (SCREEN_WIDTH - tutorialDestRect.w) / 2;
+	tutorialDestRect.y = (SCREEN_HEIGHT - tutorialDestRect.h) / 2;
+
+	TextureManager::Draw(tutorialTextbox, tutorialSrcRect, tutorialDestRect);
+
+	// Render the tutorial menu buttons
+	tutorialBackButton.show();
+}
+
+void Game::renderPauseMenu()
+{
+	// Render the pause menu textbox
+	SDL_Texture* menuTextbox = TextureManager::loadTexture(MENU_TEXTBOX_PATH.c_str());
+
+	SDL_Rect menuSrcRect;
+	menuSrcRect.x = 0;
+	menuSrcRect.y = 0;
+	menuSrcRect.w = MENU_TEXTBOX_WIDTH;
+	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
+
+	SDL_Rect menuDestRect;
+	menuDestRect.w = 600; // Text box rendering sizes
+	menuDestRect.h = 600;
+	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
+	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
+	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
+
+	// Render the pause menu buttons
+	resumeButton.show();
+	restartButton.show();
+	quitButton.show();
+}
+
+void Game::handlePauseMenuEvents(SDL_Event event)
+{
+	// Check which button is clicked
+	resumeButton.handle_events(event);
+	restartButton.handle_events(event);
+	quitButton.handle_events(event);
+
+
+	// Execute corresponding clicked actions
+	if (resumeButton.isClicked())
+	{
+		resumeGameplay();
+		resumeButton.resetClickedState();
+	}
+	else if (restartButton.isClicked())
+	{
+		restartGameplay();
+		restartButton.resetClickedState();
+	}
+	else if (quitButton.isClicked())
+	{
+		quitToMainMenu();
+		quitButton.resetClickedState();
+	}
+}
+
+void Game::handleTutorialScreenEvents(SDL_Event event)
+{
+	tutorialBackButton.handle_events(event);
+	if (tutorialBackButton.isClicked())
+	{
+		std::cout << "Tutorial back button pressed! " << std::endl;
+		gameInTutorial = false;
+		tutorialBackButton.resetClickedState();
+	}
+}
+
+void Game::initGameplay()
+{
+	if (gameplayInitialized)
+	{
+		return;
+	}
+	map = new Map(tiles);
+	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 100, 300));
+	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
+	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
+	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
+
+	// Reset flags
+	gameWon = false;
+	gameplayInitialized = true;
+	// Confirmation to console
+	std::cout << "Gameplay Initialized!" << std::endl;
 }
 
 void Game::handleEvents()
@@ -648,73 +776,6 @@ void cleanGameplayResources()
 	}
 }
 
-void Game::renderBackground(std::string backgroundFilePath)
-{
-	SDL_Texture* menuBackground = TextureManager::loadTexture(backgroundFilePath.c_str());
-	SDL_Rect menuSourceRect;
-	SDL_Rect menuDestinationRect;
-	menuSourceRect.x = 0;
-	menuSourceRect.y = 0;
-	menuSourceRect.w = 320;
-	menuSourceRect.h = 320;
-
-	menuDestinationRect.x = 0;
-	menuDestinationRect.y = 0;
-	menuDestinationRect.w = SCREEN_WIDTH;
-	menuDestinationRect.h = SCREEN_HEIGHT;
-
-	TextureManager::Draw(menuBackground, menuSourceRect, menuDestinationRect);
-}
-
-void Game::renderPauseMenu()
-{
-	// Render the pause menu textbox
-	SDL_Texture* menuTextbox = TextureManager::loadTexture(MENU_TEXTBOX_PATH.c_str());
-
-	SDL_Rect menuSrcRect;
-	menuSrcRect.x = 0;
-	menuSrcRect.y = 0;
-	menuSrcRect.w = MENU_TEXTBOX_WIDTH;
-	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
-
-	SDL_Rect menuDestRect;
-	menuDestRect.w = 600; // Text box rendering sizes
-	menuDestRect.h = 600;
-	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
-	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
-	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
-
-	// Render the pause menu buttons
-	resumeButton.show();
-	restartButton.show();
-	quitButton.show();
-}
-
-void Game::handlePauseMenuEvents(SDL_Event event)
-{
-	// Check which button is clicked
-	resumeButton.handle_events(event);
-	restartButton.handle_events(event);
-	quitButton.handle_events(event);
-
-
-	// Execute corresponding clicked actions
-	if (resumeButton.isClicked())
-	{
-		resumeGameplay();
-		resumeButton.resetClickedState();
-	}
-	else if (restartButton.isClicked())
-	{
-		restartGameplay();
-		restartButton.resetClickedState();
-	}
-	else if (quitButton.isClicked())
-	{
-		quitToMainMenu();
-		quitButton.resetClickedState();
-	}
-}
 
 void Game::resumeGameplay()
 {
@@ -772,7 +833,6 @@ void Game::renderWonMenu()
 	announcementDestRectangle.h = 200;
 	announcementDestRectangle.x = (SCREEN_WIDTH - announcementDestRectangle.w) / 2;
 	announcementDestRectangle.y = 200;
-	SDL_Color announcementTextColor = { 0, 0, 0 };
 	TextureManager::DrawText(globalFont, winAnnouncement, announcementTextColor, announcementDestRectangle);
 
 	// Render the won menu buttons
@@ -795,4 +855,20 @@ void Game::handleWonMenuEvents(SDL_Event event)
 		quitToMainMenu();
 		quitButton.resetClickedState();
 	}
+}
+
+// Flag Getters
+bool Game::isRunning()
+{
+	return gameRunning;
+}
+
+bool Game::isInMenu()
+{
+	return gameInMenu;
+}
+
+bool Game::isPaused()
+{
+	return gamePaused;
 }

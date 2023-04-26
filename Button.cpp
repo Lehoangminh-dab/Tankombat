@@ -3,30 +3,50 @@
 
 const int CLIP_MOUSEOUT = 0;
 const int CLIP_MOUSEOVER = 1;
-SDL_Rect clips[2];
+SDL_Rect largeButtonClips[2];
+SDL_Rect smallButtonClips[2];
 
-Button::Button(int x, int y, int w, int h, std::string buttonTexturePath)
+Button::Button(int x, int y, int w, int h, std::string buttonTexturePath, bool isLargeButton)
 {
-    // Test: Set clips 
-    clips[CLIP_MOUSEOUT].x = 0;
-    clips[CLIP_MOUSEOUT].y = 0;
-    clips[CLIP_MOUSEOUT].w = 600;
-    clips[CLIP_MOUSEOUT].h = 200;
+    // Set clips 
+    largeButtonClips[CLIP_MOUSEOUT].x = 0;
+    largeButtonClips[CLIP_MOUSEOUT].y = 0;
+    largeButtonClips[CLIP_MOUSEOUT].w = 600;
+    largeButtonClips[CLIP_MOUSEOUT].h = 200;
 
-    clips[CLIP_MOUSEOVER].x = 600;
-    clips[CLIP_MOUSEOVER].y = 0;
-    clips[CLIP_MOUSEOVER].w = 600;
-    clips[CLIP_MOUSEOVER].h = 200;
+    largeButtonClips[CLIP_MOUSEOVER].x = 600;
+    largeButtonClips[CLIP_MOUSEOVER].y = 0;
+    largeButtonClips[CLIP_MOUSEOVER].w = 600;
+    largeButtonClips[CLIP_MOUSEOVER].h = 200;
+
+    smallButtonClips[CLIP_MOUSEOUT].x = 0;
+    smallButtonClips[CLIP_MOUSEOUT].y = 0;
+    smallButtonClips[CLIP_MOUSEOUT].w = 200;
+    smallButtonClips[CLIP_MOUSEOUT].h = 200;
+
+    smallButtonClips[CLIP_MOUSEOVER].x = 200;
+    smallButtonClips[CLIP_MOUSEOVER].y = 0;
+    smallButtonClips[CLIP_MOUSEOVER].w = 200;
+    smallButtonClips[CLIP_MOUSEOVER].h = 200;
 
     //Set the button's attributes
     box.x = x;
     box.y = y;
     box.w = w;
     box.h = h;
-
-    //Set the default sprite
-    clip = &clips[CLIP_MOUSEOUT];
     
+    //Set the default sprite
+    if (isLargeButton)
+    {
+        clipsArray = largeButtonClips;
+    }
+    else
+    {
+        clipsArray = smallButtonClips;
+    }
+
+    // Set the default clip
+    clip = &clipsArray[CLIP_MOUSEOUT];
     buttonClicked = false;
 
     // Set button texture path
@@ -49,12 +69,12 @@ void Button::handle_events(SDL_Event event)
         if ((x > box.x) && (x < box.x + box.w) && (y > box.y) && (y < box.y + box.h))
         {
             //Set the button sprite
-            clip = &clips[CLIP_MOUSEOVER];
+            clip = &clipsArray[CLIP_MOUSEOVER];
         }
         else
         {
             //Set the button sprite
-            clip = &clips[CLIP_MOUSEOUT];
+            clip = &clipsArray[CLIP_MOUSEOUT];
         }
     }
 

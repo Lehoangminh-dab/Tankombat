@@ -36,6 +36,9 @@ private:
 	SoundManager soundManager;
 	// Main menu buttons
 	Button playButton;
+	Button tutorialButton;
+	Button tutorialBackButton;
+	Button exitButton;
 
 	// Pause menu buttons
 	Button resumeButton;
@@ -45,6 +48,7 @@ private:
 	// Game state flags
 	bool gameRunning;
 	bool gameInMenu;
+	bool gameInTutorial;
 	bool gamePaused;
 	bool gameWon;
 	bool gameplayInitialized;
@@ -53,6 +57,13 @@ private:
 
 	// General menu functions
 	void renderBackground(std::string backgroundFilePath);
+
+	// Main menu functions
+	void renderMainMenuScreen();
+	void handleMainMenuEvents();
+
+	void renderTutorialScreen();
+	void handleTutorialScreenEvents(SDL_Event event);
 
 	// Pause menu functions
 	void renderPauseMenu();
