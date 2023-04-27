@@ -5,10 +5,10 @@
     },
     "activeFile": "Assets/Maps/MAP.tmx",
     "expandedProjectPaths": [
-        "Temp Assets/Maps",
+        "Temp Assets/Maps/Archive",
         "Temp Assets",
         "Assets/Maps",
-        "Temp Assets/Maps/Archive",
+        "Temp Assets/Maps",
         "."
     ],
     "fileStates": {
@@ -16,8 +16,8 @@
             "scale": 0.7505,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 800.1332445036643,
-                "y": 463.69087275149906
+                "x": 764.1572285143238,
+                "y": 450.36642238507665
             }
         },
         "Assets/Maps/Map-Making/Forest.tmx": {
@@ -80,13 +80,12 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 50,
     "openFiles": [
-        "Assets/Maps/MAP.tmx",
-        "Assets/Maps/TileSheet.tsx"
+        "Assets/Maps/MAP.tmx"
     ],
     "project": "Map-Making.tiled-project",
     "recentFiles": [
-        "Assets/Maps/TileSheet.tsx",
         "Assets/Maps/MAP.tmx",
+        "Assets/Maps/TileSheet.tsx",
         "Temp Assets/Maps/Archive/MapOne.tmx",
         "Temp Assets/Maps/TileSheet.tsx",
         "Temp Assets/Maps/Map.tmx",

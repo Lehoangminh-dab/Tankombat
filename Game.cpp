@@ -10,8 +10,6 @@
 
 bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of which keys have been 
 
-
-const int SPAWN_OFFSET = 85;
 // Texture File Paths
 const std::string PLAY_BUTTON_PATH = "Assets/Menu/PlayButton.png";
 const std::string RESUME_BUTTON_PATH = "Assets/Menu/ResumeButton.png";
@@ -388,10 +386,10 @@ void Game::initGameplay()
 	{
 		map = new Map(tiles);
 	}
-	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, SPAWN_OFFSET, SPAWN_OFFSET));
-	activeTanks.push_back(new Tank(BROWN_TANK_TEXTURE_PATH, PLAYER_TWO_ID, SPAWN_OFFSET, SCREEN_HEIGHT - SPAWN_OFFSET - TANK_HEIGHT));
-	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, SCREEN_WIDTH - SPAWN_OFFSET - TANK_WIDTH, 50));
-	activeTanks.push_back(new Tank(GRAY_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, SCREEN_WIDTH - SPAWN_OFFSET - TANK_WIDTH, SCREEN_HEIGHT - SPAWN_OFFSET - TANK_HEIGHT));
+	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 160, 96));
+	activeTanks.push_back(new Tank(BROWN_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 1056, 128));
+	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 128, 768));
+	activeTanks.push_back(new Tank(GRAY_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 1184, 800));
 
 	// Play gameplay music
 	soundManager.playGameplaySong();
@@ -739,19 +737,27 @@ void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obst
 void handleObjectsCollision(Tank* tank, Tile* tiles[])
 {
 	SDL_Rect tankHitBox = tank->getHitBox();
-	SDL_Rect tileHitBox;
+	SDL_Rect newTankHitBox = tankHitBox;
+
 	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
 	{
 		int tileType = tiles[tileCnt]->getType();
 		if (tileType == TILE_OBSTACLE_WALL)
 		{
-			tileHitBox = tiles[tileCnt]->getBox();
-			if (checkCollision(tankHitBox, tileHitBox))
+			// If the tank's coming from upwards or downwards
+			if (checkCollision(tankHitBox, tiles[tileCnt]->getTopSide()) || checkCollision(tankHitBox, tiles[tileCnt]->getBottomSide()))
 			{
-				tank->handleTileCollision();
+				newTankHitBox.y -= tank->getVelocityY();
+			}
+
+			if (checkCollision(tankHitBox, tiles[tileCnt]->getLeftSide()) || checkCollision(tankHitBox, tiles[tileCnt]->getRightSide()))
+			{
+				newTankHitBox.x -= tank->getVelocityX();
 			}
 		}
 	}
+
+	tank->setHitBox(newTankHitBox);
 }
 
 void handleObjectsCollision(Projectile* projectile, Tile* tiles[])

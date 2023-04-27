@@ -16,10 +16,13 @@ public:
 	void setRotationDirection(bool isClockWise);
 	void setBulletShotState(bool isShot);
 	void setSpeed(double speedValue);
+	void setHitBox(SDL_Rect newHitBox);
 	void setDestroyedState(bool destroyedState);
 	bool getDestroyedState();
 	std::string getID();
 	double getSpeed();
+	int getVelocityX();
+	int getVelocityY();
 	SDL_Rect getHitBox();
 	int getRotationAngle();
 	void handleTileCollision();

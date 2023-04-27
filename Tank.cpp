@@ -147,6 +147,11 @@ void Tank::setSpeed(double speedValue)
 	movingGameObject.setSpeed(speedValue);
 }
 
+void Tank::setHitBox(SDL_Rect newHitBox)
+{
+	movingGameObject.setHitBox(newHitBox.x, newHitBox.y, newHitBox.w, newHitBox.h);
+}
+
 void Tank::setDestroyedState(bool destroyedState)
 {
 	isDestroyed = destroyedState;
@@ -165,6 +170,16 @@ std::string Tank::getID()
 double Tank::getSpeed()
 {
 	return movingGameObject.getSpeed();
+}
+
+int Tank::getVelocityX()
+{
+	return movingGameObject.getVelocityX();
+}
+
+int Tank::getVelocityY()
+{
+	return movingGameObject.getVelocityY();
 }
 
 SDL_Rect Tank::getHitBox()

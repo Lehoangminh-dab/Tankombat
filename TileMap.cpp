@@ -24,6 +24,27 @@ Tile::Tile(int x, int y, int tileType)
 
     //Get the tile type
     mType = tileType;
+
+	// Set the sides' coordinates
+	leftSide.x = x;
+	leftSide.y = y;
+	leftSide.w = 1;
+	leftSide.h = TILE_HEIGHT;
+
+	rightSide.x = x + TILE_WIDTH;
+	rightSide.y = y;
+	rightSide.w = 1;
+	rightSide.h = TILE_HEIGHT;
+
+	topSide.x = x;
+	topSide.y = y;
+	topSide.w = TILE_WIDTH;
+	topSide.h = 1;
+
+	bottomSide.x = x;
+	bottomSide.y = y + TILE_HEIGHT;
+	bottomSide.w = TILE_WIDTH;
+	bottomSide.h = 1;
 }
 
 void Tile::render()
@@ -38,6 +59,26 @@ int Tile::getType()
 SDL_Rect Tile::getBox()
 {
     return mBox;
+}
+
+SDL_Rect Tile::getLeftSide()
+{
+	return leftSide;
+}
+
+SDL_Rect Tile::getTopSide()
+{
+	return topSide;
+}
+
+SDL_Rect Tile::getRightSide()
+{
+	return rightSide;
+}
+
+SDL_Rect Tile::getBottomSide()
+{
+	return bottomSide;
 }
 
 Map::Map(Tile* tiles[])

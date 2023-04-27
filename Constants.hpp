@@ -16,7 +16,7 @@ static const int PROJECTILE_DISTANCE_FROM_TANK = 32;
 
 static const int TANK_WIDTH = 64;
 static const int TANK_HEIGHT = 64;
-static const int TANK_SPEED = 10.0;
+static const int TANK_SPEED = 9.0;
 static const int ROTATION_SPEED = 6;
 static const int ANIMATION_DELAY_IN_FRAMES = 5;
 
