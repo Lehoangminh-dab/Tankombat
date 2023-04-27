@@ -1,8 +1,8 @@
 Handle the spawn locations
-----------------------------------------------------------------------------------------------------
-Fix the collision
 Fix the restart button
 Clean the projectiles
+----------------------------------------------------------------------------------------------------
+Fix the collision
 Add button clicking sounds
 Add some 3rd extra beautify tiles, if there's still time
 Github time

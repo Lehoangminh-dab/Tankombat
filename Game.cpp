@@ -72,9 +72,6 @@ void handleProjectileWallCollision(Projectile* projectile);
 
 void updateCollision();
 
-// Utility functions
-void cleanGameplayResources();
-
 // Button IDs
 Game::Game()
 	: playButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 50, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, PLAY_BUTTON_PATH, true),
@@ -159,18 +156,21 @@ void Game::handleMenuEvents()
 
 		if (playButton.isClicked())
 		{
+			soundManager.playButtonClickedSound();
 			gameInMenu = false;
 			Mix_HaltMusic();
 			playButton.resetClickedState();
 		}
 		else if (tutorialButton.isClicked())
 		{
+			soundManager.playButtonClickedSound();
 			renderTutorialScreen();
 			gameInTutorial = true;
 			tutorialButton.resetClickedState();
 		}
 		else if (exitButton.isClicked())
 		{
+			soundManager.playButtonClickedSound();
 			gameRunning = false;
 		}
 	}
@@ -337,11 +337,13 @@ void Game::handlePauseMenuEvents(SDL_Event event)
 	// Execute corresponding clicked actions
 	if (resumeButton.isClicked())
 	{
+		soundManager.playButtonClickedSound();
 		resumeGameplay();
 		resumeButton.resetClickedState();
 	}
 	else if (restartButton.isClicked())
 	{
+		soundManager.playButtonClickedSound();
 		restartGameplay();
 		// Stop gameplay music
 		Mix_HaltMusic();
@@ -349,6 +351,7 @@ void Game::handlePauseMenuEvents(SDL_Event event)
 	}
 	else if (quitButton.isClicked())
 	{
+		soundManager.playButtonClickedSound();
 		quitToMainMenu();
 		// Stop gameplay music
 		Mix_HaltMusic();
@@ -361,6 +364,7 @@ void Game::handleTutorialScreenEvents(SDL_Event event)
 	tutorialBackButton.handle_events(event);
 	if (tutorialBackButton.isClicked())
 	{
+		soundManager.playButtonClickedSound();
 		std::cout << "Tutorial back button pressed! " << std::endl;
 		gameInTutorial = false;
 		tutorialBackButton.resetClickedState();
@@ -897,6 +901,7 @@ void Game::handleWonMenuEvents(SDL_Event event)
 
 	if (restartButton.isClicked())
 	{
+		soundManager.playButtonClickedSound();
 		restartGameplay();
 		// Stop gameplay music
 		Mix_HaltMusic();
@@ -904,6 +909,7 @@ void Game::handleWonMenuEvents(SDL_Event event)
 	}
 	else if (quitButton.isClicked())
 	{
+		soundManager.playButtonClickedSound();
 		quitToMainMenu();
 		// Stop gameplay music
 		Mix_HaltMusic();

@@ -4,6 +4,7 @@
 
 const char* MAIN_MENU_SONG_PATH = "Assets/Sounds/Battlefield 1943 Theme.mp3";
 const char* GAMEPLAY_SONG_PATH = "Assets/Sounds/Encounter remix.mp3";
+const char* BUTTON_CLICKED_SOUND_PATH = "Assets/Sounds/Button Clicking.ogg";
 const char* TANK_IDLE_SOUND_PATH = "Assets/Sounds/Engine Idle.ogg";
 const char* TANK_MOVING_SOUND_PATH = "Assets/Sounds/Engine Moving.ogg";
 const char* TANK_SHOOTING_SOUND_PATH = "Assets/Sounds/Tank Shooting.ogg";
@@ -29,15 +30,11 @@ void SoundManager::loadSounds()
 	{
 		std::cout << "Failed to load gameplay song! SDL_mixer Error: " << Mix_GetError() << std::endl;
 	}
-	tankIdleSound = Mix_LoadWAV(TANK_IDLE_SOUND_PATH);
-	if (tankIdleSound == NULL)
+
+	buttonClickedSound = Mix_LoadWAV(BUTTON_CLICKED_SOUND_PATH);
+	if (buttonClickedSound == NULL)
 	{
-		std::cout << "Failed to load tank idle sound! SDL_mixer Error: " << Mix_GetError() << std::endl;
-	}
-	tankMovingSound = Mix_LoadWAV(TANK_MOVING_SOUND_PATH);
-	if (tankMovingSound == NULL)
-	{
-		std::cout << "Failed to load tank moving sound! SDL_mixer Error: " << Mix_GetError() << std::endl;
+		std::cout << "Failed to load button clicked sound!" << std::endl;
 	}
 	tankShootingSound = Mix_LoadWAV(TANK_SHOOTING_SOUND_PATH);
 	if (tankShootingSound == NULL)
@@ -61,14 +58,9 @@ void SoundManager::playGameplaySong()
 	Mix_PlayMusic(gameplaySong, -1);
 }
 
-void SoundManager::playTankIdleSound()
+void SoundManager::playButtonClickedSound()
 {
-	Mix_PlayChannel(-1, tankIdleSound, 0);
-}
-
-void SoundManager::playTankMovingSound()
-{
-	Mix_PlayChannel(-1, tankMovingSound, 0);
+	Mix_PlayChannel(-1, buttonClickedSound, 0);
 }
 
 void SoundManager::playTankShootingSound()
