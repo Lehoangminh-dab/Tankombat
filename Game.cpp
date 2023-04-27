@@ -680,13 +680,45 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 void handleObjectsCollision(Tank* a, Tank* b)
 {
-	SDL_Rect tankOneHitBox = a->getHitBox();
-	SDL_Rect tileTwoHitBox = b->getHitBox();
-	if (checkCollision(tankOneHitBox, tileTwoHitBox))
+	SDL_Rect tankOneHitBox = a->getHitBox(); // This is the moving tank
+	SDL_Rect tankTwoHitBox = b->getHitBox();
+	
+	int tankVelocityX = a->getVelocityX();
+	int tankVelocityY = b->getVelocityY();
+
+	if (checkCollision(tankOneHitBox, tankTwoHitBox))
 	{
-		a->handleTileCollision();
-		b->handleTileCollision();
+
+		// Calculate the minimum translation distance to push the moving rectangle out of the static rectangle.
+		int mtv_x, mtv_y;
+		if (tankVelocityX > 0) {
+			mtv_x = tankTwoHitBox.x - (tankOneHitBox.x + tankOneHitBox.w);
+		}
+		else {
+			mtv_x = (tankTwoHitBox.x + tankOneHitBox.w) - tankOneHitBox.x;
+		}
+
+		if (tankVelocityY > 0) {
+			mtv_y = tankTwoHitBox.y - (tankOneHitBox.y + tankOneHitBox.h);
+		}
+		else {
+			mtv_y = (tankTwoHitBox.y + tankOneHitBox.h) - tankOneHitBox.y;
+		}
+
+		// Only perform collision response if the moving rectangle is actually overlapping the static rectangle.
+		if (abs(mtv_x) < tankOneHitBox.w && abs(mtv_y) < tankOneHitBox.h) {
+			if (abs(mtv_x) < abs(mtv_y)) {
+				// Collision occurred on x-axis. Move the rectangle out along the x-axis.
+				tankOneHitBox.x += mtv_x;
+			}
+			else {
+				// Collision occurred on y-axis. Move the rectangle out along the y-axis.
+				tankOneHitBox.y += mtv_y;
+			}
+		}
 	}
+
+	a->setHitBox(tankOneHitBox);
 }
 
 void handleObjectsCollision(Tank* object, Projectile* projectile)
@@ -741,27 +773,48 @@ void handleObjectsCollision(Projectile* projectile, IndestructibleObstacle* obst
 void handleObjectsCollision(Tank* tank, Tile* tiles[])
 {
 	SDL_Rect tankHitBox = tank->getHitBox();
-	SDL_Rect newTankHitBox = tankHitBox;
+	int tankVelocityX = tank->getVelocityX();
+	int tankVelocityY = tank->getVelocityY();
 
 	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
 	{
 		int tileType = tiles[tileCnt]->getType();
 		if (tileType == TILE_OBSTACLE_WALL)
 		{
-			// If the tank's coming from upwards or downwards
-			if (checkCollision(tankHitBox, tiles[tileCnt]->getTopSide()) || checkCollision(tankHitBox, tiles[tileCnt]->getBottomSide()))
+			SDL_Rect tileHitBox = tiles[tileCnt]->getBox();
+			if (checkCollision(tankHitBox, tileHitBox))
 			{
-				newTankHitBox.y -= tank->getVelocityY();
-			}
+				// Calculate the minimum translation distance to push the moving rectangle out of the static rectangle.
+				int mtv_x, mtv_y;
+				if (tankVelocityX > 0) {
+					mtv_x = tileHitBox.x - (tankHitBox.x + tankHitBox.w);
+				}
+				else {
+					mtv_x = (tileHitBox.x + tileHitBox.w) - tankHitBox.x;
+				}
 
-			if (checkCollision(tankHitBox, tiles[tileCnt]->getLeftSide()) || checkCollision(tankHitBox, tiles[tileCnt]->getRightSide()))
-			{
-				newTankHitBox.x -= tank->getVelocityX();
+				if (tankVelocityY > 0) {
+					mtv_y = tileHitBox.y - (tankHitBox.y + tankHitBox.h);
+				}
+				else {
+					mtv_y = (tileHitBox.y + tileHitBox.h) - tankHitBox.y;
+				}
+
+				// Only perform collision response if the moving rectangle is actually overlapping the static rectangle.
+				if (abs(mtv_x) < tankHitBox.w && abs(mtv_y) < tankHitBox.h) {
+					if (abs(mtv_x) < abs(mtv_y)) {
+						// Collision occurred on x-axis. Move the rectangle out along the x-axis.
+						tankHitBox.x += mtv_x;
+					}
+					else {
+						// Collision occurred on y-axis. Move the rectangle out along the y-axis.
+						tankHitBox.y += mtv_y;
+					}
+				}
 			}
 		}
 	}
-
-	tank->setHitBox(newTankHitBox);
+	tank->setHitBox(tankHitBox);
 }
 
 void handleObjectsCollision(Projectile* projectile, Tile* tiles[])
@@ -793,7 +846,6 @@ void handleProjectileWallCollision(Projectile* projectile)
 		projectile->setCollisionStatus(true);
 	}
 }
-
 
 void executeKeyPressed(Tank* tank) // The moment the key is pressed, execute this ONCE
 {
