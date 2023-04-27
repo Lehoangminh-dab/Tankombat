@@ -55,7 +55,7 @@ Note: This game is only tested in Windows environment and is compiled using Visu
 * Step 5: Press the "Local Windows Debugger" button in Visual Studio.
 * Step 6: If you've done all the steps above correctly, the game should now be launched and you can enjoy playing!
 # Credits
-* This project is made by Le Hoang Minh
+* This project is made by [Le Hoang Minh](https://github.com/Lehoangminh-dab)
 * Game assets were taken from various sources, like:
   * Itch.io
   * opengameart.org
