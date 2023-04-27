@@ -858,10 +858,10 @@ void Game::renderWonMenu()
 	srcRect.h = WON_MENU_TEXTBOX_HEIGHT;
 
 	SDL_Rect destRect;
-	destRect.w = 600; // Text box rendering sizes
-	destRect.h = 600;
+	destRect.w = 1150; // Text box rendering sizes
+	destRect.h = 700;
 	destRect.x = (SCREEN_WIDTH - destRect.w) / 2;
-	destRect.y = (SCREEN_HEIGHT - destRect.h) / 2;
+	destRect.y = (SCREEN_HEIGHT - destRect.h) / 2 + 70;
 	TextureManager::Draw(wonMenuTextbox, srcRect, destRect);
 	SDL_DestroyTexture(wonMenuTextbox);
 
@@ -876,14 +876,7 @@ void Game::renderWonMenu()
 	}
 
 	std::string winAnnouncement = winningTankID + " WINS! ";
-
-	SDL_Rect announcementDestRectangle;
-	announcementDestRectangle.w = 600;
-	announcementDestRectangle.h = 200;
-	announcementDestRectangle.x = (SCREEN_WIDTH - announcementDestRectangle.w) / 2;
-	announcementDestRectangle.y = 200;
-	/*TextureManager::DrawText(globalFont, winAnnouncement, ANNOUNCEMENT_TEXT_COLOR, announcementDestRectangle);*/
-
+	TextureManager::DrawText(gameTitleFont, winAnnouncement, TITLE_TEXT_COLOR, 260, destRect.y + 25, false);
 	// Render the won menu buttons
 	restartButton.show();
 	quitButton.show();
@@ -897,11 +890,15 @@ void Game::handleWonMenuEvents(SDL_Event event)
 	if (restartButton.isClicked())
 	{
 		restartGameplay();
+		// Stop gameplay music
+		Mix_HaltMusic();
 		restartButton.resetClickedState();
 	}
 	else if (quitButton.isClicked())
 	{
 		quitToMainMenu();
+		// Stop gameplay music
+		Mix_HaltMusic();
 		quitButton.resetClickedState();
 	}
 }

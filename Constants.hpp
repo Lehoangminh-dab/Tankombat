@@ -58,7 +58,7 @@ static const int TILE_WATER = 2;
 static const int TILE_OBSTACLE_WALL = 3;
 
 // Tank IDs
-static const std::string PLAYER_ONE_ID = "PLAYER ONE";
-static const std::string PLAYER_TWO_ID = "PLAYER TWO";
-static const std::string PLAYER_THREE_ID = "PLAYER THREE";
-static const std::string PLAYER_FOUR_ID = "PLAYER FOUR";
+static const std::string PLAYER_ONE_ID = "BLUE TANK";
+static const std::string PLAYER_TWO_ID = "RED TANK";
+static const std::string PLAYER_THREE_ID = "GRAY TANK";
+static const std::string PLAYER_FOUR_ID = "GREEN TANK";
