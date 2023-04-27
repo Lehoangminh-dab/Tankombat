@@ -81,9 +81,9 @@ Game::Game()
 	tutorialButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 200, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
 	tutorialBackButton((SCREEN_WIDTH - SMALL_BUTTON_WIDTH) / 2, 800, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, TUTORIAL_BACK_BUTTON_PATH, false),
 	exitButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 350, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
-	resumeButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 400, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
-	quitButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 550, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
-	restartButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 700, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
+	resumeButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 375, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
+	restartButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 525, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESTART_BUTTON_PATH, true),
+	quitButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 675, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, QUIT_BUTTON_PATH, true)
 {
 }
 
@@ -308,8 +308,8 @@ void Game::renderPauseMenu()
 	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
 
 	SDL_Rect menuDestRect;
-	menuDestRect.w = 1100; // Text box rendering sizes
-	menuDestRect.h = 600;
+	menuDestRect.w = 1150; // Text box rendering sizes
+	menuDestRect.h = 700;
 	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
 	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
 	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
@@ -317,7 +317,7 @@ void Game::renderPauseMenu()
 
 	// Render the game paused title
 	std::string gamePausedText = "GAME PAUSED";
-	TextureManager::DrawText(gameTitleFont, gamePausedText, TITLE_TEXT_COLOR, 0, menuDestRect.y + 100, true);
+	TextureManager::DrawText(gameTitleFont, gamePausedText, TITLE_TEXT_COLOR, 0, menuDestRect.y + 25, true);
 
 	// Render the pause menu buttons
 	resumeButton.show();
@@ -813,12 +813,6 @@ void Game::cleanGameplayResources()
 	}
 
 	std::cout << "Remaining Projectiles Left: " << activeProjectiles.size() << std::endl;
-	//// Clear the map
-	//map->~Map(); 
-	//for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
-	//{
-	//	delete tiles[tileCnt];
-	//}
 }
 
 
@@ -852,7 +846,6 @@ void Game::quitToMainMenu()
 		delete tiles[tileCnt];
 	}
 }
-
 
 void Game::renderWonMenu()
 {
