@@ -8,8 +8,6 @@ Change Title:
 Change Menu Buttons:
     Reposition the 3 buttons till fit
 ----------------------------------------------------------------------------------------------------
-Change SCREEN DIMENSIONS and make corresponding adjustments to the desert.map file for temporary
-testing
 
 Make the Tilemap
     Make a map with the desired tile size, screen width and height

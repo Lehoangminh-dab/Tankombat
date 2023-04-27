@@ -20,7 +20,7 @@ const std::string TUTORIAL_BACK_BUTTON_PATH = "Assets/Menu/TutorialBackButton.pn
 const std::string EXIT_BUTTON_PATH = "Assets/Menu/ExitButton.png";
 
 
-const std::string MENU_BACKGROUND_PATH = "Assets/Maps/sMap.png";
+const std::string MENU_BACKGROUND_PATH = "Assets/Menu/Tank Background.png";
 
 const std::string TITLE_FONT_PATH = "Assets/Fonts/Helvetica Neue LT Std 107 Extra Black Condensed.ttf";
 const std::string TITLE_STARS_TEXTURE_PATH = "Assets/Menu/Main Title Stars.png";
@@ -34,7 +34,7 @@ const std::string WON_MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
 const int WON_MENU_TEXTBOX_WIDTH = 600;
 const int WON_MENU_TEXTBOX_HEIGHT = 600;
 
-const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Tutorial Textbox.png";
+const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Textbox.png";
 const int TUTORIAL_TEXTBOX_WIDTH = 600;
 const int TUTORIAL_TEXTBOX_HEIGHT = 600;
 
@@ -43,7 +43,7 @@ TTF_Font* gameTitleFont = NULL;
 TTF_Font* globalFont = NULL;
 
 // Font colors
-const SDL_Color TITLE_TEXT_COLOR = { 0, 0, 0 };
+const SDL_Color TITLE_TEXT_COLOR = { 255, 255, 255 };
 const SDL_Color TUTORIAL_FONT_COLOR = { 0, 0 ,0 };
 const SDL_Color ANNOUNCEMENT_TEXT_COLOR = { 0, 0, 0 };
 
@@ -78,13 +78,13 @@ void cleanGameplayResources();
 
 // Button IDs
 Game::Game()
-	: playButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2 + 50, BUTTON_WIDTH, BUTTON_HEIGHT, PLAY_BUTTON_PATH, true),
-	tutorialButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2 + 200, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
-	tutorialBackButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TUTORIAL_BACK_BUTTON_PATH, false),
-	exitButton((SCREEN_WIDTH - BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - BUTTON_HEIGHT) / 2 + 350, BUTTON_WIDTH, BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
-	resumeButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
-	quitButton(600, 300, BUTTON_WIDTH, BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
-	restartButton(600, 500, BUTTON_WIDTH, BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
+	: playButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 50, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, PLAY_BUTTON_PATH, true),
+	tutorialButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 200, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
+	tutorialBackButton((SCREEN_WIDTH - SMALL_BUTTON_WIDTH) / 2, 800, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, TUTORIAL_BACK_BUTTON_PATH, false),
+	exitButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 350, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
+	resumeButton(0, 0, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
+	quitButton(600, 300, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
+	restartButton(600, 500, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
 {
 }
 
@@ -209,7 +209,7 @@ void Game::renderMenu()
 	if (!gameInTutorial)
 	{
 		// Render game title
-		TextureManager::DrawText(gameTitleFont, "Tankombat", TITLE_TEXT_COLOR, 0, 100, true);
+		TextureManager::DrawText(gameTitleFont, "TANKOMBAT", TITLE_TEXT_COLOR, 0, 100, true);
 
 		// Render the game title stars
 		SDL_Texture* titleStarsTexture = TextureManager::loadTexture(TITLE_STARS_TEXTURE_PATH.c_str());
@@ -244,8 +244,8 @@ void Game::renderBackground(std::string backgroundFilePath)
 	SDL_Rect destinationRect;
 	sourceRect.x = 0;
 	sourceRect.y = 0;
-	sourceRect.w = 320;
-	sourceRect.h = 320;
+	sourceRect.w = 1920;
+	sourceRect.h = 1080;
 
 	destinationRect.x = 0;
 	destinationRect.y = 0;

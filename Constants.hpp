@@ -39,8 +39,10 @@ static const int PLAYER_KEYS[4] = { SDLK_x, SDLK_RSHIFT, SDLK_TAB, SDLK_BACKSPAC
 static const SDL_Rect menuBackgroundSourceRect;
 
 // Button constants
-static const int BUTTON_WIDTH = 300;
-static const int BUTTON_HEIGHT = 100;
+static const int LARGE_BUTTON_WIDTH = 300;
+static const int LARGE_BUTTON_HEIGHT = 100;
+static const int SMALL_BUTTON_WIDTH = 100;
+static const int SMALL_BUTTON_HEIGHT = 100;
 
 // Tile constants
 static const int SOURCE_TILE_SIZE = 32;
