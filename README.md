@@ -24,7 +24,7 @@ Shoot, move, dodge each other's bullets until there is only one player standing!
 
 
 # Game Demo
-
+* [Tankombat Demo](https://drive.google.com/file/d/1vklHDVrLVpTVlO24e3XHrhikze0lQTki/view?usp=share_link)
 # Function
 The game has the following features:
 ## The Main Menu
@@ -47,14 +47,13 @@ When there's only one player left surviving, a winning menu will appear, announc
 # Installation
 Note: This game is only tested in Windows environment and is compiled using Visual Studio Community 2022
 * Step 1: Download Visual Studio Community 2022 from [Microsoft page](https://visualstudio.microsoft.com/vs/community/).
-* Step 2: Install the Visual C++ compiler and then put the directory address in System Path. (Or download the Visual C++ package that is displayed as an option when you first launch Visual Studio)
-* Step 3: Download the source code from this repository
+* Step 2: Install any of the C++ packages that is displayed when you first launch Visual Studio. This will install Visual C++, which is needed to compile the game.
+* Step 3: Download the source code from this repository.
 * Step 4: Install the SDL2 libraries (including SDL2, SDL2_image, SDL2_ttf, SDL2_mixer)
-* Copy all the headers of SDL2 (for example: SDL.h) into the sdl folder (which should be created in include folder)
-Copy all the libraries of SDL2 (cmake, pkgconfig, libSDL2) into the lib folder (which should be created in main directory)
-Copy all the SDL dll files into the main directory
-* Step 5: Press the shortcut "Ctrl + B" in Visual Studio.
-* Step 6: After the game is compiled successfully, you will the an executable file named "main.exe" and you can open this file to play the game!
+  * Open project properties in Visual Studio and link the SDL2 lib and include folders to the project.
+  * Copy all the .dll files and paste them into the main directory.
+* Step 5: Press the "Local Windows Debugger" button in Visual Studio.
+* Step 6: If you've done all the steps above correctly, the game should now be launched and you can enjoy playing!
 # Credits
 * This project is made by Le Hoang Minh
 * Game assets were taken from various sources, like:
