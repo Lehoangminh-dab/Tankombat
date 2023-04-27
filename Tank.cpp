@@ -2,16 +2,19 @@
 #include "cmath"
 #include "Constants.hpp"
 
+const int SOURCE_TANK_WIDTH = 245;
+const int SOURCE_TANK_HEIGHT = 165;
+
 Tank::Tank(const char* objectTextureSheet, std::string id, int xStartingPosition, int yStartingPosition)
 	: movingGameObject(objectTextureSheet, id, xStartingPosition, yStartingPosition, TANK_WIDTH, TANK_HEIGHT, 0, 30)
 {
 
 	for (int frame_cnt = 0; frame_cnt < TANK_FRAME_COUNT; frame_cnt++)
 	{
-		textureSheetClips[frame_cnt].x = frame_cnt * 32;
+		textureSheetClips[frame_cnt].x = frame_cnt * SOURCE_TANK_WIDTH;
 		textureSheetClips[frame_cnt].y = 0;
-		textureSheetClips[frame_cnt].w = 32;
-		textureSheetClips[frame_cnt].h = 32;
+		textureSheetClips[frame_cnt].w = SOURCE_TANK_WIDTH;
+		textureSheetClips[frame_cnt].h = SOURCE_TANK_HEIGHT;
 	}
 
 	frame = 0;
@@ -101,7 +104,7 @@ void Tank::render()
 {
 	if (isDestroyed)
 	{
-		currentClip = textureSheetClips[3];
+		currentClip = textureSheetClips[TANK_FRAME_COUNT - 1];
 	}
 
 	else if (bulletShot)

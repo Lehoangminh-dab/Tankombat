@@ -41,7 +41,7 @@ const int TUTORIAL_TEXTBOX_HEIGHT = 510;
 // Fonts
 TTF_Font* gameTitleFont = NULL;
 TTF_Font* globalFont = NULL;
-
+TTF_Font* wonTitleFont = NULL;
 // Font colors
 const SDL_Color TITLE_TEXT_COLOR = { 255, 255, 255 };
 const SDL_Color ANNOUNCEMENT_TEXT_COLOR = { 0, 0, 0 };
@@ -143,6 +143,7 @@ void Game::init(const char* title, bool fullscreen)
 	// Initialize fonts
 	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 160);
 	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 40);
+	wonTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 120);
 }
 
 void Game::handleMenuEvents()
@@ -280,10 +281,10 @@ void Game::renderTutorialScreen()
 
 	// Setting each line's text
 	std::string tutorialTitle = "TUTORIAL";
-	std::string tutorialTextPlayerOne = "Player 1 (Blue): Press X to shoot and move forward";
-	std::string tutorialTextPlayerTwo = "Player 2 (Red): Press RIGHT SHIFT to shoot and move forward";
-	std::string tutorialTextPlayerThree = "Player 3 (Gray): Press LEFT TAB to shoot and move forward";
-	std::string tutorialTextPlayerFour = "Player 4 (Green): Press BACKSPACE to shoot and move forward";
+	std::string tutorialTextPlayerOne = "BLUE Tank: Press X to shoot and move forward";
+	std::string tutorialTextPlayerTwo = "RED Tank: Press RIGHT SHIFT to shoot and move forward";
+	std::string tutorialTextPlayerThree = "GRAY Tank: Press LEFT TAB to shoot and move forward";
+	std::string tutorialTextPlayerFour = "GREEN Tank: Press BACKSPACE to shoot and move forward";
 
 	// Rendering the lines of text
 	TextureManager::DrawText(gameTitleFont, tutorialTitle, TUTORIAL_TEXT_COLOR, 0, 95, true);
@@ -386,9 +387,9 @@ void Game::initGameplay()
 		map = new Map(tiles);
 	}
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 100, 300));
-	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
+	activeTanks.push_back(new Tank(BROWN_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
-	activeTanks.push_back(new Tank(BEIGE_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
+	activeTanks.push_back(new Tank(GRAY_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
 
 	// Play gameplay music
 	soundManager.playGameplaySong();
@@ -675,14 +676,13 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 void handleObjectsCollision(Tank* a, Tank* b)
 {
-	SDL_Rect hitBoxA = a->getHitBox();
-	SDL_Rect hitBoxB = b->getHitBox();
-	if (!checkCollision(hitBoxA, hitBoxB))
+	SDL_Rect tankOneHitBox = a->getHitBox();
+	SDL_Rect tileTwoHitBox = b->getHitBox();
+	if (checkCollision(tankOneHitBox, tileTwoHitBox))
 	{
-		return;
+		a->handleTileCollision();
+		b->handleTileCollision();
 	}
-	a->setSpeed(0);
-	b->setSpeed(0);
 }
 
 void handleObjectsCollision(Tank* object, Projectile* projectile)
@@ -860,7 +860,7 @@ void Game::renderWonMenu()
 	SDL_Rect destRect;
 	destRect.w = 1150; // Text box rendering sizes
 	destRect.h = 700;
-	destRect.x = (SCREEN_WIDTH - destRect.w) / 2;
+	destRect.x = (SCREEN_WIDTH - destRect.w) / 2 - 10;
 	destRect.y = (SCREEN_HEIGHT - destRect.h) / 2 + 70;
 	TextureManager::Draw(wonMenuTextbox, srcRect, destRect);
 	SDL_DestroyTexture(wonMenuTextbox);
@@ -876,7 +876,7 @@ void Game::renderWonMenu()
 	}
 
 	std::string winAnnouncement = winningTankID + " WINS! ";
-	TextureManager::DrawText(gameTitleFont, winAnnouncement, TITLE_TEXT_COLOR, 260, destRect.y + 25, false);
+	TextureManager::DrawText(wonTitleFont, winAnnouncement, TITLE_TEXT_COLOR, 260, destRect.y + 45, true);
 	// Render the won menu buttons
 	restartButton.show();
 	quitButton.show();

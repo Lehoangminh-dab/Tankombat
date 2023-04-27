@@ -14,17 +14,17 @@ static const int PROJECTILE_HEIGHT = 32;
 static const double PROJECTILE_SPEED = 15.0;
 static const int PROJECTILE_DISTANCE_FROM_TANK = 32;
 
-static const int TANK_WIDTH = 48;
-static const int TANK_HEIGHT = 48;
+static const int TANK_WIDTH = 64;
+static const int TANK_HEIGHT = 64;
 static const int TANK_SPEED = 10.0;
 static const int ROTATION_SPEED = 6;
 static const int ANIMATION_DELAY_IN_FRAMES = 5;
 
 // Asset file Paths
 static const char* BLUE_TANK_TEXTURE_PATH = "Assets/Objects/Tank/BlueTankSheet.png";
-static const char* RED_TANK_TEXTURE_PATH = "Assets/Objects/Tank/RedTankSheet.png";
+static const char* BROWN_TANK_TEXTURE_PATH = "Assets/Objects/Tank/BrownTankSheet.png";
 static const char* GREEN_TANK_TEXTURE_PATH = "Assets/Objects/Tank/GreenTankSheet.png";
-static const char* BEIGE_TANK_TEXTURE_PATH = "Assets/Objects/Tank/BeigeTankSheet.png";
+static const char* GRAY_TANK_TEXTURE_PATH = "Assets/Objects/Tank/GrayTankSheet.png";
 
 // Map background constants
 static const char* DESERT_BACKGROUND_PATH = "Assets/Maps/sMap.png";
@@ -59,6 +59,6 @@ static const int TILE_OBSTACLE_WALL = 3;
 
 // Tank IDs
 static const std::string PLAYER_ONE_ID = "BLUE TANK";
-static const std::string PLAYER_TWO_ID = "RED TANK";
-static const std::string PLAYER_THREE_ID = "GRAY TANK";
-static const std::string PLAYER_FOUR_ID = "GREEN TANK";
+static const std::string PLAYER_TWO_ID = "BROWN TANK";
+static const std::string PLAYER_THREE_ID = "GREEN TANK";
+static const std::string PLAYER_FOUR_ID = "GRAY TANK";

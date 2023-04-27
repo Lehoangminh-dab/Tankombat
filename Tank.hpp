@@ -32,7 +32,7 @@ private:
 	bool bulletShot;
 	bool isDestroyed;
 	SDL_Rect currentClip;
-	static const int TANK_FRAME_COUNT = 4;
+	static const int TANK_FRAME_COUNT = 5;
 	SDL_Rect textureSheetClips[TANK_FRAME_COUNT];
 	void handleWallCollision();
 };
