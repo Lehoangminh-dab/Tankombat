@@ -27,7 +27,8 @@ static const char* GREEN_TANK_TEXTURE_PATH = "Assets/Objects/Tank/GreenTankSheet
 static const char* GRAY_TANK_TEXTURE_PATH = "Assets/Objects/Tank/GrayTankSheet.png";
 
 // Map background constants
-static const char* DESERT_BACKGROUND_PATH = "Assets/Maps/sMap.png";
+static const std::string TILE_SHEET_PATH = "Assets/Maps/TileSheet.png";
+static const char* TILE_MAP_PATH = "Assets/Maps/Map.csv";
 
 // Projectile constants
 static const int NUM_OF_PLAYERS = 4;
@@ -46,8 +47,8 @@ static const int SMALL_BUTTON_HEIGHT = 100;
 
 // Tile constants
 static const int SOURCE_TILE_SIZE = 32;
-static const int TILE_WIDTH = 16;
-static const int TILE_HEIGHT = 16;
+static const int TILE_WIDTH = 32;
+static const int TILE_HEIGHT = 32;
 static const int TOTAL_TILES = (SCREEN_WIDTH / TILE_WIDTH) * (SCREEN_HEIGHT / TILE_HEIGHT);
 static const int TOTAL_TILE_SPRITES = 4;
 

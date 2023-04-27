@@ -1,12 +1,10 @@
 #include <vector>
 #include <fstream>
+#include <sstream>
 #include "TileMap.hpp"
 #include "TextureManager.hpp"
 #include "Game.hpp"
 #include "Constants.hpp"
-
-// Texture file paths
-const std::string TILE_SHEET_PATH = "Assets/Maps/TileSheet.png";
 
 //The dimensions of the level
 const int LEVEL_WIDTH = SCREEN_WIDTH;
@@ -79,60 +77,67 @@ bool Map::LoadMap(Tile* tiles[])
 	int x = 0, y = 0;
 
 	//Open the map
-	std::ifstream map("Assets/Maps/Desert.map");
+	std::fstream map (TILE_MAP_PATH, std::ios::in);
+	// Extracting the contents of the map
+	std::vector<std::vector<std::string>> mapContent;
+	std::vector<std::string> row;
+	std::string line, word;
 
-	//If the map couldn't be loaded
-	if (map.fail())
+	if (map.is_open())
 	{
-		printf("Unable to load map file!\n");
-		tilesLoaded = false;
+		while (std::getline(map, line))
+		{
+			row.clear();
+
+			std::stringstream stream(line);
+
+			while (std::getline(stream, word, ','))
+			{
+				row.push_back(word);
+				mapContent.push_back(row);
+			}
+		}
 	}
 	else
 	{
-		//Initialize the tiles
-		for (int i = 0; i < TOTAL_TILES; ++i)
+		std::cout << "Unable to load map file!" << std::endl;
+	}
+
+	std::cout << "Number of rows: " << mapContent.size() << std::endl;
+	std::cout << "Number of columns: " << mapContent[0].size() << std::endl;
+	//Initialize the tiles
+	for (int tileCnt = 0; tileCnt < mapContent.size(); ++tileCnt)
+	{
+		//Determines what kind of tile will be made
+		int tileType = -1;
+
+		//Read tile from map file
+		tileType = std::stoi(mapContent[tileCnt][0]);
+
+		//If the number is a valid tile number
+		if ((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES))
 		{
-			//Determines what kind of tile will be made
-			int tileType = -1;
+			tiles[tileCnt] = new Tile(x, y, tileType);
+		}
+		//If we don't recognize the tile type
+		else
+		{
+			//Stop loading map
+			printf("Error loading map: Invalid tile type at %d!\n", tileCnt);
+			tilesLoaded = false;
+			break;
+		}
+		//Move to next tile spot
+		x += TILE_WIDTH;
 
-			//Read tile from map file
-			map >> tileType;
+		//If we've gone too far
+		if (x >= LEVEL_WIDTH)
+		{
+			//Move back
+			x = 0;
 
-			//If the was a problem in reading the map
-			if (map.fail())
-			{
-				//Stop loading map
-				printf("Error loading map: Unexpected end of file!\n");
-				tilesLoaded = false;
-				break;
-			}
-
-			//If the number is a valid tile number
-			if ((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES))
-			{
-				std::cout << tileType << " "; //test
-				tiles[i] = new Tile(x, y, tileType);
-			}
-			//If we don't recognize the tile type
-			else
-			{
-				//Stop loading map
-				printf("Error loading map: Invalid tile type at %d!\n", i);
-				tilesLoaded = false;
-				break;
-			}
-			//Move to next tile spot
-			x += TILE_WIDTH;
-
-			//If we've gone too far
-			if (x >= LEVEL_WIDTH)
-			{
-				//Move back
-				x = 0;
-
-				//Move to the next row
-				y += TILE_HEIGHT;
-			}
+			//Move to the next row
+			y += TILE_HEIGHT;
 		}
 	}
 
