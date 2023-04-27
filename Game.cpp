@@ -282,7 +282,7 @@ void Game::renderTutorialScreen()
 	// Setting each line's text
 	std::string tutorialTitle = "TUTORIAL";
 	std::string tutorialTextPlayerOne = "BLUE Tank: Press X to shoot and move forward";
-	std::string tutorialTextPlayerTwo = "RED Tank: Press RIGHT SHIFT to shoot and move forward";
+	std::string tutorialTextPlayerTwo = "BROWN Tank: Press RIGHT SHIFT to shoot and move forward";
 	std::string tutorialTextPlayerThree = "GRAY Tank: Press LEFT TAB to shoot and move forward";
 	std::string tutorialTextPlayerFour = "GREEN Tank: Press BACKSPACE to shoot and move forward";
 
