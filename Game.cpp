@@ -34,7 +34,7 @@ const std::string WON_MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
 const int WON_MENU_TEXTBOX_WIDTH = 860;
 const int WON_MENU_TEXTBOX_HEIGHT = 510;
 
-const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Textbox (No background).png";
+const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Textbox.png";
 const int TUTORIAL_TEXTBOX_WIDTH = 860;
 const int TUTORIAL_TEXTBOX_HEIGHT = 510;
 
@@ -81,9 +81,9 @@ Game::Game()
 	tutorialButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 200, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, TUTORIAL_BUTTON_PATH, true),
 	tutorialBackButton((SCREEN_WIDTH - SMALL_BUTTON_WIDTH) / 2, 800, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, TUTORIAL_BACK_BUTTON_PATH, false),
 	exitButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, (SCREEN_HEIGHT - LARGE_BUTTON_HEIGHT) / 2 + 350, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, EXIT_BUTTON_PATH, true),
-	resumeButton(0, 0, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
-	quitButton(600, 300, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
-	restartButton(600, 500, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
+	resumeButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 400, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESUME_BUTTON_PATH, true),
+	quitButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 550, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, QUIT_BUTTON_PATH, true),
+	restartButton((SCREEN_WIDTH - LARGE_BUTTON_WIDTH) / 2, 700, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, RESTART_BUTTON_PATH, true)
 {
 }
 
@@ -139,6 +139,7 @@ void Game::init(const char* title, bool fullscreen)
 	gamePaused = false;
 	gameplayInitialized = false;
 	gameInTutorial = false;
+	gameRestarted = false;
 	// Initialize fonts
 	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 160);
 	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 40);
@@ -307,12 +308,16 @@ void Game::renderPauseMenu()
 	menuSrcRect.h = MENU_TEXTBOX_HEIGHT;
 
 	SDL_Rect menuDestRect;
-	menuDestRect.w = 600; // Text box rendering sizes
+	menuDestRect.w = 1100; // Text box rendering sizes
 	menuDestRect.h = 600;
 	menuDestRect.x = (SCREEN_WIDTH - menuDestRect.w) / 2;
 	menuDestRect.y = (SCREEN_HEIGHT - menuDestRect.h) / 2;
 	TextureManager::Draw(menuTextbox, menuSrcRect, menuDestRect);
 	SDL_DestroyTexture(menuTextbox);
+
+	// Render the game paused title
+	std::string gamePausedText = "GAME PAUSED";
+	TextureManager::DrawText(gameTitleFont, gamePausedText, TITLE_TEXT_COLOR, 0, menuDestRect.y + 100, true);
 
 	// Render the pause menu buttons
 	resumeButton.show();
@@ -363,7 +368,11 @@ void Game::handleTutorialScreenEvents(SDL_Event event)
 
 void Game::renderLoadingScreen()
 {
-
+	// Render the main menu background
+	renderBackground(MENU_BACKGROUND_PATH);
+	// Render the loading text
+	std::string loadingText = "LOADING...";
+	TextureManager::DrawText(gameTitleFont, loadingText, TITLE_TEXT_COLOR, 0, 300, true);
 }
 
 void Game::initGameplay()
@@ -372,7 +381,10 @@ void Game::initGameplay()
 	{
 		return;
 	}
-	map = new Map(tiles);
+	if (!gameRestarted)
+	{
+		map = new Map(tiles);
+	}
 	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 100, 300));
 	activeTanks.push_back(new Tank(RED_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
 	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
@@ -783,7 +795,7 @@ void executeKeyLifted(Tank* tank)
 	tank->setMovementState(false);
 }
 
-void cleanGameplayResources()
+void Game::cleanGameplayResources()
 {
 	// Clear all gameplay objects
 	for (int tankCnt = activeTanks.size() - 1; tankCnt >= 0; tankCnt--) // Clear all tank objects
@@ -801,12 +813,12 @@ void cleanGameplayResources()
 	}
 
 	std::cout << "Remaining Projectiles Left: " << activeProjectiles.size() << std::endl;
-	// Clear the map
-	map->~Map(); 
-	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
-	{
-		delete tiles[tileCnt];
-	}
+	//// Clear the map
+	//map->~Map(); 
+	//for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
+	//{
+	//	delete tiles[tileCnt];
+	//}
 }
 
 
@@ -820,15 +832,25 @@ void Game::restartGameplay()
 	cleanGameplayResources();
 	gameplayInitialized = false;
 	gamePaused = false;
+	gameRestarted = true;
 }
 
 void Game::quitToMainMenu()
 {
-	cleanGameplayResources();
 	// Reset flags
 	gameInMenu = true; // Set game to in menu
 	gameplayInitialized = false; // Reset gameplay initialization state
 	gamePaused = false; // Reset game in pause menu state
+	gameRestarted = false;
+
+	cleanGameplayResources();
+
+	// Clear the map
+	map->~Map();
+	for (int tileCnt = 0; tileCnt < TOTAL_TILES; tileCnt++)
+	{
+		delete tiles[tileCnt];
+	}
 }
 
 

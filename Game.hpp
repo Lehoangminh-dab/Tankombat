@@ -53,10 +53,12 @@ private:
 	bool gameInTutorial;
 	bool gamePaused;
 	bool gameWon;
+	bool gameRestarted;
 	bool gameplayInitialized;
 
 	SDL_Window* window;
 
+	void cleanGameplayResources();
 	// General menu functions
 	void renderBackground(std::string backgroundFilePath);
 
