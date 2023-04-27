@@ -10,6 +10,8 @@
 
 bool KEY_PRESSED[4] = { false, false, false, false }; // Array to keep track of which keys have been 
 
+
+const int SPAWN_OFFSET = 85;
 // Texture File Paths
 const std::string PLAY_BUTTON_PATH = "Assets/Menu/PlayButton.png";
 const std::string RESUME_BUTTON_PATH = "Assets/Menu/ResumeButton.png";
@@ -386,10 +388,10 @@ void Game::initGameplay()
 	{
 		map = new Map(tiles);
 	}
-	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, 100, 300));
-	activeTanks.push_back(new Tank(BROWN_TANK_TEXTURE_PATH, PLAYER_TWO_ID, 200, 400));
-	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, 300, 500));
-	activeTanks.push_back(new Tank(GRAY_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, 600, 500));
+	activeTanks.push_back(new Tank(BLUE_TANK_TEXTURE_PATH, PLAYER_ONE_ID, SPAWN_OFFSET, SPAWN_OFFSET));
+	activeTanks.push_back(new Tank(BROWN_TANK_TEXTURE_PATH, PLAYER_TWO_ID, SPAWN_OFFSET, SCREEN_HEIGHT - SPAWN_OFFSET - TANK_HEIGHT));
+	activeTanks.push_back(new Tank(GREEN_TANK_TEXTURE_PATH, PLAYER_THREE_ID, SCREEN_WIDTH - SPAWN_OFFSET - TANK_WIDTH, 50));
+	activeTanks.push_back(new Tank(GRAY_TANK_TEXTURE_PATH, PLAYER_FOUR_ID, SCREEN_WIDTH - SPAWN_OFFSET - TANK_WIDTH, SCREEN_HEIGHT - SPAWN_OFFSET - TANK_HEIGHT));
 
 	// Play gameplay music
 	soundManager.playGameplaySong();

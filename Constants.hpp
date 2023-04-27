@@ -50,13 +50,12 @@ static const int SOURCE_TILE_SIZE = 32;
 static const int TILE_WIDTH = 32;
 static const int TILE_HEIGHT = 32;
 static const int TOTAL_TILES = (SCREEN_WIDTH / TILE_WIDTH) * (SCREEN_HEIGHT / TILE_HEIGHT);
-static const int TOTAL_TILE_SPRITES = 4;
+static const int TOTAL_TILE_SPRITES = 3;
 
 // The different tile types
 static const int TILE_DIRT = 0;
-static const int TILE_GRASS = 1;
-static const int TILE_WATER = 2;
-static const int TILE_OBSTACLE_WALL = 3;
+static const int TILE_OBSTACLE_WALL = 1;
+static const int TILE_WHITE = 2;
 
 // Tank IDs
 static const std::string PLAYER_ONE_ID = "BLUE TANK";

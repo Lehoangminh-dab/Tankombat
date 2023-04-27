@@ -3,13 +3,23 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Temp Assets/Maps/MapOne.tmx",
+    "activeFile": "Assets/Maps/MAP.tmx",
     "expandedProjectPaths": [
+        "Temp Assets/Maps",
         "Temp Assets",
-        ".",
-        "Temp Assets/Maps"
+        "Assets/Maps",
+        "Temp Assets/Maps/Archive",
+        "."
     ],
     "fileStates": {
+        "Assets/Maps/MAP.tmx": {
+            "scale": 0.7505,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 800.1332445036643,
+                "y": 463.69087275149906
+            }
+        },
         "Assets/Maps/Map-Making/Forest.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
@@ -22,12 +32,24 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Assets/Maps/TileSheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Temp Assets/Maps/Archive/MapOne.tmx": {
             "scale": 0.7505,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 800.1332445036643,
-                "y": 481.01265822784814
+                "x": 858.7608261159229,
+                "y": 478.34776815456365
+            }
+        },
+        "Temp Assets/Maps/Map.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 818.5,
+                "y": 168
             }
         },
         "Temp Assets/Maps/MapOne.tmx": {
@@ -52,17 +74,22 @@
         }
     },
     "last.exportedFilePath": "D:/Work and Study/School/lap_trinh_nang_cao/Bing and Chill/Assets/Maps",
-    "last.imagePath": "D:/Work and Study/School/lap_trinh_nang_cao/Bing and Chill/Temp Assets/Maps",
+    "last.imagePath": "D:/Work and Study/School/lap_trinh_nang_cao/Bing and Chill/Assets/Maps",
     "map.height": 29,
     "map.lastUsedExportFilter": "CSV files (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.width": 50,
     "openFiles": [
-        "Temp Assets/Maps/MapOne.tmx"
+        "Assets/Maps/MAP.tmx",
+        "Assets/Maps/TileSheet.tsx"
     ],
     "project": "Map-Making.tiled-project",
     "recentFiles": [
+        "Assets/Maps/TileSheet.tsx",
+        "Assets/Maps/MAP.tmx",
+        "Temp Assets/Maps/Archive/MapOne.tmx",
         "Temp Assets/Maps/TileSheet.tsx",
+        "Temp Assets/Maps/Map.tmx",
         "Temp Assets/Maps/MapOne.tmx",
         "Temp Assets/Maps/TileSheet.tmx",
         "Assets/Maps/Map-Making/TileSet_V1.tsx",

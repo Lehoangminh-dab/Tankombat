@@ -79,22 +79,18 @@ bool Map::LoadMap(Tile* tiles[])
 	//Open the map
 	std::fstream map (TILE_MAP_PATH, std::ios::in);
 	// Extracting the contents of the map
-	std::vector<std::vector<std::string>> mapContent;
-	std::vector<std::string> row;
+	std::vector<std::string> mapContent;
 	std::string line, word;
 
 	if (map.is_open())
 	{
 		while (std::getline(map, line))
 		{
-			row.clear();
-
 			std::stringstream stream(line);
 
 			while (std::getline(stream, word, ','))
 			{
-				row.push_back(word);
-				mapContent.push_back(row);
+				mapContent.push_back(word);
 			}
 		}
 	}
@@ -112,7 +108,7 @@ bool Map::LoadMap(Tile* tiles[])
 		int tileType = -1;
 
 		//Read tile from map file
-		tileType = std::stoi(mapContent[tileCnt][0]);
+		tileType = std::stoi(mapContent[tileCnt]);
 
 		//If the number is a valid tile number
 		if ((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES))
