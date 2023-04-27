@@ -24,19 +24,19 @@ const std::string MENU_BACKGROUND_PATH = "Assets/Menu/Tank Background.png";
 
 const std::string TITLE_FONT_PATH = "Assets/Fonts/Helvetica Neue LT Std 107 Extra Black Condensed.ttf";
 const std::string TITLE_STARS_TEXTURE_PATH = "Assets/Menu/Main Title Stars.png";
-const std::string GLOBAL_FONT_PATH = "Assets/Fonts/TestFont.ttf";
+const std::string GLOBAL_FONT_PATH = "Assets/Fonts/Eurostile LT Std Condensed.ttf";
 
 const std::string MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
-const int MENU_TEXTBOX_WIDTH = 600;
-const int MENU_TEXTBOX_HEIGHT = 600;
+const int MENU_TEXTBOX_WIDTH = 860;
+const int MENU_TEXTBOX_HEIGHT = 510;
 
 const std::string WON_MENU_TEXTBOX_PATH = "Assets/Menu/TextBox.png";
-const int WON_MENU_TEXTBOX_WIDTH = 600;
-const int WON_MENU_TEXTBOX_HEIGHT = 600;
+const int WON_MENU_TEXTBOX_WIDTH = 860;
+const int WON_MENU_TEXTBOX_HEIGHT = 510;
 
-const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Textbox.png";
-const int TUTORIAL_TEXTBOX_WIDTH = 600;
-const int TUTORIAL_TEXTBOX_HEIGHT = 600;
+const std::string TUTORIAL_TEXTBOX_PATH = "Assets/Menu/Textbox (No background).png";
+const int TUTORIAL_TEXTBOX_WIDTH = 860;
+const int TUTORIAL_TEXTBOX_HEIGHT = 510;
 
 // Fonts
 TTF_Font* gameTitleFont = NULL;
@@ -44,9 +44,8 @@ TTF_Font* globalFont = NULL;
 
 // Font colors
 const SDL_Color TITLE_TEXT_COLOR = { 255, 255, 255 };
-const SDL_Color TUTORIAL_FONT_COLOR = { 0, 0 ,0 };
 const SDL_Color ANNOUNCEMENT_TEXT_COLOR = { 0, 0, 0 };
-
+const SDL_Color TUTORIAL_TEXT_COLOR = { 255, 255, 255 };
 // Object storers
 std::vector<Tank*> activeTanks;
 std::vector<Projectile*> activeProjectiles;
@@ -142,7 +141,7 @@ void Game::init(const char* title, bool fullscreen)
 	gameInTutorial = false;
 	// Initialize fonts
 	gameTitleFont = TTF_OpenFont(TITLE_FONT_PATH.c_str(), 160);
-	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 16);
+	globalFont = TTF_OpenFont(GLOBAL_FONT_PATH.c_str(), 40);
 }
 
 void Game::handleMenuEvents()
@@ -268,10 +267,10 @@ void Game::renderTutorialScreen()
 	tutorialSrcRect.h = TUTORIAL_TEXTBOX_HEIGHT;
 
 	SDL_Rect tutorialDestRect;
-	tutorialDestRect.w = SCREEN_WIDTH; // Text box rendering sizes
-	tutorialDestRect.h = 600;
+	tutorialDestRect.w = TUTORIAL_TEXTBOX_WIDTH * 1.4; // Text box rendering sizes
+	tutorialDestRect.h = TUTORIAL_TEXTBOX_HEIGHT * 1.4;
 	tutorialDestRect.x = (SCREEN_WIDTH - tutorialDestRect.w) / 2;
-	tutorialDestRect.y = (SCREEN_HEIGHT - tutorialDestRect.h) / 2;
+	tutorialDestRect.y = (SCREEN_HEIGHT - tutorialDestRect.h) / 2 - 48;
 
 	TextureManager::Draw(tutorialTextbox, tutorialSrcRect, tutorialDestRect);
 	SDL_DestroyTexture(tutorialTextbox);
@@ -279,42 +278,18 @@ void Game::renderTutorialScreen()
 	// Render the tutorial title text
 
 	// Setting each line's text
+	std::string tutorialTitle = "TUTORIAL";
 	std::string tutorialTextPlayerOne = "Player 1 (Blue): Press X to shoot and move forward";
 	std::string tutorialTextPlayerTwo = "Player 2 (Red): Press RIGHT SHIFT to shoot and move forward";
 	std::string tutorialTextPlayerThree = "Player 3 (Gray): Press LEFT TAB to shoot and move forward";
 	std::string tutorialTextPlayerFour = "Player 4 (Green): Press BACKSPACE to shoot and move forward";
 
-	// Determining each line's coordinates
-	SDL_Rect playerOneTextDest;
-	SDL_Rect playerTwoTextDest;
-	SDL_Rect playerThreeTextDest;
-	SDL_Rect playerFourTextDest;
-
-	playerOneTextDest.x = tutorialDestRect.x + 50;
-	playerOneTextDest.y = tutorialDestRect.y + 200;
-	playerOneTextDest.w = tutorialDestRect.w - 100;
-	playerOneTextDest.h = 200;
-
-	playerTwoTextDest.x = tutorialDestRect.x + 50;
-	playerTwoTextDest.y = tutorialDestRect.y + 300;
-	playerTwoTextDest.w = tutorialDestRect.w - 100;
-	playerTwoTextDest.h = 200;
-
-	playerThreeTextDest.x = tutorialDestRect.x + 50;
-	playerThreeTextDest.y = tutorialDestRect.y + 400;
-	playerThreeTextDest.w = tutorialDestRect.w - 100;
-	playerThreeTextDest.h = 200;
-
-	playerFourTextDest.x = tutorialDestRect.x + 50;
-	playerFourTextDest.y = tutorialDestRect.y + 500;
-	playerFourTextDest.w = tutorialDestRect.w - 100;
-	playerFourTextDest.h = 200;
-
 	// Rendering the lines of text
-	//TextureManager::DrawText(globalFont, tutorialTextPlayerOne, TUTORIAL_FONT_COLOR, playerOneTextDest);
-	//TextureManager::DrawText(globalFont, tutorialTextPlayerTwo, TUTORIAL_FONT_COLOR, playerTwoTextDest);
-	//TextureManager::DrawText(globalFont, tutorialTextPlayerThree, TUTORIAL_FONT_COLOR, playerThreeTextDest);
-	//TextureManager::DrawText(globalFont, tutorialTextPlayerFour, TUTORIAL_FONT_COLOR, playerFourTextDest);
+	TextureManager::DrawText(gameTitleFont, tutorialTitle, TUTORIAL_TEXT_COLOR, 0, 95, true);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerOne, TUTORIAL_TEXT_COLOR, 0, 350, true);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerTwo, TUTORIAL_TEXT_COLOR, 0, 450, true);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerThree, TUTORIAL_TEXT_COLOR, 0, 550, true);
+	TextureManager::DrawText(globalFont, tutorialTextPlayerFour, TUTORIAL_TEXT_COLOR, 0, 650, true);
 
 	// Render the tutorial menu buttons
 	tutorialBackButton.show();
