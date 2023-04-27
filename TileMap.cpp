@@ -140,8 +140,6 @@ bool Map::LoadMap(Tile* tiles[])
 		std::cout << "Unable to load map file!" << std::endl;
 	}
 
-	std::cout << "Number of rows: " << mapContent.size() << std::endl;
-	std::cout << "Number of columns: " << mapContent[0].size() << std::endl;
 	//Initialize the tiles
 	for (int tileCnt = 0; tileCnt < mapContent.size(); ++tileCnt)
 	{
