@@ -1,0 +1,98 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Assets/Maps/MAP.tmx",
+    "expandedProjectPaths": [
+        "Temp Assets/Maps/Archive",
+        "Temp Assets",
+        "Assets/Maps",
+        "Temp Assets/Maps",
+        "."
+    ],
+    "fileStates": {
+        "Assets/Maps/MAP.tmx": {
+            "scale": 0.7505,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 764.1572285143238,
+                "y": 450.36642238507665
+            }
+        },
+        "Assets/Maps/Map-Making/Forest.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 897,
+                "y": 604
+            }
+        },
+        "Assets/Maps/Map-Making/TileSet_V1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Assets/Maps/TileSheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Temp Assets/Maps/Archive/MapOne.tmx": {
+            "scale": 0.7505,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 858.7608261159229,
+                "y": 478.34776815456365
+            }
+        },
+        "Temp Assets/Maps/Map.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 818.5,
+                "y": 168
+            }
+        },
+        "Temp Assets/Maps/MapOne.tmx": {
+            "scale": 0.7505,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 798.8007994670221,
+                "y": 479.6802131912059
+            }
+        },
+        "Temp Assets/Maps/TileSheet.tmx": {
+            "scale": 3.7525,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 160.02664890073282,
+                "y": 16.25582944703531
+            }
+        },
+        "Temp Assets/Maps/TileSheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "D:/Work and Study/School/lap_trinh_nang_cao/Bing and Chill/Assets/Maps",
+    "last.imagePath": "D:/Work and Study/School/lap_trinh_nang_cao/Bing and Chill/Assets/Maps",
+    "map.height": 29,
+    "map.lastUsedExportFilter": "CSV files (*.csv)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 50,
+    "openFiles": [
+        "Assets/Maps/MAP.tmx"
+    ],
+    "project": "Map-Making.tiled-project",
+    "recentFiles": [
+        "Assets/Maps/MAP.tmx",
+        "Assets/Maps/TileSheet.tsx",
+        "Temp Assets/Maps/Archive/MapOne.tmx",
+        "Temp Assets/Maps/TileSheet.tsx",
+        "Temp Assets/Maps/Map.tmx",
+        "Temp Assets/Maps/MapOne.tmx",
+        "Temp Assets/Maps/TileSheet.tmx",
+        "Assets/Maps/Map-Making/TileSet_V1.tsx",
+        "Assets/Maps/Map-Making/Forest.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
